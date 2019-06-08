@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.edbrix.connectbrix">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".Application"
+        android:allowBackup="true"
+        android:icon="@drawable/connect_brix_flash"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/connect_brix_flash"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.ForgotPasswordActivity" />
+        <activity android:name=".activities.SchoolListActivity" />
+        <activity android:name=".activities.MeetingDetailsActivity" />
+        <activity android:name=".activities.FlashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.ChangePasswordActivity" />
+        <activity android:name=".activities.OrgnizationListActivity" />
+        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.ParticipantListItemActivity" />
+        <activity android:name=".activities.CreateMeetingActivity" />
+        <activity android:name=".activities.CalenderViewMeetingListActivity" />
+        <activity android:name=".activities.SelectParticipantsActivity" />
+        <activity android:name=".activities.FliterParticipantsActivity" />
+        <activity android:name=".activities.SelectParticipantsListItemActivity" />
+        <activity android:name=".activities.UpdateProfilePicActivity"></activity>
+        <activity android:name=".activities.WelcomeActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="aa6c280ec9307f757b7c5b1df101f1fc3899dc97" />
+    </application>
+
+</manifest>

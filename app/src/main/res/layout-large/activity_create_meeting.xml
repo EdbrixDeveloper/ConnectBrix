@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.CreateMeetingActivity">
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/cMeetingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="Title*" />
+
+            <EditText
+                android:id="@+id/cMeetingTitleVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/flash_screen_background"
+                android:inputType="text"
+                android:padding="13dp" />
+
+            <TextView
+                android:id="@+id/cMeetingDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"
+                android:text="Meeting Date*" />
+
+            <EditText
+                android:id="@+id/cMeetingDateVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/flash_screen_background"
+                android:inputType="textPersonName"
+                android:focusable="false"
+                android:drawableRight="@drawable/ic_date_range_black_24dp"
+                android:padding="13dp" />
+
+            <TextView
+                android:id="@+id/cMeetingAgenda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="14dp"
+                android:text="Agenda" />
+
+            <EditText
+                android:id="@+id/cMeetingAgendaVal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/flash_screen_background"
+                android:minLines="6"
+                android:lines="8"
+                android:gravity="top|left"
+                android:maxLines="10"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical"
+                android:padding="13dp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorButtonText"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:text="Add Participants" />
+</RelativeLayout>

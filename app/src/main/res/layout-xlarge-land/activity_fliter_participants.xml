@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.FliterParticipantsActivity">
+
+    <LinearLayout
+        android:id="@+id/linearSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/flash_screen_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/txtComboCampus"
+                style="@style/MyTheme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Select Campus" />
+
+            <TextView
+                android:id="@+id/txtComboType"
+                style="@style/MyTheme"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:text="Select Participants" />
+
+            <TextView
+                android:id="@+id/txtComboStudent"
+                style="@style/MyTheme"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:visibility="gone"
+                android:text="Select Student" />
+
+           <!-- <EditText
+                android:id="@+id/edSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:hint="Search"
+                android:inputType="textPersonName" />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_search"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Search" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/selectParticipantList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btns"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearSearch" />
+
+    <FrameLayout
+        android:id="@+id/btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/edit_text_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="bottom">
+
+            <Button
+                android:id="@+id/btnSelect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="Add To List"
+                android:textAllCaps="false"
+                android:textColor="@color/colorButtonText"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>

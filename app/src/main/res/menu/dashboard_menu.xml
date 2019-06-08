@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+   <!-- <item
+        android:id="@+id/menuRefresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        app:showAsAction="always"
+        android:title="refresh" />-->
+
+    <item
+        android:id="@+id/menuCalender"
+        android:icon="@drawable/calender"
+        app:showAsAction="always"
+        android:title="calender" />
+
+    <item
+        android:id="@+id/menuProfile"
+        android:icon="@drawable/profile"
+        app:showAsAction="always"
+        android:title="profile" />
+
+    <!--<item  android:id="@+id/item1"
+        android:title="Share"/>
+    <item  android:id="@+id/item2"
+        android:title="Change Password" />
+    <item  android:id="@+id/item3"
+        android:title="App Tour" />
+    <item  android:id="@+id/item4"
+        android:title="Logout"
+        app:showAsAction="withText" />-->
+
+</menu>
