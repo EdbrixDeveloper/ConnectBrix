@@ -74,7 +74,21 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewUserName.setText(sessionManager.getSessionUserFirstName() + " " + sessionManager.getSessionUserFirstLast());
         mTextViewEmail.setText(sessionManager.getSessionUserEmail());
         mTextViewOrgnization.setText(sessionManager.getPrefsSessionSchoolDispalyName());
-        mTextViewType.setText(sessionManager.getSessionUserType());
+        //mTextViewType.setText(sessionManager.getSessionUserType());
+
+        if (sessionManager.getSessionUserType().toString().equals("T")) {
+            mTextViewType.setText("Teacher");
+        } else if (sessionManager.getSessionUserType().toString().equals("A")) {
+            mTextViewType.setText("Admin");
+        } else if (sessionManager.getSessionUserType().toString().equals("S")) {
+            mTextViewType.setText("Student");
+        } else if (sessionManager.getSessionUserType().toString().equals("P")) {
+            mTextViewType.setText("Parent");
+        } else if (sessionManager.getSessionUserType().toString().equals("G")) {
+            mTextViewType.setText("Group");
+        } else if (sessionManager.getSessionUserType().toString().equals("O")) {
+            mTextViewType.setText("Other");
+        }
 
         Glide.with(this).load(sessionManager.getSessionProfileImageUrl())
                 .apply(RequestOptions.bitmapTransform(new FitCenter()))
