@@ -58,6 +58,12 @@ public class ForgotPasswordActivity extends BaseActivity {
         assignViews();
 
         checkEmailIsValidate();
+        clickListner();
+
+    }
+
+    private void clickListner() {
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +72,6 @@ public class ForgotPasswordActivity extends BaseActivity {
                     if (isEmailValid == true) {
 
                         getOrganizationList(mEdTxtEmail.getText().toString());
-
                     }
                 }
             }
@@ -182,10 +187,10 @@ public class ForgotPasswordActivity extends BaseActivity {
         String email = mEdTxtEmail.getText().toString().trim();
 
         if (email.isEmpty() || email == null) {
+            mEdTxtEmail.setError("Field can not be empty");
             return false;
         } else {
             return true;
         }
-
     }
 }

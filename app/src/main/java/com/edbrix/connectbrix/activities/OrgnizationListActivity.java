@@ -15,6 +15,7 @@ import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.OrgnizationListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.data.ForgotPasswordResponseData;
 import com.edbrix.connectbrix.data.UserLoginResponseData;
 import com.edbrix.connectbrix.data.UserOrganizationListData;
 import com.edbrix.connectbrix.utils.Constants;
@@ -148,7 +149,34 @@ public class OrgnizationListActivity extends BaseActivity {
             jsonObject.put("SECRETKEY", userOrganizationListData.get(position).getSecretekey());
             jsonObject.put("Email", sessionManager.getSessionUsername());
 
+            GsonRequest<ForgotPasswordResponseData> userLoginRequest = new GsonRequest<>(Request.Method.POST, Constants.resetPassword, jsonObject.toString(), ForgotPasswordResponseData.class,
+                    new Response.Listener<ForgotPasswordResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull ForgotPasswordResponseData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
 
+                                if (response.getSuccess() == 1) {
+                                    showToast(response.getMessage());
+
+                                    Intent intent = new Intent(OrgnizationListActivity.this, ForgotPasswordActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            userLoginRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            userLoginRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(userLoginRequest, "userLoginRequest");
 
         }catch (Exception e){
             hideBusyProgress();
