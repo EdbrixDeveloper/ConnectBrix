@@ -8,6 +8,7 @@
     tools:context=".activities.UserProfileActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayoutUserInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_background"
@@ -100,7 +101,6 @@
     <ListView
         android:id="@+id/userOptionList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

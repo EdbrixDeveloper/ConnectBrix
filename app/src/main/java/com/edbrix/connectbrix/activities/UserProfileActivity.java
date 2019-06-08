@@ -66,12 +66,12 @@ public class UserProfileActivity extends AppCompatActivity {
         userOptionsListAdapter = new UserOptionsListAdapter(UserProfileActivity.this, userOptions, userOptionsImages);
         mUserOptionList.setAdapter(userOptionsListAdapter);
 
-        // clickListner();
+        clickListner();
     }
 
     private void setUserDetails() {
 
-        mTextViewUserName.setText(sessionManager.getSessionUserFirstName()+" "+sessionManager.getSessionUserFirstLast());
+        mTextViewUserName.setText(sessionManager.getSessionUserFirstName() + " " + sessionManager.getSessionUserFirstLast());
         mTextViewEmail.setText(sessionManager.getSessionUserEmail());
         mTextViewOrgnization.setText(sessionManager.getPrefsSessionSchoolDispalyName());
         mTextViewType.setText(sessionManager.getSessionUserType());
@@ -122,8 +122,8 @@ public class UserProfileActivity extends AppCompatActivity {
         mTextViewOrgnization = (TextView) findViewById(R.id.textViewOrgnization);
         mTextViewType = (TextView) findViewById(R.id.textViewType);
         mUserOptionList = (ListView) findViewById(R.id.userOptionList);
-        mUpdatePhotoLayout = (RelativeLayout)findViewById(R.id.updatePhotoLayout);
-        mLinearLayoutUserInfo = (LinearLayout)findViewById(R.id.linearLayoutUserInfo);
+        mUpdatePhotoLayout = (RelativeLayout) findViewById(R.id.updatePhotoLayout);
+        mLinearLayoutUserInfo = (LinearLayout) findViewById(R.id.linearLayoutUserInfo);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.menuLogout:
-                startActivity(new Intent(UserProfileActivity.this,LoginActivity.class));
+                startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
                 logoutFromApp();
                 return true;
         }
