@@ -47,7 +47,7 @@ public class OrgnizationListActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         Intent intent = getIntent();
         userComesFrom = intent.getStringExtra("comesFrom");
-
+        userOrganizationListData = new ArrayList<>();
         userOrganizationListData = (ArrayList<UserOrganizationListData>) intent.getSerializableExtra("organizationList");
         setOrgnizationListAdapter(userOrganizationListData);
         clickListners();

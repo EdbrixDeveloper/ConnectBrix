@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity {
     SessionManager sessionManager;
     boolean isEmailValid = false;
 
-    ArrayList<UserOrganizationListData> userOrganizationListData = new ArrayList<>();
+    ArrayList<UserOrganizationListData> userOrganizationListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class LoginActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
+        userOrganizationListData = new ArrayList<>();
         assignViews();
         init();
     }
@@ -182,6 +183,7 @@ public class LoginActivity extends BaseActivity {
                                     sessionManager.updateSessionPassword(password);
 
                                     for (int i = 0; i < response.getUserOrganizationList().size(); i++) {
+                                        userOrganizationListData = new ArrayList<>();
                                         userOrganizationListData.add(response.getUserOrganizationList().get(i));
                                     }
                                     Intent intent = new Intent(LoginActivity.this, OrgnizationListActivity.class);

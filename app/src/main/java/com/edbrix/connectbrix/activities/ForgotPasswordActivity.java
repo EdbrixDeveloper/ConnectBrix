@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         setContentView(R.layout.activity_forgot_password);
         getSupportActionBar().setTitle("Reset your Password");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        userOrganizationListData = new ArrayList<>();
         sessionManager = new SessionManager(this);
         assignViews();
 
@@ -103,6 +103,7 @@ public class ForgotPasswordActivity extends BaseActivity {
                                     sessionManager.updateSessionUsername(userName);
 
                                     for (int i = 0; i < response.getUserOrganizationList().size(); i++) {
+                                        userOrganizationListData = new ArrayList<>();
                                         userOrganizationListData.add(response.getUserOrganizationList().get(i));
                                     }
 
