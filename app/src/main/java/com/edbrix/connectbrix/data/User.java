@@ -30,6 +30,36 @@ public class User {
     @SerializedName("SchoolLoginUrl")
     @Expose
     private String schoolLoginUrl;
+    ///////////
+    @SerializedName("MobileNumber")
+    @Expose
+    private String mobileNumber;
+    @SerializedName("State")
+    @Expose
+    private String state;
+    @SerializedName("Country")
+    @Expose
+    private String country;
+    @SerializedName("MobileNumber2")
+    @Expose
+    private String mobileNumber2;
+    @SerializedName("Address")
+    @Expose
+    private String address;
+    @SerializedName("City")
+    @Expose
+    private String city;
+    @SerializedName("StateId")
+    @Expose
+    private String stateId;
+    @SerializedName("Zip")
+    @Expose
+    private String zip;
+    @SerializedName("CountryId")
+    @Expose
+    private String countryId;
+    //////
+
     private final static long serialVersionUID = -5626855158322304629L;
 
     public String getId() {
@@ -95,4 +125,78 @@ public class User {
     public void setSchoolLoginUrl(String schoolLoginUrl) {
         this.schoolLoginUrl = schoolLoginUrl;
     }
+    /////
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getMobileNumber2() {
+        return mobileNumber2;
+    }
+
+    public void setMobileNumber2(String mobileNumber2) {
+        this.mobileNumber2 = mobileNumber2;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
+
 }

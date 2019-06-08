@@ -68,6 +68,7 @@ dependencies {
 
     implementation project(':commonlib')
     implementation project(':mobilertc')
+    implementation 'com.vikktorn.picker:picker:1.0.0'
 }
 configurations {
     all*.exclude group: 'com.google.code.gson'
