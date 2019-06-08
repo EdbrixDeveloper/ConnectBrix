@@ -14,5 +14,6 @@ public class Constants  {
     public final static String userLogin = BASE_URL.concat("auth/login");  // authenticate
     public final static String organizationList = BASE_URL.concat("auth/authorganizationlistbyuseremail");
     public final static String resetPassword = BASE_URL.concat("auth/resetpassword");
+    public final static String changePassword = BASE_URL.concat("auth/changepassword");
 
 }
