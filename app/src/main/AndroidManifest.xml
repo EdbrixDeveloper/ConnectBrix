@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -27,7 +28,6 @@
         <activity android:name=".activities.FlashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,6 +48,7 @@
             android:value="aa6c280ec9307f757b7c5b1df101f1fc3899dc97" />
 
         <activity android:name=".activities.ImagePickerActivity" />
+
         <!-- uCrop cropping activity -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

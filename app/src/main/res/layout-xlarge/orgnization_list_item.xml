@@ -10,14 +10,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+       <!-- <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgOrgnization"
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:src="@drawable/ic_launcher_background"
-            android:padding="5dp" />
+            android:padding="5dp" />-->
+
+        <ImageView
+            android:id="@+id/imgOrgnization"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_launcher_background"/>
 
         <TextView
             android:id="@+id/txtOrgnizationName"

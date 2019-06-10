@@ -4,23 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.UpdateProfilePicActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.UpdateProfilePicActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_background"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfile"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_margin="10dp"
             android:padding="5dp"
             android:src="@drawable/ic_launcher_background" />
+
+
+        <TextView
+            android:id="@+id/selectPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:text="Select Photo"
+            android:textSize="15dp"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -28,11 +39,11 @@
         android:id="@+id/btnUpdateProfilePic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorButtonText"
-        android:layout_margin="10dp"
-        android:textAllCaps="false"
         android:layout_alignParentBottom="true"
-        android:text="Update Profile Pic" />
+        android:layout_margin="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Update Profile Pic"
+        android:textAllCaps="false"
+        android:textColor="@color/colorButtonText" />
 
 </RelativeLayout>
