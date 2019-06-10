@@ -84,12 +84,15 @@ public class UpdateProfilePicActivity extends BaseActivity {
 
     private void loadProfileDefault() {
 
+
         if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
             Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
                     .into(mImgProfile);
             mImgProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
-            Glide.with(this).load(sessionManager.getSessionProfileImageUrl())
+            int randomNumber = generateRandomIntIntRange(0001,9999);
+            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+            Glide.with(this).load(imageUrl)
                     .into(mImgProfile);
         }
     }
@@ -248,7 +251,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("UserId", sessionManager.getSessionUserId());
             jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
-            jsonObject.put("UploadFileTitle", sessionManager.getSessionUsername() + ".png");
+            jsonObject.put("UploadFileTitle", sessionManager.getSessionUserFirstName()+"_"+sessionManager.getSessionUserId() + ".png");
             jsonObject.put("UploadFileEncodeString", base64StringUserProfile);
 
             GsonRequest<UploadProfilePicResponseData> uploadUserProfilePictureRequest = new GsonRequest<>(Request.Method.POST, Constants.updateUserProfilePicture, jsonObject.toString(), UploadProfilePicResponseData.class,

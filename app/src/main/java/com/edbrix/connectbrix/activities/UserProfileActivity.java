@@ -1,8 +1,9 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,19 +14,31 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.request.RequestOptions;
+import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.UserOptionsListAdapter;
+import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.data.UserData;
+import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
+import com.edbrix.connectbrix.volley.GsonRequest;
+import com.edbrix.connectbrix.volley.SettingsMy;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends BaseActivity {
 
+    private static final String TAG = UserProfileActivity.class.getName();
     private CircleImageView mImgProfile;
     private TextView mTextViewUserName;
     private TextView mTextViewEmail;
@@ -50,6 +63,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignViews();
 
+
         userOptions.add("Edit Profile");
         userOptions.add("Change Password");
         userOptions.add("App Tour");
@@ -59,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity {
         userOptionsImages.add(R.drawable.apptour);
 
         sessionManager = new SessionManager(this);
-
+        GetUserPersonalData();
 
         setUserDetails();
 
@@ -90,7 +104,11 @@ public class UserProfileActivity extends AppCompatActivity {
             mTextViewType.setText("Other");
         }
 
-        Glide.with(this).load(sessionManager.getSessionProfileImageUrl())
+        int randomNumber = generateRandomIntIntRange(0001,9999);
+        String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+
+
+        Glide.with(this).load(imageUrl)
                 .apply(RequestOptions.bitmapTransform(new FitCenter()))
                 .into(mImgProfile);
 
@@ -164,5 +182,55 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void logoutFromApp() {
         finish();
+    }
+
+    private void GetUserPersonalData() {
+        try {
+
+            showBusyProgress();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("UserId", sessionManager.getSessionUserId());
+            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+
+            GsonRequest<UserData> userOrganizationListRequest = new GsonRequest<>(Request.Method.POST, Constants.getUserPersonalData, jsonObject.toString(), UserData.class,
+                    new Response.Listener<UserData>() {
+                        @Override
+                        public void onResponse(@NonNull UserData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                String error = response.getError().getErrorMessage();
+                                showToast(error);
+                            } else {
+
+                                if (response.getSuccess() == 1) {
+                                    sessionManager.updateSessionProfileImageUrl(response.getUser().getImageUrl());
+                                    setUserDetails();
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            userOrganizationListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            userOrganizationListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(userOrganizationListRequest, "userOrganizationListRequest");
+
+        } catch (Exception e) {
+
+            hideBusyProgress();
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        setUserDetails();
+        super.onBackPressed();
     }
 }

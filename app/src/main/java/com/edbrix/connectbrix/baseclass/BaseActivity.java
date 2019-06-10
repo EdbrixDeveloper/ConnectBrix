@@ -26,6 +26,8 @@ import com.edbrix.connectbrix.utils.NotificationUtils;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Random;
+
 //import com.brahamaputra.mahindra.brahamaputra.commons.OfflineStorageWrapper;
 
 
@@ -184,5 +186,10 @@ public class BaseActivity extends AppCompatActivity {
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;
 
+    }
+
+    public static int generateRandomIntIntRange(int min, int max) {
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 }
