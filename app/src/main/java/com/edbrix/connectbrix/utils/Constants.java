@@ -1,9 +1,9 @@
 package com.edbrix.connectbrix.utils;
 
-public class Constants  {
+public class Constants {
 
     // TODO Change it to your web domain
-    public final static String WEB_DOMAIN ="";
+    public final static String WEB_DOMAIN = "";
     // TODO Change it to your APP Key
     public final static String APP_KEY__ = "QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEhZWRicml4QDE4";
     // TODO Change it to your APP Secret
@@ -20,6 +20,6 @@ public class Constants  {
     public final static String updateUserPersonalData = BASE_URL.concat("auth/updateuserdetails");
     public final static String updateUserProfilePicture = BASE_URL.concat("auth/uploaduserprofilepicture");
 
-    public final static String getMeetingList = BASE_URL.concat("auth/uploaduserprofilepicture");
+    public final static String getMeetingList = BASE_URL.concat("connectbrix/getmeetinglist");
 
 }
