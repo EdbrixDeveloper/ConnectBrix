@@ -101,7 +101,7 @@
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_launcher_xxx" />
+                android:src="@drawable/user_group" />
 
             <TextView
                 android:id="@+id/textViewPartycipentCount"
