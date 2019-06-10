@@ -1,6 +1,7 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,22 +14,24 @@ import android.widget.ListView;
 
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolListAdapter;
+import com.edbrix.connectbrix.baseclass.BaseActivity;
 
 import java.util.ArrayList;
 
-public class SchoolListActivity extends AppCompatActivity {
+public class SchoolListActivity extends BaseActivity {
 
     private ListView mSchoolMeetingList;
     SchoolListAdapter schoolListAdapter;
     ArrayList<String> date = new ArrayList<>();
     FloatingActionButton floating_action_button_fab_with_listview;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_list);
         getSupportActionBar().setTitle("Meeting List");
-      /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
         assignViews();
 
         date.add("02/03/2019");
@@ -45,8 +48,8 @@ public class SchoolListActivity extends AppCompatActivity {
         mSchoolMeetingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SchoolListActivity.this,MeetingDetailsActivity.class);
-                intent.putExtra("meetingTitle","School Anual Function Meeting");
+                Intent intent = new Intent(SchoolListActivity.this, MeetingDetailsActivity.class);
+                intent.putExtra("meetingTitle", "School Anual Function Meeting");
                 startActivity(intent);
             }
         });
@@ -61,13 +64,13 @@ public class SchoolListActivity extends AppCompatActivity {
     }
 
     private void setSchoolListAdapter(ArrayList<String> date) {
-        schoolListAdapter = new SchoolListAdapter(SchoolListActivity.this,date);
+        schoolListAdapter = new SchoolListAdapter(SchoolListActivity.this, date);
         mSchoolMeetingList.setAdapter(schoolListAdapter);
     }
 
     private void assignViews() {
         mSchoolMeetingList = (ListView) findViewById(R.id.schoolMeetingList);
-        floating_action_button_fab_with_listview = (FloatingActionButton)findViewById(R.id.floating_action_button_fab_with_listview);
+        floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
     }
 
     @Override
@@ -92,6 +95,25 @@ public class SchoolListActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.dashboard_menu, menu);
         return true;
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        showToast("Click back again to exit.");
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
 }

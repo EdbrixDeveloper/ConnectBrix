@@ -2,6 +2,7 @@ package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -54,6 +55,7 @@ public class LoginActivity extends BaseActivity {
     boolean isEmailValid = false;
 
     ArrayList<UserOrganizationListData> userOrganizationListData;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +157,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-
     private void doLogin(final String userName, final String password) {
 
         try {
@@ -228,5 +229,25 @@ public class LoginActivity extends BaseActivity {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        showToast("Click back again to exit.");
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

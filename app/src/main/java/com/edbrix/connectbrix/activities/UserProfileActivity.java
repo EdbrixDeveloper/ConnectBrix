@@ -24,6 +24,7 @@ import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.UserOptionsListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.UserData;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
@@ -53,6 +54,7 @@ public class UserProfileActivity extends BaseActivity {
     ArrayList<String> userOptions = new ArrayList<>();
     ArrayList<Integer> userOptionsImages = new ArrayList<>();
     Intent intent;
+    private AlertDialogManager alertDialogManager;
     SessionManager sessionManager;
 
     @Override
@@ -63,7 +65,7 @@ public class UserProfileActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignViews();
 
-
+        alertDialogManager = new AlertDialogManager(UserProfileActivity.this);
         userOptions.add("Edit Profile");
         userOptions.add("Change Password");
         userOptions.add("App Tour");
@@ -104,8 +106,8 @@ public class UserProfileActivity extends BaseActivity {
             mTextViewType.setText("Other");
         }
 
-        int randomNumber = generateRandomIntIntRange(0001,9999);
-        String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+        int randomNumber = generateRandomIntIntRange(0001, 9999);
+        String imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
 
 
         Glide.with(this).load(imageUrl)
@@ -173,11 +175,31 @@ public class UserProfileActivity extends BaseActivity {
                 finish();
                 return true;
             case R.id.menuLogout:
-                startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
-                logoutFromApp();
+                //startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
+                //logoutFromApp();
+                showSettingsAlert();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showSettingsAlert() {
+
+        alertDialogManager.Dialog("Confirmation", "Are you sure you want to logout?", "Yes", "No", new AlertDialogManager.onTwoButtonClickListner() {
+            @Override
+            public void onPositiveClick() {
+                sessionManager.clearSessionCredentials();
+                finish();
+                startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
+            }
+
+            @Override
+            public void onNegativeClick() {
+
+            }
+        }).show();
+
     }
 
     private void logoutFromApp() {
