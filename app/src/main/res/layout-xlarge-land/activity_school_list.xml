@@ -8,14 +8,32 @@
     tools:context=".activities.SchoolListActivity">
 
 
-    <ListView
+    <!--android:layout_below="@+id/linearLayout_Status"-->
+    <ExpandableListView
+        android:id="@+id/schoolList_listView_schoolList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listheader="@layout/item_meeting_list_seprator"
+        tools:listitem="@layout/item_meeting_list" />
+
+    <TextView
+        android:id="@+id/txtDataFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No data found."
+        android:visibility="gone" />
+
+
+    <!--<ListView
         android:id="@+id/schoolMeetingList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" />-->
 
+    <!--Add Button List-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button_fab_with_listview"

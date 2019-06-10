@@ -20,4 +20,6 @@ public class Constants  {
     public final static String updateUserPersonalData = BASE_URL.concat("auth/updateuserdetails");
     public final static String updateUserProfilePicture = BASE_URL.concat("auth/uploaduserprofilepicture");
 
+    public final static String getMeetingList = BASE_URL.concat("auth/uploaduserprofilepicture");
+
 }
