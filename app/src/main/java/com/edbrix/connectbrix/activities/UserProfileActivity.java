@@ -191,7 +191,9 @@ public class UserProfileActivity extends BaseActivity {
             public void onPositiveClick() {
                 sessionManager.clearSessionCredentials();
                 finish();
-                startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
+                Intent intent = new Intent(UserProfileActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
 
             @Override

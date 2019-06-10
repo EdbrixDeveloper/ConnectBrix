@@ -187,6 +187,7 @@ public class LoginActivity extends BaseActivity {
                                         userOrganizationListData = new ArrayList<>();
                                         userOrganizationListData.add(response.getUserOrganizationList().get(i));
                                     }
+                                    finish();
                                     Intent intent = new Intent(LoginActivity.this, OrgnizationListActivity.class);
                                     intent.putExtra("organizationList", userOrganizationListData);
                                     intent.putExtra("comesFrom","loginActivity");

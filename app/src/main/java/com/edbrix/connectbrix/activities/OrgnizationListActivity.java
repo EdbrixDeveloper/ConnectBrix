@@ -118,8 +118,10 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());
 
-                                    Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
-                                    startActivity(intent);
+                                    //Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
+                                    finish();
+                                    startActivity(new Intent(OrgnizationListActivity.this, SchoolListActivity.class));
+
                                 }
                             }
 
@@ -142,7 +144,7 @@ public class OrgnizationListActivity extends BaseActivity {
     }
 
     private void resetPassword(int position) {
-        try{
+        try {
             showBusyProgress();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("APIKEY", userOrganizationListData.get(position).getApiKey());
@@ -178,10 +180,19 @@ public class OrgnizationListActivity extends BaseActivity {
             userLoginRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(userLoginRequest, "userLoginRequest");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             hideBusyProgress();
             Log.e(TAG, e.getMessage());
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        //Intent intent = new Intent(OrgnizationListActivity.this, LoginActivity.class);
+        finish();
+        startActivity(new Intent(OrgnizationListActivity.this, LoginActivity.class));
 
     }
 }
