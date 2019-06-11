@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.CalenderViewMeetingListActivity">
 
     <LinearLayout
@@ -11,11 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <CalendarView
+        <!--<CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="0dp" />-->
+
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            app:headerColor="@color/colorPrimary"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="0dp" />
 
@@ -26,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutCal"
-        android:gravity="center"
         android:background="@color/colorBackground"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -36,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="04/Feb/2019"/>
+            android:text="04/Feb/2019" />
 
 
     </LinearLayout>
