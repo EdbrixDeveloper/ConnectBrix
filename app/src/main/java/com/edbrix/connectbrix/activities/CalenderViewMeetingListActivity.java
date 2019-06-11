@@ -20,7 +20,6 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolListAdapter;
 import com.edbrix.connectbrix.data.MyEventDay;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -120,20 +119,17 @@ public class CalenderViewMeetingListActivity extends AppCompatActivity {
     private void addEventToCalendar() {
 
         try {
-
             for(int i=1;i<=9;i++){
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 Date dateForEvent = sdf. parse(i+"-06-2019");
                 Calendar cal = Calendar. getInstance();
                 cal.setTime(dateForEvent);
-                MyEventDay myEventDay1 = new MyEventDay(cal, R.drawable.ic_fiber_manual_record_black_24dp, "Note "+i);
+                MyEventDay myEventDay1 = new MyEventDay(cal, R.drawable.circle, "Note "+i);
                 mCalendarView.setDate(myEventDay1.getCalendar());
                 mEventDays.add(myEventDay1);
                 mCalendarView.setEvents(mEventDays);
             }
-
-
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

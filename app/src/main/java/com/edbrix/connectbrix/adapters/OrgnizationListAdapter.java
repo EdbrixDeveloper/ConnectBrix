@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.request.RequestOptions;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.activities.OrgnizationListActivity;
 import com.edbrix.connectbrix.data.UserOrganizationListData;
@@ -65,7 +63,7 @@ public class OrgnizationListAdapter extends BaseAdapter {
 
        // Glide.with(orgnizationListActivity).load(userOrganizationListData.get(position).getSchoolLogoUrl()).into( holder.orgnizationImage);
         Glide.with(orgnizationListActivity).load(userOrganizationListData.get(position).getSchoolLogoUrl())
-                .apply(RequestOptions.bitmapTransform(new FitCenter()))
+                //.apply(RequestOptions.bitmapTransform(new FitCenter()))
                 .into(holder.orgnizationImage);
 
         /* holder.orgnizationImage.setImageURI(Uri.parse(userOrganizationListData.get(position).getSchoolLogoUrl()));*/
