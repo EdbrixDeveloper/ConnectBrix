@@ -21,5 +21,6 @@ public class Constants {
     public final static String updateUserProfilePicture = BASE_URL.concat("auth/uploaduserprofilepicture");
 
     public final static String getMeetingList = BASE_URL.concat("connectbrix/getmeetinglist");
+    public final static String getMeetingDetails = BASE_URL.concat("connectbrix/getmeetingdetails");
 
 }

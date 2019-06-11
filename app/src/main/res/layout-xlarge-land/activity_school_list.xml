@@ -45,6 +45,7 @@
         android:layout_marginRight="16dp"
         android:clickable="true"
         android:src="@drawable/ic_action_name"
+        android:visibility="gone"
         app:elevation="4dp" />
 
 </RelativeLayout>

@@ -104,7 +104,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher_xxx" />
+                android:src="@drawable/user_group" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Start"
+                android:text="Join"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="19dp"/>

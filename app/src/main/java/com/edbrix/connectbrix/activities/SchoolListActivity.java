@@ -3,6 +3,7 @@ package com.edbrix.connectbrix.activities;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +31,6 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class SchoolListActivity extends BaseActivity {
 
@@ -66,6 +62,11 @@ public class SchoolListActivity extends BaseActivity {
         alertDialogManager = new AlertDialogManager(SchoolListActivity.this);
         sessionManager = new SessionManager(SchoolListActivity.this);
 
+        floating_action_button_fab_with_listview.hide();
+        if (sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) {
+            floating_action_button_fab_with_listview.show();
+        }
+
         prepareListData();
 
         schoolList_listView_schoolList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -82,18 +83,20 @@ public class SchoolListActivity extends BaseActivity {
 
                 if (meetingListData != null) {
 
-                    /*final String sitePMAcTicketId = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getId() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getId().toString();
-                    final String sitePMAcTicketNo = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketNo() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketNo().toString();
-                    final String sitePMAcTicketDate = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketDate().toString();
-                    final String pmPlanDate = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getPmPlanDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getPmPlanDate().toString();
-                    final String submittedDate = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSubmittedDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSubmittedDate().toString();
-                    final String sheduledDateOfAcPm = meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSheduledDateOfAcPm() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSheduledDateOfAcPm().toString();
+                    final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
+                    goToEditingMeetingDetails(meetingId, isHost);
+                    /*final String meetingDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate().toString();
+                    final String sitePMAcTicketDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketDate().toString();
+                    final String pmPlanDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getPmPlanDate().toString();
+                    final String submittedDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSubmittedDate().toString();
+                    final String sheduledDateOfAcPm = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSheduledDateOfAcPm().toString();
 
                     checkSystemLocation(customerName, circleName, stateName, ssaName, siteDBId, siteId, siteName, siteType,
                             sitePMAcTicketId, sitePMAcTicketNo, sitePMAcTicketDate, pmPlanDate,
                             submittedDate, sheduledDateOfAcPm, numberOfAc, modeOfOpration,
                             vendorName, acTechnicianName, acTechnicianMobileNo, accessType, ticketAccess, acPmTickStatus);*/
-                    showToast("Clicked on Meeting");
+                    //showToast("Clicked on Meeting");
                 }
 
                 return false;
@@ -109,6 +112,13 @@ public class SchoolListActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private void goToEditingMeetingDetails(String MeetingId, String IsHost) {
+        Intent intent = new Intent(SchoolListActivity.this, MeetingDetailsActivity.class);
+        intent.putExtra("MeetingId", MeetingId);
+        intent.putExtra("IsHost", IsHost);
+        startActivity(intent);
     }
 
     @Override

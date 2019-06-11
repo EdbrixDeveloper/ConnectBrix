@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edbrix.connectbrix.R;
+import com.edbrix.connectbrix.utils.SessionManager;
 
 import java.util.ArrayList;
 
@@ -21,10 +22,14 @@ public class ParticipantsListAdapter extends BaseAdapter {
     private Activity participantListActivity;
     ArrayList<String> participantList;
     private static LayoutInflater inflater = null;
+    private String MeetingId = "", IsHost = "", UserType = "";
 
-    public ParticipantsListAdapter(Activity participantListActivity,ArrayList<String> participantList){
+    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<String> participantList, String UserType, String MeetingId, String IsHost) {
         this.participantListActivity = participantListActivity;
         this.participantList = participantList;
+        this.UserType = UserType;
+        this.MeetingId = MeetingId;
+        this.IsHost = IsHost;
         inflater = (LayoutInflater) participantListActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -50,15 +55,19 @@ public class ParticipantsListAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.activity_participant_list_item, null);
             holder = new ViewHolder();
-            holder.partcipantImage = (CircleImageView)view.findViewById(R.id.imgParticipant);
-            holder.participantName = (TextView)view.findViewById(R.id.txtParticipantName);
-            holder.organizationName = (TextView)view.findViewById(R.id.txtorganizationName);
-            holder.txtIsAvaliable = (TextView)view.findViewById(R.id.txtIsAvaliable);
-            holder.remove = (ImageView)view.findViewById(R.id.imgRemove);
-            holder.status = (ImageView)view.findViewById(R.id.imgStatus);
+            holder.partcipantImage = (CircleImageView) view.findViewById(R.id.imgParticipant);
+            holder.participantName = (TextView) view.findViewById(R.id.txtParticipantName);
+            holder.organizationName = (TextView) view.findViewById(R.id.txtorganizationName);
+            holder.txtIsAvaliable = (TextView) view.findViewById(R.id.txtIsAvaliable);
+            holder.remove = (ImageView) view.findViewById(R.id.imgRemove);
+            holder.status = (ImageView) view.findViewById(R.id.imgStatus);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
+        }
+
+        if ((UserType.equals("T") || UserType.equals("A")) && IsHost.equals("1")) {
+            holder.remove.setVisibility(View.VISIBLE);
         }
 
         holder.participantName.setText(participantList.get(position).toString());
