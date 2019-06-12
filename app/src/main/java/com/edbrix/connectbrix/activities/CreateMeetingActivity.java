@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,26 +16,41 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
+import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.data.CreateMeetingResponseData;
+import com.edbrix.connectbrix.data.UploadProfilePicResponseData;
+import com.edbrix.connectbrix.utils.Constants;
+import com.edbrix.connectbrix.utils.SessionManager;
+import com.edbrix.connectbrix.volley.GsonRequest;
+import com.edbrix.connectbrix.volley.SettingsMy;
+
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class CreateMeetingActivity extends AppCompatActivity {
+public class CreateMeetingActivity extends BaseActivity {
 
+    private static final String TAG = CreateMeetingActivity.class.getName();
     private TextView mCMeetingTitle;
     private EditText mCMeetingTitleVal;
     private TextView mCMeetingDate;
     private EditText mCMeetingDateVal;
     private TextView mCMeetingAgenda;
     private EditText mCMeetingAgendaVal;
-    private Button mBtnNext;
+    private Button mBtnCreateMeeting;
     String str_date;
     String str_temp_date;
     String str_time;
     String meetingDate;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +58,15 @@ public class CreateMeetingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_meeting);
         getSupportActionBar().setTitle("Create Meeting");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        sessionManager = new SessionManager(this);
         assignViews();
 
-        mBtnNext.setOnClickListener(new View.OnClickListener() {
+        mBtnCreateMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreateMeetingActivity.this, SelectParticipantsActivity.class));
+                // startActivity(new Intent(CreateMeetingActivity.this, SelectParticipantsActivity.class));
+                createMeeting();
             }
         });
 
@@ -117,14 +136,14 @@ public class CreateMeetingActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         meetingDate = new String();
-                        meetingDate = str_date +" "+str_time;
-                        if (meetingDate.equals("nullnull")) {
+                        meetingDate = str_date + " " + str_time;
+                        if (meetingDate.equals("null null")) {
                             Date date = new Date();
                             str_date = finalSimpleDateFormat.format(date);
                             String strDateFormat = "hh:mm a";
                             DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
                             str_time = dateFormat.format(date);
-                            meetingDate = str_date +" "+str_time;
+                            meetingDate = str_date + " " + str_time;
 
                         }
                         //Toast.makeText(getApplicationContext(),""+meetingDate,Toast.LENGTH_LONG).show();
@@ -141,6 +160,54 @@ public class CreateMeetingActivity extends AppCompatActivity {
         });
     }
 
+    private void createMeeting() {
+
+        try {
+
+            showBusyProgress();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jsonObject.put("UserId", sessionManager.getSessionUserId());
+            jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
+            jsonObject.put("Agenda", mCMeetingAgendaVal.getText().toString().trim());
+            jsonObject.put("MeetingDate", mCMeetingDateVal.getText().toString().trim());
+
+            GsonRequest<CreateMeetingResponseData> createMeetingRequest = new GsonRequest<>(Request.Method.POST, Constants.createMeeting, jsonObject.toString(), CreateMeetingResponseData.class,
+                    new Response.Listener<CreateMeetingResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull CreateMeetingResponseData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                String error = response.getError().getErrorMessage();
+                                showToast(error);
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast(response.getMessage());
+                                    startActivity(new Intent(CreateMeetingActivity.this,SchoolListActivity.class));
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            createMeetingRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            createMeetingRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(createMeetingRequest, "createMeetingRequest");
+
+        } catch (Exception e) {
+            hideBusyProgress();
+            Log.e(TAG, e.getMessage());
+
+        }
+
+    }
+
     private void assignViews() {
         mCMeetingTitle = (TextView) findViewById(R.id.cMeetingTitle);
         mCMeetingTitleVal = (EditText) findViewById(R.id.cMeetingTitleVal);
@@ -148,7 +215,7 @@ public class CreateMeetingActivity extends AppCompatActivity {
         mCMeetingDateVal = (EditText) findViewById(R.id.cMeetingDateVal);
         mCMeetingAgenda = (TextView) findViewById(R.id.cMeetingAgenda);
         mCMeetingAgendaVal = (EditText) findViewById(R.id.cMeetingAgendaVal);
-        mBtnNext = (Button) findViewById(R.id.btnNext);
+        mBtnCreateMeeting = (Button) findViewById(R.id.btnCreateMeeting);
     }
 
     @Override
@@ -157,11 +224,6 @@ public class CreateMeetingActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            /*case R.id.menuDone:
-                submitDetails();
-                finish();
-                startActivity(new Intent(this, ServoStabilizer.class));
-                return true;*/
         }
         return super.onOptionsItemSelected(item);
     }
