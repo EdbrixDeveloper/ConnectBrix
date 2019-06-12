@@ -165,7 +165,11 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         btnMAddParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
+                Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
+                intent.putExtra("MeetingId", MeetingId);
+                intent.putExtra("IsHost", IsHost);
+                startActivity(intent);
+                //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
             }
         });
 

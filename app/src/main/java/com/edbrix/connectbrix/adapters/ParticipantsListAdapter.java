@@ -90,9 +90,11 @@ public class ParticipantsListAdapter extends BaseAdapter {
             holder.txtIsAvaliable.setTextColor(Color.parseColor("#d1395c"));
 
         }
-        Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
-                //.apply(RequestOptions.bitmapTransform(new FitCenter()))
-                .into(holder.partcipantImage);
+        if (participantList.get(position).getImageUrl() != null && !participantList.get(position).getImageUrl().isEmpty()) {
+            Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
+                    //.apply(RequestOptions.bitmapTransform(new FitCenter()))
+                    .into(holder.partcipantImage);
+        }
         //holder.txtIsAvaliable.setText(participantList.get(position).getOrgName());
 
         return view;
