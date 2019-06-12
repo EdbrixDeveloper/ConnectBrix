@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:weightSum="2">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1.5"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+           <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1.5"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtMeetingTitle"
@@ -54,14 +54,14 @@
                             android:layout_height="32dp"
                             android:src="@drawable/date_image" />
 
-                        <TextView
-                            android:id="@+id/txtMeetingDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="3dp"
-                            android:text="25/05/2019"
-                            android:textSize="19dp" />
+                         <TextView
+                        android:id="@+id/txtMeetingDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:text="dd/MMM/yyyy"
+                        android:textSize="19dp" />
 
                     </LinearLayout>
 
@@ -77,24 +77,24 @@
                             android:src="@drawable/timer" />
 
                         <TextView
-                            android:id="@+id/txtMeetingTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="3dp"
-                            android:text="9:00AM"
-                            android:textSize="19dp" />
+                        android:id="@+id/txtMeetingTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:text="hh:mm AM"
+                        android:textSize="19dp" />
 
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtMeetingDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dp"
-                    android:text="Meeting for annual function in school"
-                    android:textSize="19dp" />
+                android:id="@+id/txtMeetingDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:text="Meeting Details"
+                android:textSize="19dp" />
 
             </LinearLayout>
 
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="0"
                     android:textSize="19dp" />
 
 
@@ -140,6 +140,7 @@
                 android:textSize="14dp" />
 
         </LinearLayout>
+
     </LinearLayout>
 
 

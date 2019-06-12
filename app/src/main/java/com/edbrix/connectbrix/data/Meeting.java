@@ -3,6 +3,7 @@ package com.edbrix.connectbrix.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Meeting {
@@ -20,7 +21,7 @@ public class Meeting {
     private String startDateTime;
     @SerializedName("ParticipantList")
     @Expose
-    private List<ParticipantList> participantList = null;
+    private ArrayList<ParticipantList> participantList = null;
 
     public String getId() {
         return id;
@@ -54,11 +55,11 @@ public class Meeting {
         this.startDateTime = startDateTime;
     }
 
-    public List<ParticipantList> getParticipantList() {
+    public ArrayList<ParticipantList> getParticipantList() {
         return participantList;
     }
 
-    public void setParticipantList(List<ParticipantList> participantList) {
+    public void setParticipantList(ArrayList<ParticipantList> participantList) {
         this.participantList = participantList;
     }
 

@@ -55,12 +55,12 @@
                             android:src="@drawable/date_image" />
 
                         <TextView
-                            android:id="@+id/txtMeetingDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3dp"
-                            android:text="25/05/2019"
-                            android:textSize="19dp" />
+                        android:id="@+id/txtMeetingDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="dd/MMM/yyyy"
+                        android:textSize="19dp" />
 
                     </LinearLayout>
 
@@ -76,23 +76,23 @@
                             android:src="@drawable/timer" />
 
                         <TextView
-                            android:id="@+id/txtMeetingTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3dp"
-                            android:text="9:00AM"
-                            android:textSize="19dp" />
+                        android:id="@+id/txtMeetingTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="hh:mm AM"
+                        android:textSize="19dp" />
 
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtMeetingDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="5dp"
-                    android:text="Meeting for annual function in school"
-                    android:textSize="19dp" />
+                android:id="@+id/txtMeetingDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:text="Meeting Details"
+                android:textSize="19dp" />
 
             </LinearLayout>
 
@@ -111,7 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="0"
                     android:textSize="19dp" />
 
 

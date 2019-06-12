@@ -33,8 +33,8 @@ public class SelectParticipantsActivity extends AppCompatActivity {
         participantName.add("Amit Rane");
         participantName.add("Mohmmad Befari");
 
-        participantsListAdapter = new ParticipantsListAdapter(SelectParticipantsActivity.this, participantName, "", "", "");
-        mSelectedParticipantsList.setAdapter(participantsListAdapter);
+        //participantsListAdapter = new ParticipantsListAdapter(SelectParticipantsActivity.this, participantName, "", "", "");
+        //mSelectedParticipantsList.setAdapter(participantsListAdapter);
     }
 
     private void assignViews() {

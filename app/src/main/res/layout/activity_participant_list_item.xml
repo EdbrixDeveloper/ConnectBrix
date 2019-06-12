@@ -53,7 +53,7 @@
                     android:id="@+id/txtIsAvaliable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Accepted"
+                    android:text="Status"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12dp" />
 

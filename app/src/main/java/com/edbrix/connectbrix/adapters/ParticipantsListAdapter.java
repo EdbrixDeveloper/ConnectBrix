@@ -2,6 +2,7 @@ package com.edbrix.connectbrix.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.edbrix.connectbrix.R;
-import com.edbrix.connectbrix.utils.SessionManager;
+import com.edbrix.connectbrix.data.ParticipantList;
 
 import java.util.ArrayList;
 
@@ -20,11 +22,11 @@ public class ParticipantsListAdapter extends BaseAdapter {
 
     private static final String TAG = ParticipantsListAdapter.class.getName();
     private Activity participantListActivity;
-    ArrayList<String> participantList;
+    ArrayList<ParticipantList> participantList;
     private static LayoutInflater inflater = null;
     private String MeetingId = "", IsHost = "", UserType = "";
 
-    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<String> participantList, String UserType, String MeetingId, String IsHost) {
+    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<ParticipantList> participantList, String UserType, String MeetingId, String IsHost) {
         this.participantListActivity = participantListActivity;
         this.participantList = participantList;
         this.UserType = UserType;
@@ -60,18 +62,39 @@ public class ParticipantsListAdapter extends BaseAdapter {
             holder.organizationName = (TextView) view.findViewById(R.id.txtorganizationName);
             holder.txtIsAvaliable = (TextView) view.findViewById(R.id.txtIsAvaliable);
             holder.remove = (ImageView) view.findViewById(R.id.imgRemove);
-            holder.status = (ImageView) view.findViewById(R.id.imgStatus);
+            //holder.status = (ImageView) view.findViewById(R.id.imgStatus);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
+        //ParticipantList participantList=this.participantList.get(position).
+
         if ((UserType.equals("T") || UserType.equals("A")) && IsHost.equals("1")) {
             holder.remove.setVisibility(View.VISIBLE);
         }
 
-        holder.participantName.setText(participantList.get(position).toString());
-        holder.organizationName.setText("The World Talent Organization");
+        //holder.participantName.setText(participantList.get(position).toString());
+        //holder.organizationName.setText("The World Talent Organization");
+
+        holder.participantName.setText(participantList.get(position).getName());
+        holder.organizationName.setText(participantList.get(position).getOrgName());
+        if (participantList.get(position).getStatus().equals("0")) {
+            holder.txtIsAvaliable.setText("Waiting for response");
+            holder.txtIsAvaliable.setTextColor(Color.parseColor("#bdbdbd"));
+        } else if (participantList.get(position).getStatus().equals("1")) {
+            holder.txtIsAvaliable.setText("Accepted");
+            holder.txtIsAvaliable.setTextColor(Color.parseColor("#47a54b"));
+        } else if (participantList.get(position).getStatus().equals("2")) {
+            holder.txtIsAvaliable.setText("Rejected");
+            holder.txtIsAvaliable.setTextColor(Color.parseColor("#d1395c"));
+
+        }
+        Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
+                //.apply(RequestOptions.bitmapTransform(new FitCenter()))
+                .into(holder.partcipantImage);
+        //holder.txtIsAvaliable.setText(participantList.get(position).getOrgName());
+
         return view;
     }
 

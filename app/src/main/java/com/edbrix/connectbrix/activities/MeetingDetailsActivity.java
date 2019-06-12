@@ -1,6 +1,7 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -24,8 +26,10 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.ParticipantsListAdapter;
 import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.MeetingDetailsData;
 import com.edbrix.connectbrix.data.MeetingListData;
+import com.edbrix.connectbrix.data.ParticipantList;
 import com.edbrix.connectbrix.utils.AuthConstants;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
@@ -34,7 +38,11 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.StringTokenizer;
 
 import us.zoom.sdk.InviteOptions;
 import us.zoom.sdk.JoinMeetingOptions;
@@ -56,11 +64,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private TextView mTxtMeetingTime;
     private TextView mTxtMeetingDetails;
     private FrameLayout mBtns;
-    private Button mBtnMAvaliable;
+    private Button btnMAddParticipants;
     private Button mBtnMJoin;
     private ListView mParticipantList;
 
-    ArrayList<String> participantName = new ArrayList<>();
+    private AlertDialogManager alertDialogManager;
+    MeetingDetailsData meetingDetailsData;
+    ArrayList<ParticipantList> participantArrayList = new ArrayList<>();
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
@@ -75,13 +85,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         assignViews();
 
-        participantName.add("Prasad Mane");
-        participantName.add("Ram Patil");
-        participantName.add("Raju Shirke");
-        participantName.add("Amit Rane");
-        participantName.add("Mohmmad Befari");
-
         sessionManager = new SessionManager(MeetingDetailsActivity.this);
+        meetingDetailsData = new MeetingDetailsData();
+        alertDialogManager = new AlertDialogManager(MeetingDetailsActivity.this);
         Intent intent = getIntent();
         MeetingId = intent.getStringExtra("MeetingId");
         IsHost = intent.getStringExtra("IsHost");
@@ -90,13 +96,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
             mBtnMJoin.setText("Start");
         }
-
-        //mTxtMeetingTitle.setText(intent.getStringExtra("meetingTitle"));
-        //mTxtMDate.setText(intent.getStringExtra("meetingDate"));
-        //mTxtMTime.setText(intent.getStringExtra("meetingScheduledTime"));
-
-        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantName, sessionManager.getSessionUserType(), MeetingId, IsHost);
-        mParticipantList.setAdapter(participantsListAdapter);
+        prepareListData();
 
         /*ZoomSDK zoomSDK = ZoomSDK.getInstance();
         if(savedInstanceState == null) {
@@ -159,6 +159,44 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
         });
 
+
+        btnMAddParticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
+            }
+        });
+
+        mParticipantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                String recordId = meetingDetailsData.getMeeting().getParticipantList().get(position).getRecordId();
+                deleteSelectedParticipant(recordId);
+
+            }
+
+        });
+
+    }
+
+    private void deleteSelectedParticipant(String RecordId) {
+        alertDialogManager.Dialog("Conformation", "Do you want to remove participant?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+            @Override
+            public void onPositiveClick() {
+                removeParticipant(RecordId);
+                //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
+            }
+
+            @Override
+            public void onNegativeClick() {
+                //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
+            }
+        }).show();
     }
 
     private void assignViews() {
@@ -168,7 +206,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         mTxtMeetingTime = (TextView) findViewById(R.id.txtMeetingTime);
         mTxtMeetingDetails = (TextView) findViewById(R.id.txtMeetingDetails);
         // mBtns = (FrameLayout) findViewById(R.id.btns);
-        // mBtnMAvaliable = (Button) findViewById(R.id.btnMAvaliable);
+        btnMAddParticipants = (Button) findViewById(R.id.btnMAddParticipants);
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);
         mParticipantList = (ListView) findViewById(R.id.participantList);
     }
@@ -194,23 +232,37 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
+                                    meetingDetailsData = response;
+                                    mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
 
-                                    mTxtMeetingTitle.setText(response.getMeeting().getTitle() == null || response.getMeeting().getTitle().isEmpty() ? "" : response.getMeeting().getTitle());
-                                    //mTxtMDate.setText(intent.getStringExtra("meetingDate"));
-                                    //mTxtMTime.setText(intent.getStringExtra("meetingScheduledTime"));
-                                    /*meetingListData = response;
-                                    if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
-                                        txtDataFound.setVisibility(View.GONE);
-                                        schoolList_listView_schoolList.setVisibility(View.VISIBLE);
-                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, meetingListData);
-                                        schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
-                                        for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {
-                                            schoolList_listView_schoolList.expandGroup(i);
-                                        }
+                                    if (meetingDetailsData.getMeeting().getStartDateTime() == null || meetingDetailsData.getMeeting().getStartDateTime().isEmpty()) {
+                                        mTxtMeetingDate.setText("");
+                                        mTxtMeetingTime.setText("00:00 am");
                                     } else {
-                                        schoolList_listView_schoolList.setVisibility(View.GONE);
-                                        txtDataFound.setVisibility(View.VISIBLE);
-                                    }*/
+                                        StringTokenizer tk = new StringTokenizer(meetingDetailsData.getMeeting().getStartDateTime());
+                                        String date = tk.nextToken();
+                                        String time = tk.nextToken();
+
+                                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                                        SimpleDateFormat sdfs = new SimpleDateFormat("hh:mm a");
+                                        Date dt;
+                                        try {
+                                            dt = sdf.parse(time);
+                                            mTxtMeetingDate.setText(date);
+                                            mTxtMeetingTime.setText(sdfs.format(dt));
+                                            //System.out.println("Time Display: " + sdfs.format(dt)); // <-- I got result here
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                    mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
+                                    if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
+                                        participantArrayList = new ArrayList<>();
+                                        participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
+                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), MeetingId, IsHost);
+                                        mParticipantList.setAdapter(participantsListAdapter);
+                                    }
                                 }
                             }
                         }
@@ -224,6 +276,50 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
             getAssignAvailabilityLearnersListRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingDetails");
+
+        } catch (JSONException e) {
+            hideBusyProgress();
+            showToast("Something went wrong. Please try again later.");
+        }
+
+    }
+
+    private void removeParticipant(String RecordId) {
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+
+            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("MeetingId", MeetingId);
+            jo.put("RecordId", RecordId);
+
+            Log.i(MeetingDetailsActivity.class.getName(), Constants.deleteMeetingParticipant + "\n\n" + jo.toString());
+
+            GsonRequest<MeetingDetailsData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.deleteMeetingParticipant, jo.toString(), MeetingDetailsData.class,
+                    new Response.Listener<MeetingDetailsData>() {
+                        @Override
+                        public void onResponse(@NonNull MeetingDetailsData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast("Removed Participant");
+                                    prepareListData();
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+
+                }
+            });
+            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "deleteMeetingParticipant");
 
         } catch (JSONException e) {
             hideBusyProgress();
@@ -258,6 +354,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 return true;
             case R.id.menuEdit:
                 startActivity(new Intent(this, CreateMeetingActivity.class));
+                //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
