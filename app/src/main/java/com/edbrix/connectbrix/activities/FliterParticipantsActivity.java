@@ -54,10 +54,10 @@ public class FliterParticipantsActivity extends BaseActivity {
     private SessionManager sessionManager;
     private ArrayList<String> CampusArray;
     private MeetingOrganizationListData meetingOrganizationListData;
-    String str_CampusName;
-    int siteID = 0;
+    String str_CampusName = "", str_UserType = "";
+    int CampusId = 0;
     MeetingParticipantListData meetingParticipantListData;
-    private String meetingDbId = "", IsHost = "";
+    private String MeetingDbId = "", IsHost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class FliterParticipantsActivity extends BaseActivity {
         assignViews();
         sessionManager = new SessionManager(FliterParticipantsActivity.this);
         Intent intent = getIntent();
-        meetingDbId = intent.getStringExtra("meetingDbId");
+        MeetingDbId = intent.getStringExtra("meetingDbId");
         IsHost = intent.getStringExtra("IsHost");
 
         prepareCampusList();
@@ -104,9 +104,14 @@ public class FliterParticipantsActivity extends BaseActivity {
                     searchableSpinnerDialog.bindOnSpinerListener(new OnSpinnerItemClick() {
                         @Override
                         public void onClick(ArrayList<String> item, int position) {
+
+                            mTxtComboType.setText("Select Participants");
+                            mTxtComboStudent.setText("Select Student");
+                            mTxtComboStudent.setVisibility(View.GONE);
+
                             str_CampusName = item.get(position);
                             mTxtComboCampus.setText(str_CampusName);
-                            siteID = Integer.valueOf(meetingOrganizationListData.getMeetingOrganizationList().get(position).getId());
+                            CampusId = Integer.valueOf(meetingOrganizationListData.getMeetingOrganizationList().get(position).getId());
                             //mEbProcessTextViewSiteIDVal.setText(site.getSiteList().get(position).getSiteId());
                         }
                     });
@@ -137,9 +142,36 @@ public class FliterParticipantsActivity extends BaseActivity {
                         public void onClick(ArrayList<String> item, int position) {
                             str_typeOfParticipant = item.get(position);
                             mTxtComboType.setText(str_typeOfParticipant);
+
+                            /*<item>Teachers</item>
+        <item>Students</item>
+        <item>Parents</item>
+        <item>System User</item>
+        <item>Group</item>
+        <item>Other</item>*/
+                            boolean processdFlag = false;
+                            if (str_typeOfParticipant.equals("Teachers")) {
+                                str_UserType = "T";
+                                processdFlag = true;
+                            } else if (str_typeOfParticipant.equals("Students")) {
+                                str_UserType = "S";
+                                processdFlag = true;
+                            } else if (str_typeOfParticipant.equals("System")) {
+                                str_UserType = "A";
+                                processdFlag = true;
+                            } else if (str_typeOfParticipant.equals("Group")) {
+                                str_UserType = "G";
+                                processdFlag = true;
+                            } else if (str_typeOfParticipant.equals("Other")) {
+                                str_UserType = "O";
+                                processdFlag = true;
+                            }
+                            if (processdFlag == true) {
+                                prepareListData(MeetingDbId, String.valueOf(CampusId), str_UserType);
+                                mInputSearch.setVisibility(View.VISIBLE);
+                            }
                             if (str_typeOfParticipant.equals("Parents")) {
                                 mTxtComboStudent.setVisibility(View.VISIBLE);
-                                prepareCampusList();
                             } else {
                                 mTxtComboStudent.setVisibility(View.GONE);
                             }
@@ -155,10 +187,7 @@ public class FliterParticipantsActivity extends BaseActivity {
         mTxtComboStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //prepareSite();
-                //on 20022019 if (!mEbProcessTextViewSsaVal.getText().toString().trim().isEmpty()) {
-                //prepareSite();
-                if (CampusArray != null) {
+                /*if (CampusArray != null) {
                     SearchableSpinnerDialog searchableSpinnerDialog = new SearchableSpinnerDialog(FliterParticipantsActivity.this,
                             CampusArray,
                             "Select Student",
@@ -171,16 +200,11 @@ public class FliterParticipantsActivity extends BaseActivity {
 
                             str_CampusName = item.get(position);
                             mTxtComboStudent.setText(str_CampusName);
-                            siteID = Integer.valueOf(meetingOrganizationListData.getMeetingOrganizationList().get(position).getId());
-                            //mEbProcessTextViewSiteIDVal.setText(site.getSiteList().get(position).getSiteId());
+                            CampusId = Integer.valueOf(meetingOrganizationListData.getMeetingOrganizationList().get(position).getId());
                         }
                     });
                 } else {
-                    showToast("Sites are not found");
-                }
-
-                /* on 20022019 } else {
-                    showToast("Please Select SSA");
+                    showToast("Students are not found");
                 }*/
 
             }
@@ -302,14 +326,14 @@ public class FliterParticipantsActivity extends BaseActivity {
 
     }
 
-    private void prepareListData(String meetingDbId, String OrgId, String Type) {
+    private void prepareListData(String MeetingDbId, String OrgId, String Type) {
         try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
             /*"APIKEY":"QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEy",
                     "SECRETKEY":"MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1Mg==",
-                    "meetingDbId":"1",
+                    "MeetingId":"1",
                     "OrgId":"2",
                     "Type":"T"*/
 
@@ -317,14 +341,14 @@ public class FliterParticipantsActivity extends BaseActivity {
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
 
-            jo.put("MeetingId", meetingDbId);
+            jo.put("MeetingId", MeetingDbId);
             jo.put("OrgId", OrgId);
             jo.put("Type", Type);
 
 
-            Log.i(SchoolListActivity.class.getName(), Constants.getMeetingList + "\n\n" + jo.toString());
+            Log.i(SchoolListActivity.class.getName(), Constants.getMeetingParticipantList + "\n\n" + jo.toString());
 
-            GsonRequest<MeetingParticipantListData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingList, jo.toString(), MeetingParticipantListData.class,
+            GsonRequest<MeetingParticipantListData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingParticipantList, jo.toString(), MeetingParticipantListData.class,
                     new Response.Listener<MeetingParticipantListData>() {
                         @Override
                         public void onResponse(@NonNull MeetingParticipantListData response) {

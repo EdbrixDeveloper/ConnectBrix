@@ -60,6 +60,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:visibility="gone"
                     android:id="@+id/input_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
