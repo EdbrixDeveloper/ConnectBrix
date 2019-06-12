@@ -24,13 +24,13 @@ public class ParticipantsListAdapter extends BaseAdapter {
     private Activity participantListActivity;
     ArrayList<ParticipantList> participantList;
     private static LayoutInflater inflater = null;
-    private String MeetingId = "", IsHost = "", UserType = "";
+    private String meetingDbId = "", IsHost = "", UserType = "";
 
-    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<ParticipantList> participantList, String UserType, String MeetingId, String IsHost) {
+    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<ParticipantList> participantList, String UserType, String meetingDbId, String IsHost) {
         this.participantListActivity = participantListActivity;
         this.participantList = participantList;
         this.UserType = UserType;
-        this.MeetingId = MeetingId;
+        this.meetingDbId = meetingDbId;
         this.IsHost = IsHost;
         inflater = (LayoutInflater) participantListActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

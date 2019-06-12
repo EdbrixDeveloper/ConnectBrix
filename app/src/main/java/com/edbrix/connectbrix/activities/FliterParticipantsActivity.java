@@ -1,10 +1,9 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,7 +57,7 @@ public class FliterParticipantsActivity extends BaseActivity {
     String str_CampusName;
     int siteID = 0;
     MeetingParticipantListData meetingParticipantListData;
-    private String MeetingId = "", IsHost = "";
+    private String meetingDbId = "", IsHost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class FliterParticipantsActivity extends BaseActivity {
         assignViews();
         sessionManager = new SessionManager(FliterParticipantsActivity.this);
         Intent intent = getIntent();
-        MeetingId = intent.getStringExtra("MeetingId");
+        meetingDbId = intent.getStringExtra("meetingDbId");
         IsHost = intent.getStringExtra("IsHost");
 
         prepareCampusList();
@@ -303,14 +302,14 @@ public class FliterParticipantsActivity extends BaseActivity {
 
     }
 
-    private void prepareListData(String MeetingId, String OrgId, String Type) {
+    private void prepareListData(String meetingDbId, String OrgId, String Type) {
         try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
             /*"APIKEY":"QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEy",
                     "SECRETKEY":"MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1Mg==",
-                    "MeetingId":"1",
+                    "meetingDbId":"1",
                     "OrgId":"2",
                     "Type":"T"*/
 
@@ -318,7 +317,7 @@ public class FliterParticipantsActivity extends BaseActivity {
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
 
-            jo.put("MeetingId", MeetingId);
+            jo.put("MeetingId", meetingDbId);
             jo.put("OrgId", OrgId);
             jo.put("Type", Type);
 

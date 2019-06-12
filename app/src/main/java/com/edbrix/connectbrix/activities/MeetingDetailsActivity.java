@@ -1,10 +1,8 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -25,11 +22,9 @@ import com.android.volley.VolleyError;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.ParticipantsListAdapter;
-import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.MeetingDetailsData;
-import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.ParticipantList;
 import com.edbrix.connectbrix.utils.AuthConstants;
 import com.edbrix.connectbrix.utils.Constants;
@@ -51,7 +46,6 @@ import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
-import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKAuthenticationListener;
 import us.zoom.sdk.ZoomSDKInitializeListener;
@@ -76,7 +70,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String MeetingId = "", IsHost = "";
+    private String meetingDbId="", MeetingId = "", IsHost = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +85,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         meetingDetailsData = new MeetingDetailsData();
         alertDialogManager = new AlertDialogManager(MeetingDetailsActivity.this);
         Intent intent = getIntent();
+        meetingDbId = intent.getStringExtra("meetingDbId");
         MeetingId = intent.getStringExtra("MeetingId");
         IsHost = intent.getStringExtra("IsHost");
 
@@ -100,17 +95,17 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         }
         prepareListData();
 
-        /*ZoomSDK zoomSDK = ZoomSDK.getInstance();
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
         if(savedInstanceState == null) {
             zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
-        }*/
+        }
 
         mBtnMJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // Step 1: Get meeting number from input field.
-                String meetingNo = "200395093";
+                String meetingNo = MeetingId;//"200395093";
 
                 // Check if the meeting number is empty.
                 if (meetingNo.length() == 0) {
@@ -166,7 +161,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
-                intent.putExtra("MeetingId", MeetingId);
+                intent.putExtra("meetingDbId", meetingDbId);
                 intent.putExtra("IsHost", IsHost);
                 startActivity(intent);
                 //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
@@ -244,7 +239,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
-            jo.put("MeetingId", MeetingId);
+            jo.put("MeetingId", meetingDbId);
 
             Log.i(MeetingDetailsActivity.class.getName(), Constants.getMeetingDetails + "\n\n" + jo.toString());
 
@@ -285,7 +280,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
                                         participantArrayList = new ArrayList<>();
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
-                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), MeetingId, IsHost);
+                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost);
                                         mParticipantList.setAdapter(participantsListAdapter);
                                     }
                                 }
@@ -316,7 +311,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
-            jo.put("MeetingId", MeetingId);
+            jo.put("MeetingId", meetingDbId);
             jo.put("RecordId", RecordId);
 
             Log.i(MeetingDetailsActivity.class.getName(), Constants.deleteMeetingParticipant + "\n\n" + jo.toString());
@@ -361,7 +356,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
             jo.put("UserId", sessionManager.getSessionUserId());
-            jo.put("MeetingId", MeetingId);
+            jo.put("MeetingId", meetingDbId);
             jo.put("Available", StatusFlag);
 
             Log.i(MeetingDetailsActivity.class.getName(), Constants.updateMeetingAvilabilityStatus + "\n\n" + jo.toString());

@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,9 +10,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +30,7 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.UserOrganizationListData;
 import com.edbrix.connectbrix.data.UserOrganizationListParentData;
+import com.edbrix.connectbrix.utils.Conditions;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
@@ -68,6 +73,7 @@ public class LoginActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         userOrganizationListData = new ArrayList<>();
         assignViews();
+        hideKeyboard();
         init();
     }
 
@@ -112,7 +118,7 @@ public class LoginActivity extends BaseActivity {
                         mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
                         isEmailValid = true;
                     } else {
-                        mEdTxtEmail.setError("Email not valid");
+                        mEdTxtEmail.setError("Enter valid email address");
                         mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
                         isEmailValid = false;
                     }
@@ -145,7 +151,32 @@ public class LoginActivity extends BaseActivity {
         mTextViewForgotPassword = (TextView) findViewById(R.id.textViewForgotPassword);
         mEyeIcon = (ImageView) findViewById(R.id.eyeIcon);
         isPasswordVisible = false;//
+
+        mEdTxtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // hide virtual keyboard
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mEdTxtPassword.getWindowToken(), 0);
+                    checkValidation();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
     }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEdTxtEmail.getWindowToken(), 0);
+    }
+
 
     private void setPasswordVisible(boolean isVisible) {
         if (isVisible) {
@@ -220,11 +251,13 @@ public class LoginActivity extends BaseActivity {
         String userEmail = mEdTxtEmail.getText().toString().trim();
         String userPassword = mEdTxtPassword.getText().toString().trim();
 
+        Conditions.hideKeyboard(LoginActivity.this);
+
         if (userEmail.isEmpty() || userEmail == null) {
-            mEdTxtEmail.setError("Field can not be empty");
+            mEdTxtEmail.setError("Email can not be blank");
             return false;
         } else if (userPassword.isEmpty() || userPassword == null) {
-            mEdTxtPassword.setError("Field can not be empty");
+            mEdTxtPassword.setError("Password can not be blank");
             return false;
 
         } else {

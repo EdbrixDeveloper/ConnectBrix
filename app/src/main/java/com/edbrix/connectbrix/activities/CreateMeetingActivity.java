@@ -3,9 +3,8 @@ package com.edbrix.connectbrix.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.CreateMeetingResponseData;
-import com.edbrix.connectbrix.data.UploadProfilePicResponseData;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
@@ -49,7 +47,9 @@ public class CreateMeetingActivity extends BaseActivity {
     String str_date;
     String str_temp_date;
     String str_time;
+    String str_temp_time;
     String meetingDate;
+    String tempMeetingDate;
     SessionManager sessionManager;
 
     @Override
@@ -66,7 +66,10 @@ public class CreateMeetingActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // startActivity(new Intent(CreateMeetingActivity.this, SelectParticipantsActivity.class));
-                createMeeting();
+                if(fieldValidation()==true)
+                {
+                    createMeeting();
+                }
             }
         });
 
@@ -129,6 +132,7 @@ public class CreateMeetingActivity extends BaseActivity {
                         }
 
                         str_time += " " + hour + ":" + minuteTemp + " " + am_pm;
+                        str_temp_time += " " + hour + ":" + minuteTemp;
                     }
                 });
 
@@ -146,8 +150,18 @@ public class CreateMeetingActivity extends BaseActivity {
                             meetingDate = str_date + " " + str_time;
 
                         }
-                        //Toast.makeText(getApplicationContext(),""+meetingDate,Toast.LENGTH_LONG).show();
+
                         mCMeetingDateVal.setText(meetingDate);
+
+                        SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                        try {
+                            Date dateTime = convertDateTime.parse(meetingDate);
+                            tempMeetingDate = tempSimpleDateTimeFormat.format(dateTime);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         dialogBuilder.dismiss();
                     }
                 });
@@ -171,7 +185,7 @@ public class CreateMeetingActivity extends BaseActivity {
             jsonObject.put("UserId", sessionManager.getSessionUserId());
             jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
             jsonObject.put("Agenda", mCMeetingAgendaVal.getText().toString().trim());
-            jsonObject.put("MeetingDate", mCMeetingDateVal.getText().toString().trim());
+            jsonObject.put("MeetingDate", tempMeetingDate);
 
             GsonRequest<CreateMeetingResponseData> createMeetingRequest = new GsonRequest<>(Request.Method.POST, Constants.createMeeting, jsonObject.toString(), CreateMeetingResponseData.class,
                     new Response.Listener<CreateMeetingResponseData>() {
@@ -184,7 +198,7 @@ public class CreateMeetingActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage());
-                                    startActivity(new Intent(CreateMeetingActivity.this,SchoolListActivity.class));
+                                    startActivity(new Intent(CreateMeetingActivity.this, SchoolListActivity.class));
                                 }
                             }
 
@@ -226,6 +240,22 @@ public class CreateMeetingActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean fieldValidation() {
+        String meetingTitle = mCMeetingTitleVal.getText().toString().trim();
+        String meetingDate = mCMeetingDateVal.getText().toString().trim();
+        String meetingAjenda = mCMeetingAgendaVal.getText().toString().trim();
+
+        if (meetingTitle.isEmpty() || meetingTitle == null) {
+            showToast("Please fill meeting title");
+            return false;
+        } else if (meetingDate.isEmpty() || meetingDate == null) {
+            showToast("Please fill meeting date");
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }

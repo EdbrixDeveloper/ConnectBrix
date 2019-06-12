@@ -17,14 +17,14 @@ import com.edbrix.connectbrix.data.UserMeetingsDate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SchoolExpListAdapter extends BaseExpandableListAdapter {
+public class SchoolListWithCalendarAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     // child data in format of header title, child title
     private MeetingListData meetingListData;
+    private static LayoutInflater inflater = null;
 
-
-    public SchoolExpListAdapter(Context _context, MeetingListData meetingListData) {
+    public SchoolListWithCalendarAdapter(Context _context, MeetingListData meetingListData) {
         this._context = _context;
         this.meetingListData = meetingListData;
     }
@@ -75,7 +75,6 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         } catch (Exception ex) {
 
         }
-        notifyDataSetChanged();
 
         textViewMeetingDay.setText(day);
         textViewMeetingMonth.setText(monthString);
@@ -83,6 +82,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         textViewAgenda.setText(userMeeting.getAgenda());
         textViewMeetingTime.setText(userMeeting.getMeetingTime());
         textViewPartycipentCount.setText(userMeeting.getMeetingParticipantsCount());
+
         return convertView;
     }
 
@@ -123,9 +123,9 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
 
         textView_Count.setTypeface(null, Typeface.BOLD);
         textView_Count.setText("" + userMeetingsDate.getMeetingCount());
-        notifyDataSetChanged();
 
         return convertView;
+
     }
 
     @Override
@@ -137,5 +137,4 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 }

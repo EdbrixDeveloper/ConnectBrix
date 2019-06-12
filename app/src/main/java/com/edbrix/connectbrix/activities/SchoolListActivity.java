@@ -3,7 +3,6 @@ package com.edbrix.connectbrix.activities;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -21,7 +19,6 @@ import com.android.volley.VolleyError;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
-import com.edbrix.connectbrix.adapters.SchoolListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.MeetingListData;
@@ -49,7 +46,7 @@ public class SchoolListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_list);
-        getSupportActionBar().setTitle("Meeting List");
+        getSupportActionBar().setTitle("Meetings");
         /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
         //////////
 
@@ -83,9 +80,11 @@ public class SchoolListActivity extends BaseActivity {
 
                 if (meetingListData != null) {
 
-                    final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
-                    goToEditingMeetingDetails(meetingId, isHost);
+                    final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                    final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
+                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
+
+                    goToEditingMeetingDetails(meetingDbId,meetingId, isHost);
                 }
 
                 return false;
@@ -103,8 +102,9 @@ public class SchoolListActivity extends BaseActivity {
 
     }
 
-    private void goToEditingMeetingDetails(String MeetingId, String IsHost) {
+    private void goToEditingMeetingDetails(String meetingDbId, String MeetingId, String IsHost) {
         Intent intent = new Intent(SchoolListActivity.this, MeetingDetailsActivity.class);
+        intent.putExtra("meetingDbId", meetingDbId);
         intent.putExtra("MeetingId", MeetingId);
         intent.putExtra("IsHost", IsHost);
         startActivity(intent);

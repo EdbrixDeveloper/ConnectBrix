@@ -79,7 +79,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnCreateMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -87,5 +87,5 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
         android:textAllCaps="false"
-        android:text="Add Participants" />
+        android:text="Create Meeting" />
 </RelativeLayout>
