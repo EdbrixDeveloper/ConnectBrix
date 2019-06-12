@@ -58,6 +58,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private TextView mTxtMeetingDate;
     private TextView mTxtMeetingTime;
     private TextView mTxtMeetingDetails;
+    private TextView mTxtQuestion;
     private Button btnMAddParticipants;
     private Button mBtnMJoin;
     private ListView mParticipantList;
@@ -91,7 +92,11 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         invalidateOptionsMenu();
         if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
-            mBtnMJoin.setText("Start");
+            mBtnMJoin.setText("Start Meeting");
+            btnMAddParticipants.setVisibility(View.VISIBLE);
+            mTxtQuestion.setVisibility(View.GONE);
+            radioMale.setVisibility(View.GONE);
+            radioFemale.setVisibility(View.GONE);
         }
         prepareListData();
 
@@ -222,6 +227,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         mTxtMeetingDate = (TextView) findViewById(R.id.txtMeetingDate);
         mTxtMeetingTime = (TextView) findViewById(R.id.txtMeetingTime);
         mTxtMeetingDetails = (TextView) findViewById(R.id.txtMeetingDetails);
+        mTxtQuestion = (TextView) findViewById(R.id.txtQuestion);
         // mBtns = (FrameLayout) findViewById(R.id.btns);
         btnMAddParticipants = (Button) findViewById(R.id.btnMAddParticipants);
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);

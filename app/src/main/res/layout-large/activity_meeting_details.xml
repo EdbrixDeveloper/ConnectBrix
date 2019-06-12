@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:layout_weight="1"
+                android:layout_weight="1.6"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:gravity="top|center"
                 android:orientation="vertical">
 
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="22dp" />
+                    android:textSize="17dp" />
 
 
             </LinearLayout>
@@ -133,6 +133,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Add Participants"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="14dp" />
@@ -169,7 +170,7 @@
                 android:id="@+id/txtQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Are you avaliable ?"
+                android:text="Are you avaliable?"
                 android:textSize="16dp" />
 
             <RadioGroup
@@ -203,7 +204,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
-                android:text="Join"
+                android:text="Join Now"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="14dp" />

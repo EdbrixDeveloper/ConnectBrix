@@ -80,7 +80,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
         holder.participantName.setText(participantList.get(position).getName());
         holder.organizationName.setText(participantList.get(position).getOrgName());
         if (participantList.get(position).getStatus().equals("0")) {
-            holder.txtIsAvaliable.setText("Waiting for response");
+            holder.txtIsAvaliable.setText("Waiting for accept your invitation");
             holder.txtIsAvaliable.setTextColor(Color.parseColor("#bdbdbd"));
         } else if (participantList.get(position).getStatus().equals("1")) {
             holder.txtIsAvaliable.setText("Accepted");
