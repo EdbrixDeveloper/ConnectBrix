@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,10 +64,11 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private TextView mTxtMeetingDate;
     private TextView mTxtMeetingTime;
     private TextView mTxtMeetingDetails;
-    private FrameLayout mBtns;
     private Button btnMAddParticipants;
     private Button mBtnMJoin;
     private ListView mParticipantList;
+    RadioButton radioMale;
+    RadioButton radioFemale;
 
     private AlertDialogManager alertDialogManager;
     MeetingDetailsData meetingDetailsData;
@@ -167,6 +169,22 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
         });
 
+        radioMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                meetingAvilabilityStatus("1");
+                //showToast("Radio Male");
+            }
+        });
+
+        radioFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                meetingAvilabilityStatus("0");
+                //showToast("Radio Female");
+            }
+        });
+
         mParticipantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -209,6 +227,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         btnMAddParticipants = (Button) findViewById(R.id.btnMAddParticipants);
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);
         mParticipantList = (ListView) findViewById(R.id.participantList);
+
+        radioMale = (RadioButton) findViewById(R.id.radioMale);
+        radioFemale = (RadioButton) findViewById(R.id.radioFemale);
     }
 
 
@@ -320,6 +341,50 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
             getAssignAvailabilityLearnersListRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "deleteMeetingParticipant");
+
+        } catch (JSONException e) {
+            hideBusyProgress();
+            showToast("Something went wrong. Please try again later.");
+        }
+
+    }
+
+    private void meetingAvilabilityStatus(String StatusFlag) {
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+
+            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("UserId", sessionManager.getSessionUserId());
+            jo.put("MeetingId", MeetingId);
+            jo.put("Available", StatusFlag);
+
+            Log.i(MeetingDetailsActivity.class.getName(), Constants.updateMeetingAvilabilityStatus + "\n\n" + jo.toString());
+
+            GsonRequest<MeetingDetailsData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.updateMeetingAvilabilityStatus, jo.toString(), MeetingDetailsData.class,
+                    new Response.Listener<MeetingDetailsData>() {
+                        @Override
+                        public void onResponse(@NonNull MeetingDetailsData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast("Successfully updated meeting status");
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+
+                }
+            });
+            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingAvailabilityStatus");
 
         } catch (JSONException e) {
             hideBusyProgress();

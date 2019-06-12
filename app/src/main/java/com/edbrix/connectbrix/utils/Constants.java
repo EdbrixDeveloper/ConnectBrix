@@ -23,7 +23,7 @@ public class Constants {
     public final static String getMeetingList = BASE_URL.concat("connectbrix/getmeetinglist");
     public final static String getMeetingDetails = BASE_URL.concat("connectbrix/getmeetingdetails");
     public final static String deleteMeetingParticipant = BASE_URL.concat("connectbrix/deletemeetingparticipant");
-
+    public final static String updateMeetingAvilabilityStatus= BASE_URL.concat("connectbrix/updatemeetingavilabilitystatus");
 
     public final static String createMeeting = BASE_URL.concat("connectbrix/createmeeting");
 
