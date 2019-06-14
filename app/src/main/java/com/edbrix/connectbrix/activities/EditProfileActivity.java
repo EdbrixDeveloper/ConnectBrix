@@ -138,7 +138,7 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
             @Override
             public void onClick(View v) {
                 if (validation() == true) {
-                    //UpdateUserPersonalData();
+                    UpdateUserPersonalData();
                 }
             }
         });

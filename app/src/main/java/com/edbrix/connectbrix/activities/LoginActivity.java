@@ -215,7 +215,6 @@ public class LoginActivity extends BaseActivity {
                                     sessionManager.updateSessionPassword(password);
 
                                     for (int i = 0; i < response.getUserOrganizationList().size(); i++) {
-                                        userOrganizationListData = new ArrayList<>();
                                         userOrganizationListData.add(response.getUserOrganizationList().get(i));
                                     }
                                     finish();
