@@ -714,8 +714,11 @@ public class FliterParticipantsActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage().toString());
-                                    onBackPressed();
-                                    //addParticipantsListData = new AddParticipantsListData();
+                                    Intent intent = new Intent(FliterParticipantsActivity.this,MeetingDetailsActivity.class);
+                                    intent.putExtra("meetingDbId",MeetingDbId);
+                                    intent.putExtra("IsHost",IsHost);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
                         }
