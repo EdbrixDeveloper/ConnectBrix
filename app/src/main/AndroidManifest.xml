@@ -24,7 +24,8 @@
 
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.ForgotPasswordActivity" />
-        <activity android:name=".activities.SchoolListActivity" />
+        <activity android:name=".activities.SchoolListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activities.MeetingDetailsActivity" />
         <activity android:name=".activities.FlashScreenActivity">
             <intent-filter>

@@ -49,6 +49,7 @@ public class FliterParticipantsActivity extends BaseActivity {
     private Button mBtnSelect;
 
     String str_typeOfParticipant;
+    ArrayList<String> participantName = new ArrayList<>();
     FliteredParticipantsAdapter fliteredParticipantsAdapter;
     private SessionManager sessionManager;
     private ArrayList<String> CampusArray;
@@ -73,6 +74,16 @@ public class FliterParticipantsActivity extends BaseActivity {
         prepareCampusList();
         initCombo();
         meetingParticipantListData = new MeetingParticipantListData();
+
+        participantName.add("Prasad Mane");
+        participantName.add("Ram Patil");
+        participantName.add("Raju Shirke");
+        participantName.add("Amit Rane");
+        participantName.add("Mohmmad Befari");
+
+        //fliteredParticipantsAdapter = new FliteredParticipantsAdapter(FliterParticipantsActivity.this, participantName);
+        //mSelectParticipantList.setAdapter(fliteredParticipantsAdapter);
+
     }
 
     private void initCombo() {
@@ -80,6 +91,9 @@ public class FliterParticipantsActivity extends BaseActivity {
         mTxtComboCampus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //prepareSite();
+                //on 20022019 if (!mEbProcessTextViewSsaVal.getText().toString().trim().isEmpty()) {
+                //prepareSite();
                 if (CampusArray != null) {
                     SearchableSpinnerDialog searchableSpinnerDialog = new SearchableSpinnerDialog(FliterParticipantsActivity.this,
                             CampusArray,
@@ -104,6 +118,11 @@ public class FliterParticipantsActivity extends BaseActivity {
                 } else {
                     showToast("Sites are not found");
                 }
+
+                /* on 20022019 } else {
+                    showToast("Please Select SSA");
+                }*/
+
             }
         });
 

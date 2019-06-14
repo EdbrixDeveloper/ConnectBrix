@@ -1,140 +1,86 @@
 package com.edbrix.connectbrix.adapters;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.edbrix.connectbrix.R;
-import com.edbrix.connectbrix.data.MeetingListData;
-import com.edbrix.connectbrix.data.UserMeeting;
-import com.edbrix.connectbrix.data.UserMeetingsDate;
+import com.edbrix.connectbrix.data.UserMeetingListResponseData;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
-public class SchoolListWithCalendarAdapter extends BaseExpandableListAdapter {
+public class SchoolListWithCalendarAdapter extends BaseAdapter {
 
-    private Context _context;
-    // child data in format of header title, child title
-    private MeetingListData meetingListData;
+    Activity calenderViewMeetingActivity;
+    ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
     private static LayoutInflater inflater = null;
 
-    public SchoolListWithCalendarAdapter(Context _context, MeetingListData meetingListData) {
-        this._context = _context;
-        this.meetingListData = meetingListData;
+    public SchoolListWithCalendarAdapter(Activity calenderViewMeetingActivity, ArrayList<UserMeetingListResponseData> userMeetingListResponseData){
+        this.calenderViewMeetingActivity = calenderViewMeetingActivity;
+        this.userMeetingListResponseData = userMeetingListResponseData;
+        inflater = (LayoutInflater) calenderViewMeetingActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosititon);
+    public int getCount() {
+        return userMeetingListResponseData.size();
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return Long.parseLong(meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId());
+    public Object getItem(int position) {
+        return userMeetingListResponseData.get(position);
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public long getItemId(int position) {
+        return position;
+    }
 
-        final UserMeeting userMeeting = (UserMeeting) getChild(groupPosition, childPosition);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        final ViewHolder holder;
+        if (view == null) {
+            view = inflater.inflate(R.layout.activity_school_list_item, null);
+            holder = new ViewHolder();
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_meeting_list, null);
+            holder.mTextViewMeetingDay = (TextView) view.findViewById(R.id.textViewMeetingDay);
+            holder.mTextViewMeetingMonth = (TextView)  view.findViewById(R.id.textViewMeetingMonth);
+            holder.mTextViewMeetingName = (TextView)  view.findViewById(R.id.textViewMeetingName);
+            holder.mTextViewAgenda = (TextView)  view.findViewById(R.id.textViewAgenda);
+            holder.mTextViewMeetingTime = (TextView)  view.findViewById(R.id.textViewMeetingTime);
+            holder.mTextViewPartycipentCount = (TextView)  view.findViewById(R.id.textViewPartycipentCount);
+
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder) view.getTag();
         }
 
-        TextView textViewMeetingDay = (TextView) convertView.findViewById(R.id.textViewMeetingDay);
-        TextView textViewMeetingMonth = (TextView) convertView.findViewById(R.id.textViewMeetingMonth);
-        TextView textViewMeetingName = (TextView) convertView.findViewById(R.id.textViewMeetingName);
-        TextView textViewAgenda = (TextView) convertView.findViewById(R.id.textViewAgenda);
-        TextView textViewMeetingTime = (TextView) convertView.findViewById(R.id.textViewMeetingTime);
-        TextView textViewPartycipentCount = (TextView) convertView.findViewById(R.id.textViewPartycipentCount);
+        String [] dateTime = userMeetingListResponseData.get(position).getStartDateTime().split(" ");
+        String [] date = dateTime[0].split("/");
+        holder.mTextViewMeetingDay.setText(date[0]);
+        holder.mTextViewMeetingMonth.setText(date[1]);
+        holder.mTextViewMeetingName.setText(userMeetingListResponseData.get(position).getTitle());
+        holder.mTextViewAgenda.setText(userMeetingListResponseData.get(position).getAgenda());
+        holder.mTextViewMeetingTime.setText(dateTime[1]+" "+dateTime[2]);
+        holder.mTextViewPartycipentCount.setText(userMeetingListResponseData.get(position).getParticipantCount());
 
-        ///
-        /*import android.text.format.DateFormat;
-
-        String dayOfTheWeek = (String) DateFormat.format("EEEE", date); // Thursday
-        String day          = (String) DateFormat.format("dd",   date); // 20
-        String monthString  = (String) DateFormat.format("MMM",  date); // Jun
-        String monthNumber  = (String) DateFormat.format("MM",   date); // 06
-        String year         = (String) DateFormat.format("yyyy", date); // 2013*/
-
-        String day = "", monthString = "";
-        try {
-            SimpleDateFormat dateFormatprev = new SimpleDateFormat("dd/MMM/yyyy");
-            Date d = dateFormatprev.parse(userMeeting.getMeetingDate().toString());
-            day = (String) DateFormat.format("dd", d); // 20
-            monthString = (String) DateFormat.format("MMM", d); // Jun
-        } catch (Exception ex) {
-
-        }
-
-        textViewMeetingDay.setText(day);
-        textViewMeetingMonth.setText(monthString);
-        textViewMeetingName.setText(userMeeting.getTitle());
-        textViewAgenda.setText(userMeeting.getAgenda());
-        textViewMeetingTime.setText(userMeeting.getMeetingTime());
-        textViewPartycipentCount.setText(userMeeting.getMeetingParticipantsCount());
-
-        return convertView;
+        return view;
     }
 
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().size();
-    }
+    static class ViewHolder {
 
-    @Override
-    public Object getGroup(int groupPosition) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition);
-    }
-
-    @Override
-    public int getGroupCount() {
-        return meetingListData.getUserMeetingsDates().size();
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        UserMeetingsDate userMeetingsDate = (UserMeetingsDate) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_meeting_list_seprator, null);
-            convertView.setClickable(false);
-        }
-        TextView textView_Date = (TextView) convertView.findViewById(R.id.textView_Date);
-        TextView textView_Count = (TextView) convertView.findViewById(R.id.textView_Count);
-
-        textView_Date.setText(userMeetingsDate.getDate());
-        textView_Date.setTypeface(null, Typeface.BOLD);
-
-        textView_Count.setTypeface(null, Typeface.BOLD);
-        textView_Count.setText("" + userMeetingsDate.getMeetingCount());
-
-        return convertView;
+         TextView mTextViewMeetingDay;
+         TextView mTextViewMeetingMonth;
+         TextView mTextViewMeetingName;
+         TextView mTextViewAgenda;
+         TextView mTextViewMeetingTime;
+         TextView mTextViewPartycipentCount;
 
     }
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
-    }
 }

@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Meeting {
     @SerializedName("Id")
@@ -19,6 +18,13 @@ public class Meeting {
     @SerializedName("StartDateTime")
     @Expose
     private String startDateTime;
+    @SerializedName("MeetingId")
+    @Expose
+    private String meetingId;
+    @SerializedName("ParticipantCount")
+    @Expose
+    private String participantCount;
+
     @SerializedName("ParticipantList")
     @Expose
     private ArrayList<ParticipantList> participantList = null;
@@ -63,4 +69,19 @@ public class Meeting {
         this.participantList = participantList;
     }
 
+    public String getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(String meetingId) {
+        this.meetingId = meetingId;
+    }
+
+    public String getParticipantCount() {
+        return participantCount;
+    }
+
+    public void setParticipantCount(String participantCount) {
+        this.participantCount = participantCount;
+    }
 }

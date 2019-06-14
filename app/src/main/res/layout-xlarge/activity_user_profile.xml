@@ -18,6 +18,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_weight="0.1">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -26,17 +27,25 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
-                android:padding="5dp"
+                android:padding="0dp"
                 android:src="@drawable/ic_launcher_background" />
+            <TextView
+                android:id="@+id/textViewType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="Teacher"
+                android:textSize="19dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2.8"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:orientation="vertical"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
             <TextView
@@ -73,13 +82,7 @@
                 android:text="The World Scholer Organization Of United State Of America"
                 android:textSize="19dp" />
 
-            <TextView
-                android:id="@+id/textViewType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Teacher"
-                android:textSize="19dp" />
+
         </LinearLayout>
 
         <RelativeLayout

@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,10 +33,7 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.StringTokenizer;
 
 import us.zoom.sdk.InviteOptions;
@@ -59,11 +55,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private TextView mTxtMeetingTime;
     private TextView mTxtMeetingDetails;
     private TextView mTxtQuestion;
+    private TextView mTextViewParticipantCount;
     private Button btnMAddParticipants;
     private Button mBtnMJoin;
     private ListView mParticipantList;
     RadioButton radioMale;
     RadioButton radioFemale;
+    String msgName = "join";
 
     private AlertDialogManager alertDialogManager;
     MeetingDetailsData meetingDetailsData;
@@ -87,7 +85,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         alertDialogManager = new AlertDialogManager(MeetingDetailsActivity.this);
         Intent intent = getIntent();
         meetingDbId = intent.getStringExtra("meetingDbId");
-        MeetingId = intent.getStringExtra("MeetingId");
+       /* MeetingId = intent.getStringExtra("MeetingId");*/
         IsHost = intent.getStringExtra("IsHost");
 
         invalidateOptionsMenu();
@@ -97,6 +95,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             mTxtQuestion.setVisibility(View.GONE);
             radioMale.setVisibility(View.GONE);
             radioFemale.setVisibility(View.GONE);
+            msgName = "start";
         }
         prepareListData();
 
@@ -109,54 +108,66 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
 
-                // Step 1: Get meeting number from input field.
-                String meetingNo = MeetingId;//"200395093";
+                alertDialogManager.Dialog("Conformation", "Do you want to "+msgName+" meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    @Override
+                    public void onPositiveClick() {
 
-                // Check if the meeting number is empty.
-                if (meetingNo.length() == 0) {
-                    Toast.makeText(MeetingDetailsActivity.this, "You need to enter a meeting number/ vanity id which you want to join.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                // Step 2: Get Zoom SDK instance.
-                ZoomSDK zoomSDK = ZoomSDK.getInstance();
+                        // Step 1: Get meeting number from input field.
+                        String meetingNo = MeetingId;//"200395093";
 
-                // Check if the zoom SDK is initialized
-                if (!zoomSDK.isInitialized()) {
-                    Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
-                    return;
-                }
+                        // Check if the meeting number is empty.
+                        if (meetingNo.length() == 0) {
+                            Toast.makeText(MeetingDetailsActivity.this, "You need to enter a meeting number/ vanity id which you want to join.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        // Step 2: Get Zoom SDK instance.
+                        ZoomSDK zoomSDK = ZoomSDK.getInstance();
 
-                // Step 3: Get meeting service from zoom SDK instance.
-                MeetingService meetingService = zoomSDK.getMeetingService();
+                        // Check if the zoom SDK is initialized
+                        if (!zoomSDK.isInitialized()) {
+                            Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+                            return;
+                        }
 
-                // Step 4: Configure meeting options.
-                JoinMeetingOptions opts = new JoinMeetingOptions();
+                        // Step 3: Get meeting service from zoom SDK instance.
+                        MeetingService meetingService = zoomSDK.getMeetingService();
 
-                // Some available options
-                opts.no_driving_mode = false;
-                opts.no_invite = false;
-                opts.no_meeting_end_message = false;
-                opts.no_titlebar = false;
-                opts.no_bottom_toolbar = false;
-                opts.no_dial_in_via_phone = true;
-                opts.no_dial_out_to_phone = true;
-                opts.no_disconnect_audio = false;
-                opts.no_share = false;
-                opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS + InviteOptions.INVITE_COPY_URL + InviteOptions.INVITE_ENABLE_ALL;
-                opts.no_audio = true;
-                opts.no_video = false;
-                //  opts.meeting_views_options = MeetingViewsOptions.NO_BUTTON_SHARE + MeetingViewsOptions.NO_BUTTON_VIDEO;
-                opts.no_meeting_error_message = true;
-                opts.participant_id = "participant id";
+                        // Step 4: Configure meeting options.
+                        JoinMeetingOptions opts = new JoinMeetingOptions();
 
-                // Step 5: Setup join meeting parameters
-                JoinMeetingParams params = new JoinMeetingParams();
+                        // Some available options
+                        opts.no_driving_mode = false;
+                        opts.no_invite = false;
+                        opts.no_meeting_end_message = false;
+                        opts.no_titlebar = false;
+                        opts.no_bottom_toolbar = false;
+                        opts.no_dial_in_via_phone = true;
+                        opts.no_dial_out_to_phone = true;
+                        opts.no_disconnect_audio = false;
+                        opts.no_share = false;
+                        opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS + InviteOptions.INVITE_COPY_URL + InviteOptions.INVITE_ENABLE_ALL;
+                        opts.no_audio = true;
+                        opts.no_video = false;
+                        //  opts.meeting_views_options = MeetingViewsOptions.NO_BUTTON_SHARE + MeetingViewsOptions.NO_BUTTON_VIDEO;
+                        opts.no_meeting_error_message = true;
+                        opts.participant_id = "participant id";
 
-                params.displayName = "Hello World From Zoom SDK";
-                params.meetingNo = meetingNo;
+                        // Step 5: Setup join meeting parameters
+                        JoinMeetingParams params = new JoinMeetingParams();
 
-                // Step 6: Call meeting service to join meeting
-                meetingService.joinMeetingWithParams(MeetingDetailsActivity.this, params, opts);
+                        params.displayName = "Hello World From Zoom SDK";
+                        params.meetingNo = meetingNo;
+
+                        // Step 6: Call meeting service to join meeting
+                        meetingService.joinMeetingWithParams(MeetingDetailsActivity.this, params, opts);
+
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                }).show();
 
             }
         });
@@ -189,7 +200,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
         });
 
-        mParticipantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*mParticipantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -200,7 +211,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
             }
 
-        });
+        });*/
 
     }
 
@@ -235,6 +246,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         radioMale = (RadioButton) findViewById(R.id.radioMale);
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
+        mTextViewParticipantCount = (TextView)findViewById(R.id.textViewParticipantCount);
     }
 
 
@@ -268,22 +280,24 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         StringTokenizer tk = new StringTokenizer(meetingDetailsData.getMeeting().getStartDateTime());
                                         String date = tk.nextToken();
                                         String time = tk.nextToken();
-
-                                        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-                                        SimpleDateFormat sdfs = new SimpleDateFormat("hh:mm a");
-                                        Date dt;
+                                        String amPm = tk.nextToken();
+                                        //SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+                                        //SimpleDateFormat sdfs = new SimpleDateFormat("hh:mm a");
+                                        //Date dt;
                                         try {
-                                            dt = sdf.parse(time);
+                                            //dt = sdf.parse(time);
                                             mTxtMeetingDate.setText(date);
-                                            mTxtMeetingTime.setText(sdfs.format(dt));
+                                            mTxtMeetingTime.setText(time+" "+amPm);//sdfs.format(dt)
                                             //System.out.println("Time Display: " + sdfs.format(dt)); // <-- I got result here
-                                        } catch (ParseException e) {
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
 
                                     }
                                     mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
+                                        mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
+                                        MeetingId = meetingDetailsData.getMeeting().getMeetingId();
                                         participantArrayList = new ArrayList<>();
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost);
@@ -423,7 +437,14 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 finish();
                 return true;
             case R.id.menuEdit:
-                startActivity(new Intent(this, CreateMeetingActivity.class));
+                Intent intent = new Intent(this, CreateMeetingActivity.class);
+                intent.putExtra("comesFor","edit");
+                intent.putExtra("meetingId",meetingDbId);
+                intent.putExtra("meetingTitle",mTxtMeetingTitle.getText().toString());
+                intent.putExtra("meetingDateTime",mTxtMeetingDate.getText().toString()+" "+mTxtMeetingTime.getText().toString());
+                intent.putExtra("meetingAgenda",mTxtMeetingDetails.getText().toString());
+                intent.putExtra("isHost", IsHost);
+                startActivity(intent);
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
         }

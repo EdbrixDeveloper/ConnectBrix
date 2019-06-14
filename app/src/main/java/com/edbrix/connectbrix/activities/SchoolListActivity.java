@@ -1,21 +1,22 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
@@ -35,6 +36,9 @@ public class SchoolListActivity extends BaseActivity {
     public ExpandableListView schoolList_listView_schoolList;
     private AlertDialogManager alertDialogManager;
     private TextView txtDataFound;
+    private ImageView imgCalender;
+    private ImageView imgUserProfile;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     FloatingActionButton floating_action_button_fab_with_listview;
     boolean doubleBackToExitPressedOnce = false;
@@ -46,10 +50,11 @@ public class SchoolListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_school_list);
-        getSupportActionBar().setTitle("Meetings");
-        /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
-        //////////
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        imgCalender = (ImageView)findViewById(R.id.calender);
+        imgUserProfile = (ImageView)findViewById(R.id.imgUserProfile);
         floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
         schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
         txtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -65,6 +70,35 @@ public class SchoolListActivity extends BaseActivity {
         }
 
         prepareListData();
+
+        imgCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
+            }
+        });
+
+        //////////////// User Profile //////////////////////
+
+        if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
+            Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
+                    .into(imgUserProfile);
+            imgUserProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
+        } else {
+            int randomNumber = generateRandomIntIntRange(0001,9999);
+            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+            Glide.with(this).load(imageUrl)
+                    .into(imgUserProfile);
+        }
+
+        imgUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SchoolListActivity.this, UserProfileActivity.class));
+            }
+        });
+
+        //////////////////////////////////////
 
         schoolList_listView_schoolList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -96,7 +130,17 @@ public class SchoolListActivity extends BaseActivity {
         floating_action_button_fab_with_listview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SchoolListActivity.this, CreateMeetingActivity.class));
+                Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
+                intent.putExtra("comesFor","new");
+                startActivity(intent);
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                prepareListData();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -110,12 +154,12 @@ public class SchoolListActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-           /* case android.R.id.:
+           *//* case android.R.id.:
                 startActivity(new Intent(this, UserProfileActivity.class));
-                return true;*/
+                return true;*//*
             case R.id.menuProfile:
                 startActivity(new Intent(this, UserProfileActivity.class));
                 return true;
@@ -124,15 +168,15 @@ public class SchoolListActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.dashboard_menu, menu);
         return true;
 
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

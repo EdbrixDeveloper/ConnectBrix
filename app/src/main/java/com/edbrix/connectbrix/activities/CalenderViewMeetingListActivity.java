@@ -9,8 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,6 +26,8 @@ import com.edbrix.connectbrix.adapters.SchoolListWithCalendarAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.MyEventDay;
+import com.edbrix.connectbrix.data.UserMeetingByDateParentData;
+import com.edbrix.connectbrix.data.UserMeetingListResponseData;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
@@ -44,7 +47,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private static final String TAG = CalenderViewMeetingListActivity.class.getName();
     private LinearLayout mLinearLayoutCal;
     private CalendarView mCalendarView;
-    private ExpandableListView mMeetingListWithCalender;
+    private ListView mMeetingListWithCalender;
     private TextView mTxtSelectedDate;
     private TextView txtDataFound;
     private FloatingActionButton mFloatingActionButtonFabWithListview;
@@ -54,7 +57,9 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private List<EventDay> mEventDays = new ArrayList<>();
     SimpleDateFormat finalSimpleDateFormat;
     private MeetingListData meetingListData;
+    private UserMeetingByDateParentData userMeetingByDateParentData;
     String dateForGetEvents;
+    ArrayList<UserMeetingListResponseData>userMeetingListResponseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +70,18 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         assignViews();
         meetingListData = new MeetingListData();
+        userMeetingListResponseData = new ArrayList<>();
 
         finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
         Date date = new Date();
         mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
         SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date tempDate = null;
+
+
+
+        prepareListData();
+
         try {
             tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
             dateForGetEvents = tempSimpleDateFormat.format(tempDate);
@@ -79,8 +90,9 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             e.printStackTrace();
         }
 
+        /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        prepareMeetingListByDate(formatter.format(date));*/
 
-        prepareListData();
         clickListner();
         // addEventToCalendar();
 
@@ -88,45 +100,23 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
     private void clickListner() {
 
-        mMeetingListWithCalender.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        mMeetingListWithCalender.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                mMeetingListWithCalender.expandGroup(groupPosition);
-                return true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CalenderViewMeetingListActivity.this,MeetingDetailsActivity.class);
+                intent.putExtra("meetingDbId", userMeetingListResponseData.get(position).getId());
+                intent.putExtra("IsHost", userMeetingListResponseData.get(position).getIsHost());
+                startActivity(intent);
             }
         });
-
-        /*mMeetingListWithCalender.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
-
-                if (meetingListData != null) {
-
-                    final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
-                    goToEditingMeetingDetails(meetingId, isHost);
-                    *//*final String meetingDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate().toString();
-                    final String sitePMAcTicketDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSitePMAcTicketDate().toString();
-                    final String pmPlanDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getPmPlanDate().toString();
-                    final String submittedDate = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSubmittedDate().toString();
-                    final String sheduledDateOfAcPm = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingDate() == null ? "" : meetingListData.getSitePMTicketsDates().get(groupPosition).getSitePMAcTickets().get(childPosition).getSheduledDateOfAcPm().toString();
-
-                    checkSystemLocation(customerName, circleName, stateName, ssaName, siteDBId, siteId, siteName, siteType,
-                            sitePMAcTicketId, sitePMAcTicketNo, sitePMAcTicketDate, pmPlanDate,
-                            submittedDate, sheduledDateOfAcPm, numberOfAc, modeOfOpration,
-                            vendorName, acTechnicianName, acTechnicianMobileNo, accessType, ticketAccess, acPmTickStatus);*//*
-                    //showToast("Clicked on Meeting");
-                }
-
-                return false;
-            }
-        });*/
-
 
         mFloatingActionButtonFabWithListview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CalenderViewMeetingListActivity.this, CreateMeetingActivity.class));
+                Intent intent = new Intent(CalenderViewMeetingListActivity.this, CreateMeetingActivity.class);
+                intent.putExtra("comesFor","new");
+                startActivity(intent);
             }
         });
 
@@ -151,6 +141,8 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                     /*SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
                     dateForGetEvents = tempSimpleDateFormat.format(tempDate);*/
+                    txtDataFound.setVisibility(View.VISIBLE);
+                    mMeetingListWithCalender.setVisibility(View.GONE);
                 }
             }
         });
@@ -161,7 +153,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         Log.e(TAG, date);
         int count = 0;
         try {
-            SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+            SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy");
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Date dateTime = convertDateTime.parse(date);
             String tempDate = sdf.format(dateTime);
@@ -196,7 +188,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private void assignViews() {
         mLinearLayoutCal = (LinearLayout) findViewById(R.id.linearLayoutCal);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
-        mMeetingListWithCalender = (ExpandableListView) findViewById(R.id.meetingListWithCalender);
+        mMeetingListWithCalender = (ListView) findViewById(R.id.meetingListWithCalender);
         mFloatingActionButtonFabWithListview = (FloatingActionButton) findViewById(R.id.float_btn);
         mTxtSelectedDate = (TextView) findViewById(R.id.txtSelectedDate);
         txtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -261,20 +253,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                         }
 
                                     }
-
-                                    /*meetingListData = response;
-                                    if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
-                                        txtDataFound.setVisibility(View.GONE);
-                                        schoolList_listView_schoolList.setVisibility(View.VISIBLE);
-                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, meetingListData);
-                                        schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
-                                        for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {
-                                            schoolList_listView_schoolList.expandGroup(i);
-                                        }
-                                    } else {
-                                        schoolList_listView_schoolList.setVisibility(View.GONE);
-                                        txtDataFound.setVisibility(View.VISIBLE);
-                                    }*/
                                 }
                             }
                         }
@@ -305,28 +283,27 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
             jo.put("UserId", sessionManager.getSessionUserId());
-            jo.put("MeetingDate",mTxtSelectedDate.getText().toString());
+            jo.put("MeetingDate",dateForGetEvents);
 
-            GsonRequest<MeetingListData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingByDate, jo.toString(), MeetingListData.class,
-                    new Response.Listener<MeetingListData>() {
+            GsonRequest<UserMeetingByDateParentData> getMeetingByDateRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingByDate, jo.toString(), UserMeetingByDateParentData.class,
+                    new Response.Listener<UserMeetingByDateParentData>() {
                         @Override
-                        public void onResponse(@NonNull MeetingListData response) {
+                        public void onResponse(@NonNull UserMeetingByDateParentData response) {
                             hideBusyProgress();
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
 
-                                    meetingListData = response;
-                                    if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
+                                    userMeetingByDateParentData = response;
+                                    if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
                                         mMeetingListWithCalender.setVisibility(View.VISIBLE);
-                                        schoolListWithCalendarAdapter = new SchoolListWithCalendarAdapter(CalenderViewMeetingListActivity.this, meetingListData);
+                                        userMeetingListResponseData = new ArrayList<>();
+
+                                        userMeetingListResponseData.addAll(userMeetingByDateParentData.getMeetings());
+                                        schoolListWithCalendarAdapter = new SchoolListWithCalendarAdapter(CalenderViewMeetingListActivity.this, userMeetingListResponseData);
                                         mMeetingListWithCalender.setAdapter(schoolListWithCalendarAdapter);
-                                        for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {
-                                            mMeetingListWithCalender.expandGroup(i);
-                                        }
-                                        mMeetingListWithCalender.deferNotifyDataSetChanged();
                                     } else {
                                         mMeetingListWithCalender.setVisibility(View.GONE);
                                         txtDataFound.setVisibility(View.VISIBLE);
@@ -338,12 +315,12 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     hideBusyProgress();
-
+                    Log.e(TAG,error.getMessage());
                 }
             });
-            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
-            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
-            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingListData");
+            getMeetingByDateRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getMeetingByDateRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getMeetingByDateRequest, "getMeetingByDateRequest");
 
         } catch (Exception e) {
             hideBusyProgress();

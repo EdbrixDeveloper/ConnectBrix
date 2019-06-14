@@ -112,10 +112,12 @@
                     android:src="@drawable/user_group" />
 
                 <TextView
+                    android:id="@+id/textViewParticipantCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textSize="19dp" />
+                    android:textSize="19dp"
+                    android:textStyle="bold"/>
 
 
             </LinearLayout>

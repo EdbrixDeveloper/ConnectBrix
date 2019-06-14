@@ -10,7 +10,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_text_background"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -29,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
-            android:text="Select Photo "
+            android:text="Select a Photo"
             android:textSize="15dp"
             android:textAlignment="center" />
 
@@ -42,7 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
         android:background="@color/colorPrimary"
-        android:text="Update Profile Pic"
+        android:text="Update Profile Picture"
         android:textAllCaps="false"
         android:textColor="@color/colorButtonText" />
 

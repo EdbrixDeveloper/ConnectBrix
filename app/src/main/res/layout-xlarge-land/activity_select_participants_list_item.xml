@@ -16,9 +16,8 @@
             android:id="@+id/imgFParticipant"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:padding="10dp"
             android:src="@drawable/usersp" />
 
         <LinearLayout

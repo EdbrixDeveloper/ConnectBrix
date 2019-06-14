@@ -13,7 +13,7 @@ public class UserMeeting {
     @SerializedName("meetingTime")
     @Expose
     private String meetingTime;
-    @SerializedName("meetingParticipantsCount")
+    @SerializedName("ParticipantCount")
     @Expose
     private String meetingParticipantsCount;
     @SerializedName("Title")

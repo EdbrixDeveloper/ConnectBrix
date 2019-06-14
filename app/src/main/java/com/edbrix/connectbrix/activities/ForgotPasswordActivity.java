@@ -151,7 +151,7 @@ public class ForgotPasswordActivity extends BaseActivity {
                         mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
                         isEmailValid = true;
                     } else {
-                        mEdTxtEmail.setError("Email not valid");
+                        mEdTxtEmail.setError("Enter valid email address");
                         mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
                         isEmailValid = false;
                     }
@@ -188,7 +188,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         String email = mEdTxtEmail.getText().toString().trim();
 
         if (email.isEmpty() || email == null) {
-            mEdTxtEmail.setError("Field can not be empty");
+            mEdTxtEmail.setError("Email can not be blank");
             return false;
         } else {
             return true;
