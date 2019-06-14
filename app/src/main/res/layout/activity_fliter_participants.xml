@@ -16,8 +16,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtComboCampus"
@@ -30,43 +30,89 @@
                 android:id="@+id/txtComboType"
                 style="@style/MyTheme"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
                 android:layout_height="45dp"
+                android:layout_marginTop="5dp"
                 android:text="Select Participants" />
 
             <TextView
                 android:id="@+id/txtComboStudent"
                 style="@style/MyTheme"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
                 android:layout_height="45dp"
-                android:visibility="gone"
-                android:text="Select Student" />
+                android:layout_marginTop="5dp"
+                android:text="Select Student"
+                android:visibility="gone" />
 
-           <!-- <EditText
-                android:id="@+id/edSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:ems="10"
-                android:hint="Search"
-                android:inputType="textPersonName" />-->
+            <!-- <EditText
+                 android:id="@+id/edSearch"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentStart="true"
+                 android:layout_alignParentTop="true"
+                 android:ems="10"
+                 android:hint="Search"
+                 android:inputType="textPersonName" />-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_search"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
                 <EditText
-                    android:visibility="gone"
                     android:id="@+id/input_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Search" />
+                    android:hint="Search"
+                    android:visibility="gone" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/txtChipView"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8.4"
+                    android:text="Email ID:" />
+
+                <com.doodle.android.chips.ChipsView
+                    android:id="@+id/cv_contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:overScrollMode="ifContentScrolls"
+                    app:cv_max_height="120dp"
+                    app:cv_vertical_spacing="2dp" />
+            </LinearLayout>
+
+            <!--
+            customize with: .. xmlns:app="http://schemas.android.com/apk/res-auto" ..
+            app:cv_max_height="120dp"
+            app:cv_vertical_spacing="2dp"
+            app:cv_bg_color="#f00"
+            app:cv_bg_color_clicked="#0f0"
+            app:cv_color="#00f"
+            app:cv_color_clicked="#721"
+            app:cv_text_color="#199"
+            app:cv_text_color_clicked="#180"
+            app:cv_icon_placeholder="@drawable/ic_bug_report_24dp"
+            app:cv_icon_delete="@drawable/ic_close_24dp"
+            app:cv_dialog_title="This is the title"
+            app:cv_dialog_et_placeholder="email2"
+            app:cv_dialog_confirm="confirm2"
+            app:cv_dialog_cancel="cancel2"
+            -->
+
         </LinearLayout>
     </LinearLayout>
 

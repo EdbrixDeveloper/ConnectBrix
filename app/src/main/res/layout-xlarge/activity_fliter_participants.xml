@@ -67,6 +67,33 @@
                     android:visibility="gone" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/txtChipView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email ID:"
+                    android:layout_weight="9"/>
+
+                <com.doodle.android.chips.ChipsView
+                    android:id="@+id/cv_contacts"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="ifContentScrolls"
+                    app:cv_max_height="120dp"
+                    app:cv_vertical_spacing="2dp" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

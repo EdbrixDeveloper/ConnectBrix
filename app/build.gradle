@@ -78,6 +78,7 @@ dependencies {
     implementation project(':commonlib')
     implementation project(':mobilertc')
     implementation 'com.vikktorn.picker:picker:1.0.0'
+    compile 'com.github.DoodleScheduling:android-material-chips:1.1.0'
 }
 configurations {
     all*.exclude group: 'com.google.code.gson'

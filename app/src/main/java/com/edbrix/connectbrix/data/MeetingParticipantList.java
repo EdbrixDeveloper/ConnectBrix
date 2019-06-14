@@ -18,6 +18,10 @@ public class MeetingParticipantList {
     @Expose
     private String imageUrl = "";
 
+    @SerializedName("isChecked")
+    @Expose
+    private boolean isChecked = false;
+
     public String getId() {
         return id;
     }
@@ -48,6 +52,14 @@ public class MeetingParticipantList {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(boolean checked) {
+        isChecked = checked;
     }
 
 }
