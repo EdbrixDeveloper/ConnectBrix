@@ -213,6 +213,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(RESULT_OK);
                 finish();
                 return true;
         }
@@ -285,4 +286,12 @@ public class UpdateProfilePicActivity extends BaseActivity {
             Log.e(TAG, e.getMessage());
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
+
+
 }

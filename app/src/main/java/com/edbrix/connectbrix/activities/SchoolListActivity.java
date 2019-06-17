@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,6 +40,8 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgCalender;
     private ImageView imgUserProfile;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    public static final int  RESULT_UPDATE_PROFILE = 200;
 
     FloatingActionButton floating_action_button_fab_with_listview;
     boolean doubleBackToExitPressedOnce = false;
@@ -80,21 +83,12 @@ public class SchoolListActivity extends BaseActivity {
 
         //////////////// User Profile //////////////////////
 
-        if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
-            Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
-                    .into(imgUserProfile);
-            imgUserProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
-        } else {
-            int randomNumber = generateRandomIntIntRange(0001,9999);
-            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
-            Glide.with(this).load(imageUrl)
-                    .into(imgUserProfile);
-        }
-
+        setImageToUserProfileIcon();
         imgUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SchoolListActivity.this, UserProfileActivity.class));
+                Intent intent = new Intent(SchoolListActivity.this, UserProfileActivity.class);
+                startActivityForResult(intent,RESULT_UPDATE_PROFILE);
             }
         });
 
@@ -145,6 +139,20 @@ public class SchoolListActivity extends BaseActivity {
         });
 
     }
+
+    private void setImageToUserProfileIcon() {
+        if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
+            Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
+                    .into(imgUserProfile);
+            imgUserProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
+        } else {
+            int randomNumber = generateRandomIntIntRange(0001,9999);
+            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+            Glide.with(this).load(imageUrl)
+                    .into(imgUserProfile);
+        }
+    }
+
 
     private void goToEditingMeetingDetails(String meetingDbId, String MeetingId, String IsHost) {
         Intent intent = new Intent(SchoolListActivity.this, MeetingDetailsActivity.class);
@@ -252,4 +260,11 @@ public class SchoolListActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        invalidateOptionsMenu();
+        if (requestCode == RESULT_UPDATE_PROFILE && resultCode == RESULT_OK) {
+            setImageToUserProfileIcon();
+        }
+    }
 }

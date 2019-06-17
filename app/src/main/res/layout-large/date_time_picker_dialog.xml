@@ -11,10 +11,17 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <CalendarView
+        <DatePicker
             android:id="@+id/calendarDatePicker"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="408dp"
+            android:datePickerMode="calendar"
+            android:visibility="visible" />
+
+        <!--<CalendarView
+            android:id="@+id/calendarDatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />-->
 
         <TimePicker
             android:id="@+id/timePicker"
