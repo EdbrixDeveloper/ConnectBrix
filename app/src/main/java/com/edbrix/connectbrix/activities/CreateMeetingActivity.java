@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -104,7 +105,7 @@ public class CreateMeetingActivity extends BaseActivity {
                 LayoutInflater inflater = CreateMeetingActivity.this.getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.date_time_picker_dialog, null);
 
-                final DatePicker calendarView = (DatePicker) dialogView.findViewById(R.id.calendarDatePicker);
+                final CalendarView calendarView = (CalendarView) dialogView.findViewById(R.id.calendarDatePicker);
                 final TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.timePicker);
                 final Button btnSet = (Button) dialogView.findViewById(R.id.btnSet);
                 final Button btnCancel = (Button) dialogView.findViewById(R.id.btnCancel);
@@ -112,7 +113,7 @@ public class CreateMeetingActivity extends BaseActivity {
 
                 calendarView.setMinDate(System.currentTimeMillis() - 1000);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     calendarView.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
                         @Override
                         public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -128,17 +129,18 @@ public class CreateMeetingActivity extends BaseActivity {
                             }
                         }
                     });
+
                 } else {
 
 
-                }
+                }*/
 
-                /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         str_temp_date = "" + dayOfMonth + "/" + (month + 1) + "/" + year;
-
+                        isDateSelect = true;
                         try {
                             Date date = simpleDateFormat.parse(str_temp_date);
                             str_date = "" + finalSimpleDateFormat.format(date);
@@ -148,7 +150,7 @@ public class CreateMeetingActivity extends BaseActivity {
                         }
 
                     }
-                });*/
+                });
 
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
