@@ -69,10 +69,10 @@ public class ForgotPasswordActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (checkFieldValidation() == true) {
-                    if (isEmailValid == true) {
+                    //if (isEmailValid == true) {
 
-                        getOrganizationList(mEdTxtEmail.getText().toString());
-                    }
+                    getOrganizationList(mEdTxtEmail.getText().toString());
+                    //}
                 }
             }
         });
@@ -107,10 +107,10 @@ public class ForgotPasswordActivity extends BaseActivity {
                                         userOrganizationListData.add(response.getUserOrganizationList().get(i));
                                     }
 
-                                    Intent intent = new Intent(ForgotPasswordActivity.this,OrgnizationListActivity.class);
+                                    Intent intent = new Intent(ForgotPasswordActivity.this, OrgnizationListActivity.class);
                                     intent.putExtra("organizationList", userOrganizationListData);
-                                    intent.putExtra("email",mEdTxtEmail.getText().toString());
-                                    intent.putExtra("comesFrom","forgotPasswordActivity");
+                                    intent.putExtra("email", mEdTxtEmail.getText().toString());
+                                    intent.putExtra("comesFrom", "forgotPasswordActivity");
                                     startActivity(intent);
 
                                 }
@@ -137,7 +137,7 @@ public class ForgotPasswordActivity extends BaseActivity {
 
     private void checkEmailIsValidate() {
 
-        mEdTxtEmail.addTextChangedListener(new TextWatcher() {
+        /*mEdTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -162,7 +162,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
     }
 
     private void assignViews() {

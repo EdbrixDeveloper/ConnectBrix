@@ -47,7 +47,13 @@ public class ParticipantsListAdapter extends BaseAdapter {
     ToastMessage toastMessage;
     DialogManager dialogManager;
 
-    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<ParticipantList> participantList, String UserType, String meetingDbId, String IsHost) {
+    private OnButtonActionListener onButtonActionListener;
+
+    public interface OnButtonActionListener {
+        public void onButtonClicked(String ParticipantName, String RecordId, int position);
+    }
+
+    public ParticipantsListAdapter(Activity participantListActivity, ArrayList<ParticipantList> participantList, String UserType, String meetingDbId, String IsHost, OnButtonActionListener onButtonActionListener) {
         this.participantListActivity = participantListActivity;
         this.participantList = participantList;
         this.UserType = UserType;
@@ -58,6 +64,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
         sessionManager = new SessionManager(participantListActivity);
         toastMessage = new ToastMessage(participantListActivity);
         dialogManager = new DialogManager(participantListActivity);
+        this.onButtonActionListener = onButtonActionListener;
     }
 
     @Override
@@ -103,6 +110,11 @@ public class ParticipantsListAdapter extends BaseAdapter {
         //holder.organizationName.setText("The World Talent Organization");
 
         holder.participantName.setText(participantList.get(position).getName());
+
+        if (participantList.get(position).getName().isEmpty()) {
+            holder.participantName.setText(participantList.get(position).getEmail());
+        }
+
         holder.organizationName.setText(participantList.get(position).getOrgName());
         if (participantList.get(position).getStatus().equals("0")) {
             holder.txtIsAvaliable.setText("Waiting for accept your invitation");
@@ -121,30 +133,30 @@ public class ParticipantsListAdapter extends BaseAdapter {
             Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
                     //.apply(RequestOptions.bitmapTransform(new FitCenter()))
                     .into(holder.partcipantImage);
+        } else {
+            holder.partcipantImage.setImageBitmap(null);
         }
+
         //holder.txtIsAvaliable.setText(participantList.get(position).getOrgName());
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                alertDialogManager.Dialog("Conformation", "Do you want to remove "+participantList.get(position).getName()+"?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                onButtonActionListener.onButtonClicked(participantList.get(position).getName(), participantList.get(position).getRecordId(), position);
+
+                /*alertDialogManager.Dialog("Conformation", "Do you want to remove "+participantList.get(position).getName()+"?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                     @Override
                     public void onPositiveClick() {
                         removeParticipant(participantList.get(position).getRecordId(),position);
-                        //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
                     }
 
                     @Override
                     public void onNegativeClick() {
-                        //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
                     }
-                }).show();
+                }).show();*/
             }
         });
-
 
 
         return view;
@@ -180,7 +192,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
                             } else {
                                 dialogManager.hideBusyProgress();
                                 if (response.getSuccess() == 1) {
-                                    toastMessage.showToast("Removed "+participantList.get(position).getName());
+                                    toastMessage.showToast("Removed " + participantList.get(position).getName());
                                     participantList.remove(position);
                                     notifyDataSetChanged();
                                 }

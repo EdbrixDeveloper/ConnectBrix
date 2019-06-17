@@ -72,6 +72,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private String meetingDbId = "", MeetingId = "", IsHost = "";
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
+    ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +210,25 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         });*/
 
+        onButtonActionListener = new ParticipantsListAdapter.OnButtonActionListener() {
+            @Override
+            public void onButtonClicked(String ParticipantName, String RecordId, int Position) {
+
+                alertDialogManager.Dialog("Conformation", "Do you want to remove " + ParticipantName + "?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    @Override
+                    public void onPositiveClick() {
+                        removeParticipant(RecordId, Position);
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+                    }
+                }).show();
+            }
+
+        };
+
+
     }
 
     public void fieldsVisibilityBasedOnUser() {
@@ -307,7 +327,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
                                         participantArrayList = new ArrayList<>();
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
-                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost);
+                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
                                         mParticipantList.setAdapter(participantsListAdapter);
                                     }
                                 }
@@ -514,6 +534,54 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         finishAffinity();
         startActivity(mIntent);
         super.onBackPressed();
+    }
+
+
+    private void removeParticipant(String RecordId, int position) {
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+
+            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("MeetingId", meetingDbId);
+            jo.put("RecordId", RecordId);
+
+            Log.i(MeetingDetailsActivity.class.getName(), Constants.deleteMeetingParticipant + "\n\n" + jo.toString());
+
+            GsonRequest<MeetingDetailsData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.deleteMeetingParticipant, jo.toString(), MeetingDetailsData.class,
+                    new Response.Listener<MeetingDetailsData>() {
+                        @Override
+                        public void onResponse(@NonNull MeetingDetailsData response) {
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                hideBusyProgress();
+                                if (response.getSuccess() == 1) {
+                                    //showToast("Removed "+participantList.get(position).getName());
+                                    showToast("Removed selected participant");
+                                    //participantList.remove(position);
+                                    //notifyDataSetChanged();
+                                    prepareListData();
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+
+                }
+            });
+            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "deleteMeetingParticipant");
+
+        } catch (JSONException e) {
+            hideBusyProgress();
+            showToast("Something went wrong. Please try again later.");
+        }
+
     }
 
 }

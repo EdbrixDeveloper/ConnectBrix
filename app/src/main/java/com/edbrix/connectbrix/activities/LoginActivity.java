@@ -107,18 +107,18 @@ public class LoginActivity extends BaseActivity {
 
                 if (checkValidation() == true) {
 
-                    if (isEmailValid == true) {
-                        String userName = mEdTxtEmail.getText().toString().trim();
-                        String password = mEdTxtPassword.getText().toString().trim();
-                        doLogin(userName, password);
-                    }
+                    //if (isEmailValid == true) {
+                    String userName = mEdTxtEmail.getText().toString().trim();
+                    String password = mEdTxtPassword.getText().toString().trim();
+                    doLogin(userName, password);
+                    //}
                 }
             }
         });
 
 
         // check email field is correct
-        mEdTxtEmail.addTextChangedListener(new TextWatcher() {
+        /*mEdTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // nothing TODO
@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 // nothing TODO
             }
-        });
+        });*/
 
         mEyeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
