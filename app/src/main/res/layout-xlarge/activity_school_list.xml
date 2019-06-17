@@ -25,7 +25,7 @@
             android:textColor="@color/colorButtonText"
             android:textSize="20dp"
             android:textStyle="bold" />
-
+ 
         <ImageView
             android:id="@+id/calender"
             android:layout_width="wrap_content"
