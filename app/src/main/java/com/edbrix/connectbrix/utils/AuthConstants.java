@@ -35,4 +35,7 @@ public interface AuthConstants {
 
     // Change it to your zoom access token(ZAK)
     public final static String ZOOM_ACCESS_TOKEN = "Your zoom access token(ZAK) from REST API";
+
+    // TODO change it to your Zoom access token expired time
+    public final static long EXPIRED_TIME= 3600 * 24 * 7; //A week
 }

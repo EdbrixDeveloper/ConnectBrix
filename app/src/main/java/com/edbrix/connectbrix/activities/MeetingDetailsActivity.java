@@ -1,8 +1,11 @@
 package com.edbrix.connectbrix.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,8 +26,11 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.ParticipantsListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
+import com.edbrix.connectbrix.data.APIUserInfo;
 import com.edbrix.connectbrix.data.MeetingDetailsData;
 import com.edbrix.connectbrix.data.ParticipantList;
+import com.edbrix.connectbrix.helper.APIUserInfoHelper;
+import com.edbrix.connectbrix.helper.ApiUserStartMeetingHelper;
 import com.edbrix.connectbrix.utils.AuthConstants;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
@@ -62,6 +68,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     RadioButton radioMale;
     RadioButton radioFemale;
     String msgName = "join";
+    private boolean mbPendingStartMeeting = false;
 
     private AlertDialogManager alertDialogManager;
     MeetingDetailsData meetingDetailsData;
@@ -108,57 +115,11 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                     @Override
                     public void onPositiveClick() {
 
-                        // Step 1: Get meeting number from input field.
-                        String meetingNo = MeetingId;//"200395093";
-
-                        // Check if the meeting number is empty.
-                        if (meetingNo.length() == 0) {
-                            Toast.makeText(MeetingDetailsActivity.this, "You need to enter a meeting number/ vanity id which you want to join.", Toast.LENGTH_LONG).show();
-                            return;
+                        if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
+                            startMeeting();
+                        } else {
+                            joinMeeting();
                         }
-                        // Step 2: Get Zoom SDK instance.
-                        ZoomSDK zoomSDK = ZoomSDK.getInstance();
-
-                        // Check if the zoom SDK is initialized
-                        if (!zoomSDK.isInitialized()) {
-                            Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        // Step 3: Get meeting service from zoom SDK instance.
-                        MeetingService meetingService = zoomSDK.getMeetingService();
-
-                        // Step 4: Configure meeting options.
-                        JoinMeetingOptions opts = new JoinMeetingOptions();
-
-
-
-                        // Some available options
-                        opts.no_driving_mode = false;
-                        opts.no_invite = false;
-                        opts.no_meeting_end_message = false;
-                        opts.no_titlebar = false;
-                        opts.no_bottom_toolbar = false;
-                        opts.no_dial_in_via_phone = true;
-                        opts.no_dial_out_to_phone = true;
-                        opts.no_disconnect_audio = false;
-                        opts.no_share = false;
-                        opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS + InviteOptions.INVITE_COPY_URL + InviteOptions.INVITE_ENABLE_ALL;
-                        opts.no_audio = true;
-                        opts.no_video = false;
-                        //  opts.meeting_views_options = MeetingViewsOptions.NO_BUTTON_SHARE + MeetingViewsOptions.NO_BUTTON_VIDEO;
-                        opts.no_meeting_error_message = true;
-                        opts.participant_id = "participant id";
-
-                        // Step 5: Setup join meeting parameters
-                        JoinMeetingParams params = new JoinMeetingParams();
-
-                        params.displayName = "Hello World From Zoom SDK";
-                        params.meetingNo = meetingNo;
-
-                        // Step 6: Call meeting service to join meeting
-                        meetingService.joinMeetingWithParams(MeetingDetailsActivity.this, params, opts);
-
                     }
 
                     @Override
@@ -229,6 +190,110 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         };
 
 
+    }
+
+    private void startMeeting() {
+
+
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if(!zoomSDK.isInitialized()) {
+            Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final MeetingService meetingService = zoomSDK.getMeetingService();
+        if(meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
+
+            long lMeetingNo = 0;
+            try {
+                lMeetingNo = Long.parseLong(MeetingId);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid meeting number: " + MeetingId, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if(meetingService.getCurrentRtcMeetingNumber() == lMeetingNo) {
+                meetingService.returnToMeeting(this);
+                return;
+            }
+
+            new AlertDialog.Builder(this)
+                    .setMessage("Do you want to leave current meeting and start another?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mbPendingStartMeeting = true;
+                            meetingService.leaveCurrentMeeting(false);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .show();
+            return;
+        }
+
+        int ret = -1;
+        ret = ApiUserStartMeetingHelper.getInstance().startMeetingWithNumber(this, MeetingId);
+        Log.i(TAG, "onClickBtnStartMeeting, ret=" + ret);
+    }
+
+    private void joinMeeting() {
+        // Step 1: Get meeting number from input field.
+        String meetingNo = MeetingId;//"200395093";
+
+        // Check if the meeting number is empty.
+        if (meetingNo.length() == 0) {
+            Toast.makeText(MeetingDetailsActivity.this, "You need to enter a meeting number/ vanity id which you want to join.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // Step 2: Get Zoom SDK instance.
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        // Check if the zoom SDK is initialized
+        if (!zoomSDK.isInitialized()) {
+            Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Step 3: Get meeting service from zoom SDK instance.
+        MeetingService meetingService = zoomSDK.getMeetingService();
+
+        // Step 4: Configure meeting options.
+        JoinMeetingOptions opts = new JoinMeetingOptions();
+
+
+        // Some available options
+        opts.no_driving_mode = false;
+        opts.no_invite = false;
+        opts.no_meeting_end_message = false;
+        opts.no_titlebar = false;
+        opts.no_bottom_toolbar = false;
+        opts.no_dial_in_via_phone = true;
+        opts.no_dial_out_to_phone = true;
+        opts.no_disconnect_audio = false;
+        opts.no_share = false;
+        opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS + InviteOptions.INVITE_COPY_URL + InviteOptions.INVITE_ENABLE_ALL;
+        opts.no_audio = true;
+        opts.no_video = false;
+        //  opts.meeting_views_options = MeetingViewsOptions.NO_BUTTON_SHARE + MeetingViewsOptions.NO_BUTTON_VIDEO;
+        opts.no_meeting_error_message = true;
+        opts.participant_id = "participant id";
+
+        // Step 5: Setup join meeting parameters
+        JoinMeetingParams params = new JoinMeetingParams();
+
+        params.displayName = "Hello World From Zoom SDK";
+        params.meetingNo = meetingNo;
+
+        // Step 6: Call meeting service to join meeting
+        meetingService.joinMeetingWithParams(MeetingDetailsActivity.this, params, opts);
     }
 
     public void fieldsVisibilityBasedOnUser() {
@@ -582,6 +647,38 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             showToast("Something went wrong. Please try again later.");
         }
 
+    }
+
+    ///////////////////////////////////////////////// Start Meeting/////////////////////////////////////////////////////////////
+    private class RetrieveUserInfoTask extends AsyncTask<String, Void, APIUserInfo> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+           showBusyProgress();
+        }
+
+        @Override
+        protected APIUserInfo doInBackground(String... params) {
+            String token = APIUserInfoHelper.getZoomToken(params[0]);
+            String accessToken = APIUserInfoHelper.getZoomAccessToken(params[0]);
+
+            if(token != null && !token.isEmpty() && accessToken != null && !accessToken.isEmpty()) {
+                APIUserInfo apiUserInfo = new APIUserInfo(params[0], token, accessToken);
+                APIUserInfoHelper.saveAPIUserInfo(apiUserInfo);
+                return apiUserInfo;
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(APIUserInfo apiUserInfo) {
+            super.onPostExecute(apiUserInfo);
+           hideBusyProgress();
+            if(apiUserInfo == null)
+                Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

@@ -107,11 +107,11 @@ public class LoginActivity extends BaseActivity {
 
                 if (checkValidation() == true) {
 
-                    //if (isEmailValid == true) {
-                    String userName = mEdTxtEmail.getText().toString().trim();
-                    String password = mEdTxtPassword.getText().toString().trim();
-                    doLogin(userName, password);
-                    //}
+                    if (isEmailValid == true) {
+                        String userName = mEdTxtEmail.getText().toString().trim();
+                        String password = mEdTxtPassword.getText().toString().trim();
+                        doLogin(userName, password);
+                    }
                 }
             }
         });
@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 // nothing TODO
 
-                String email = mEdTxtEmail.getText().toString();
+                /*String email = mEdTxtEmail.getText().toString();
                 if (!email.equals("")) {
                     if (email.matches(emailPattern) && s.length() > 0) {
                         mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
@@ -155,6 +155,27 @@ public class LoginActivity extends BaseActivity {
                         isEmailValid = false;
                     }
 
+                }*/
+            }
+        });
+
+        mEdTxtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // code to execute when EditText loses focus
+                    String email = mEdTxtEmail.getText().toString();
+                    if (!email.equals("")) {
+                        if (email.matches(emailPattern)) {
+                            mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
+                            isEmailValid = true;
+                        } else {
+                            mEdTxtEmail.setError("Enter valid email address");
+                            mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
+                            isEmailValid = false;
+                        }
+
+                    }
                 }
             }
         });

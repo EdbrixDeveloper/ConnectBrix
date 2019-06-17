@@ -69,10 +69,10 @@ public class ForgotPasswordActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (checkFieldValidation() == true) {
-                    //if (isEmailValid == true) {
+                    if (isEmailValid == true) {
 
-                    getOrganizationList(mEdTxtEmail.getText().toString());
-                    //}
+                        getOrganizationList(mEdTxtEmail.getText().toString());
+                    }
                 }
             }
         });
@@ -137,7 +137,7 @@ public class ForgotPasswordActivity extends BaseActivity {
 
     private void checkEmailIsValidate() {
 
-        /*mEdTxtEmail.addTextChangedListener(new TextWatcher() {
+        mEdTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -145,7 +145,7 @@ public class ForgotPasswordActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = mEdTxtEmail.getText().toString();
+                /*String email = mEdTxtEmail.getText().toString();
                 if (!email.equals("")) {
                     if (email.matches(emailPattern) && s.length() > 0) {
                         mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
@@ -155,14 +155,45 @@ public class ForgotPasswordActivity extends BaseActivity {
                         mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
                         isEmailValid = false;
                     }
-                }
+                }*/
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                /*String email = mEdTxtEmail.getText().toString();
+                if (!email.equals("")) {
+                    if (email.matches(emailPattern) && s.length() > 0) {
+                        mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
+                        isEmailValid = true;
+                    } else {
+                        mEdTxtEmail.setError("Enter valid email address");
+                        mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
+                        isEmailValid = false;
+                    }
+                }*/
             }
-        });*/
+        });
+
+        mEdTxtEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // code to execute when EditText loses focus
+                    String email = mEdTxtEmail.getText().toString();
+                    if (!email.equals("")) {
+                        if (email.matches(emailPattern)) {
+                            mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
+                            isEmailValid = true;
+                        } else {
+                            mEdTxtEmail.setError("Enter valid email address");
+                            mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
+                            isEmailValid = false;
+                        }
+
+                    }
+                }
+            }
+        });
     }
 
     private void assignViews() {
