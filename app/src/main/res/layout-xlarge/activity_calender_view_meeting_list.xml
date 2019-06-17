@@ -50,16 +50,16 @@
     </LinearLayout>
 
 
-    <!--<ListView
+    <ListView
         android:id="@+id/meetingListWithCalender"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayoutText"
         android:layout_marginTop="0dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="8dp" />-->
+        tools:layout_editor_absoluteX="8dp" />
 
-    <ExpandableListView
+    <!--<ExpandableListView
         android:id="@+id/meetingListWithCalender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         android:layout_below="@+id/linearLayoutText"
         tools:listheader="@layout/item_meeting_list_seprator"
         tools:listitem="@layout/item_meeting_list" />
-
+-->
     <TextView
         android:id="@+id/txtDataFound"
         android:layout_width="match_parent"

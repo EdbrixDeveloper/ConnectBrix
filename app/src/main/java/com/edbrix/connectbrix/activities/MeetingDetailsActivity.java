@@ -130,7 +130,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                         // Step 4: Configure meeting options.
                         JoinMeetingOptions opts = new JoinMeetingOptions();
 
-                        
+
 
                         // Some available options
                         opts.no_driving_mode = false;
