@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -714,11 +715,19 @@ public class FliterParticipantsActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage().toString());
-                                    Intent intent = new Intent(FliterParticipantsActivity.this,MeetingDetailsActivity.class);
+                                    /*Intent intent = new Intent(FliterParticipantsActivity.this,MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId",MeetingDbId);
                                     intent.putExtra("IsHost",IsHost);
                                     startActivity(intent);
+                                    finish();*/
+
+                                    Intent resultIntent = new Intent();
+                                    // TODO Add extras or a data URI to this intent as appropriate.
+                                    resultIntent.putExtra("meetingDbId",MeetingDbId);
+                                    resultIntent.putExtra("IsHost",IsHost);
+                                    setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
+
                                 }
                             }
                         }
@@ -764,5 +773,7 @@ public class FliterParticipantsActivity extends BaseActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mInputSearch.getWindowToken(), 0);
     }
+
+
 
 }

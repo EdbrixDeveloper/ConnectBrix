@@ -2,6 +2,7 @@ package com.edbrix.connectbrix.utils;
 
 public class Constants {
 
+    public static String androidDeviceid;
     // TODO Change it to your web domain
     public final static String WEB_DOMAIN = "";
     // TODO Change it to your APP Key

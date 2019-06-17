@@ -69,7 +69,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String meetingDbId="", MeetingId = "", IsHost = "";
+    private String meetingDbId = "", MeetingId = "", IsHost = "";
+
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,22 +87,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         alertDialogManager = new AlertDialogManager(MeetingDetailsActivity.this);
         Intent intent = getIntent();
         meetingDbId = intent.getStringExtra("meetingDbId");
-       /* MeetingId = intent.getStringExtra("MeetingId");*/
+        /* MeetingId = intent.getStringExtra("MeetingId");*/
         IsHost = intent.getStringExtra("IsHost");
 
         invalidateOptionsMenu();
-        if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
-            mBtnMJoin.setText("Start Meeting");
-            btnMAddParticipants.setVisibility(View.VISIBLE);
-            mTxtQuestion.setVisibility(View.GONE);
-            radioMale.setVisibility(View.GONE);
-            radioFemale.setVisibility(View.GONE);
-            msgName = "start";
-        }
+        fieldsVisibilityBasedOnUser();
         prepareListData();
 
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
         }
 
@@ -108,7 +103,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
 
-                alertDialogManager.Dialog("Conformation", "Do you want to "+msgName+" meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                alertDialogManager.Dialog("Conformation", "Do you want to " + msgName + " meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                     @Override
                     public void onPositiveClick() {
 
@@ -172,14 +167,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
         });
 
-
         btnMAddParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
                 intent.putExtra("meetingDbId", meetingDbId);
                 intent.putExtra("IsHost", IsHost);
-                startActivity(intent);
+                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
                 //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
             }
         });
@@ -215,6 +209,17 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
     }
 
+    public void fieldsVisibilityBasedOnUser() {
+        if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
+            mBtnMJoin.setText("Start Meeting");
+            btnMAddParticipants.setVisibility(View.VISIBLE);
+            mTxtQuestion.setVisibility(View.GONE);
+            radioMale.setVisibility(View.GONE);
+            radioFemale.setVisibility(View.GONE);
+            msgName = "start";
+        }
+    }
+
     private void deleteSelectedParticipant(String RecordId) {
         alertDialogManager.Dialog("Conformation", "Do you want to remove participant?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
             @Override
@@ -246,7 +251,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         radioMale = (RadioButton) findViewById(R.id.radioMale);
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
-        mTextViewParticipantCount = (TextView)findViewById(R.id.textViewParticipantCount);
+        mTextViewParticipantCount = (TextView) findViewById(R.id.textViewParticipantCount);
     }
 
 
@@ -287,7 +292,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         try {
                                             //dt = sdf.parse(time);
                                             mTxtMeetingDate.setText(date);
-                                            mTxtMeetingTime.setText(time+" "+amPm);//sdfs.format(dt)
+                                            mTxtMeetingTime.setText(time + " " + amPm);//sdfs.format(dt)
                                             //System.out.println("Time Display: " + sdfs.format(dt)); // <-- I got result here
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -434,15 +439,16 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
+                //finish();
                 return true;
             case R.id.menuEdit:
                 Intent intent = new Intent(this, CreateMeetingActivity.class);
-                intent.putExtra("comesFor","edit");
-                intent.putExtra("meetingId",meetingDbId);
-                intent.putExtra("meetingTitle",mTxtMeetingTitle.getText().toString());
-                intent.putExtra("meetingDateTime",mTxtMeetingDate.getText().toString()+" "+mTxtMeetingTime.getText().toString());
-                intent.putExtra("meetingAgenda",mTxtMeetingDetails.getText().toString());
+                intent.putExtra("comesFor", "edit");
+                intent.putExtra("meetingId", meetingDbId);
+                intent.putExtra("meetingTitle", mTxtMeetingTitle.getText().toString());
+                intent.putExtra("meetingDateTime", mTxtMeetingDate.getText().toString() + " " + mTxtMeetingTime.getText().toString());
+                intent.putExtra("meetingAgenda", mTxtMeetingDetails.getText().toString());
                 intent.putExtra("isHost", IsHost);
                 startActivity(intent);
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
@@ -477,4 +483,35 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         Log.i(TAG, "onZoomSDKInitializeResult, errorCode=" + errorCode + ", internalErrorCode=" + internalErrorCode);
 
     }
+
+    //by 008
+    // This method is called when the second activity finishes
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check that it is the SecondActivity with an OK result
+        if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                meetingDbId = data.getStringExtra("meetingDbId");
+                /* MeetingId = data.getStringExtra("MeetingId");*/
+                IsHost = data.getStringExtra("IsHost");
+
+                invalidateOptionsMenu();
+                fieldsVisibilityBasedOnUser();
+                prepareListData();
+
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent mIntent = new Intent(mContext, SchoolListActivity.class);
+        finishAffinity();
+        startActivity(mIntent);
+        super.onBackPressed();
+    }
+
 }

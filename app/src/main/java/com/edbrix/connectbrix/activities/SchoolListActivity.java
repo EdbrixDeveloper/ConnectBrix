@@ -41,7 +41,7 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgUserProfile;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public static final int  RESULT_UPDATE_PROFILE = 200;
+    public static final int RESULT_UPDATE_PROFILE = 200;
 
     FloatingActionButton floating_action_button_fab_with_listview;
     boolean doubleBackToExitPressedOnce = false;
@@ -56,8 +56,8 @@ public class SchoolListActivity extends BaseActivity {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        imgCalender = (ImageView)findViewById(R.id.calender);
-        imgUserProfile = (ImageView)findViewById(R.id.imgUserProfile);
+        imgCalender = (ImageView) findViewById(R.id.calender);
+        imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
         floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
         schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
         txtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -88,7 +88,7 @@ public class SchoolListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SchoolListActivity.this, UserProfileActivity.class);
-                startActivityForResult(intent,RESULT_UPDATE_PROFILE);
+                startActivityForResult(intent, RESULT_UPDATE_PROFILE);
             }
         });
 
@@ -112,7 +112,7 @@ public class SchoolListActivity extends BaseActivity {
                     final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
                     final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
 
-                    goToEditingMeetingDetails(meetingDbId,meetingId, isHost);
+                    goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
                 }
 
                 return false;
@@ -125,7 +125,7 @@ public class SchoolListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
-                intent.putExtra("comesFor","new");
+                intent.putExtra("comesFor", "new");
                 startActivity(intent);
             }
         });
@@ -146,8 +146,8 @@ public class SchoolListActivity extends BaseActivity {
                     .into(imgUserProfile);
             imgUserProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
-            int randomNumber = generateRandomIntIntRange(0001,9999);
-            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+            int randomNumber = generateRandomIntIntRange(0001, 9999);
+            String imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
             Glide.with(this).load(imageUrl)
                     .into(imgUserProfile);
         }
@@ -265,6 +265,10 @@ public class SchoolListActivity extends BaseActivity {
         invalidateOptionsMenu();
         if (requestCode == RESULT_UPDATE_PROFILE && resultCode == RESULT_OK) {
             setImageToUserProfileIcon();
+        }
+
+        if (resultCode == RESULT_OK) {
+            prepareListData();
         }
     }
 }
