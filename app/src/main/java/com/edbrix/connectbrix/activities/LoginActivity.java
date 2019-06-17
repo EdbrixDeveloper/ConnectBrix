@@ -118,7 +118,7 @@ public class LoginActivity extends BaseActivity {
 
 
         // check email field is correct
-        /*mEdTxtEmail.addTextChangedListener(new TextWatcher() {
+        mEdTxtEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // nothing TODO
@@ -126,6 +126,24 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                /*String email = mEdTxtEmail.getText().toString();
+                if (!email.equals("")) {
+                    if (email.matches(emailPattern) && s.length() > 0) {
+                        mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
+                        isEmailValid = true;
+                    } else {
+                        mEdTxtEmail.setError("Enter valid email address");
+                        mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
+                        isEmailValid = false;
+                    }
+
+                }*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // nothing TODO
+
                 String email = mEdTxtEmail.getText().toString();
                 if (!email.equals("")) {
                     if (email.matches(emailPattern) && s.length() > 0) {
@@ -139,12 +157,7 @@ public class LoginActivity extends BaseActivity {
 
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // nothing TODO
-            }
-        });*/
+        });
 
         mEyeIcon.setOnClickListener(new View.OnClickListener() {
             @Override

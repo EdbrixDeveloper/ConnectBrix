@@ -138,7 +138,8 @@
                 style="@style/MyTheme"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:text="Select" />
+                android:text="Select"
+                android:textAlignment="textStart" />
 
             <TextView
                 android:id="@+id/zip"
