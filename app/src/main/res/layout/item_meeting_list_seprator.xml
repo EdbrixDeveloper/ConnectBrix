@@ -17,6 +17,22 @@
         android:textColor="@color/colorButtonText"
         android:textStyle="bold" />
 
+    <!--<TextView
+        android:id="@+id/textView_Count"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="right|end|top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/badge_background"
+        android:gravity="center"
+        android:padding="3dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="7sp"
+        android:textStyle="bold" />-->
+
     <TextView
         android:id="@+id/textView_Count"
         android:layout_width="wrap_content"
@@ -24,7 +40,7 @@
         android:layout_margin="@dimen/app_min_margin"
         android:layout_weight="1"
         android:paddingRight="@dimen/app_min_padding"
-        android:text="2"
+        android:text="Total meetings:2"
         android:textAlignment="textEnd"
         android:textColor="@color/colorButtonText" />
 </LinearLayout>
