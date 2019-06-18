@@ -1,6 +1,7 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -31,6 +32,9 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class SchoolListActivity extends BaseActivity {
 
     private SchoolExpListAdapter pmAcExpListAdapter;
@@ -48,6 +52,7 @@ public class SchoolListActivity extends BaseActivity {
     SessionManager sessionManager;
     private MeetingListData meetingListData;
 
+    private MyContinousAsyncTask myContinouslyRunningAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,7 @@ public class SchoolListActivity extends BaseActivity {
             floating_action_button_fab_with_listview.show();
         }
 
-        prepareListData();
+        //prepareListData();
 
         imgCalender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +212,7 @@ public class SchoolListActivity extends BaseActivity {
 
     private void prepareListData() {
         try {
-            showBusyProgress();
+            //showBusyProgress();
             JSONObject jo = new JSONObject();
 
             jo.put("UserId", sessionManager.getSessionUserId());
@@ -220,7 +225,7 @@ public class SchoolListActivity extends BaseActivity {
                     new Response.Listener<MeetingListData>() {
                         @Override
                         public void onResponse(@NonNull MeetingListData response) {
-                            hideBusyProgress();
+                            //hideBusyProgress();
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
                             } else {
@@ -267,8 +272,70 @@ public class SchoolListActivity extends BaseActivity {
             setImageToUserProfileIcon();
         }
 
-        if (resultCode == RESULT_OK) {
+        /*if (resultCode == RESULT_OK) {
             prepareListData();
+        }*/
+    }
+
+    //clock
+    private Timer timer;
+    private TimerTask timerTask;
+
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        if (myContinouslyRunningAsyncTask != null) {
+            myContinouslyRunningAsyncTask.cancel(true);
+        }
+
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
         }
     }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        clockTask();
+    }
+
+    public class MyContinousAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            timer = new Timer();
+            timerTask = new TimerTask() {
+
+                @Override
+                public void run() {
+                    SchoolListActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //tvPontuacao.setText(BatalhaConfigs.USUARIO_PONTUACAO);
+                            //getAllBattles();
+                            Log.i(SchoolListActivity.class.getName(), "Calling From Timer Async Task...");
+                            prepareListData();
+                        }
+                    });
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 100, 6000);//10000
+            return "execute";
+        }
+
+    }
+
+    /**
+     * timer para atualizar o adapter
+     */
+    private void clockTask() {
+        myContinouslyRunningAsyncTask = new MyContinousAsyncTask();
+        myContinouslyRunningAsyncTask.execute("execute");
+
+    }
 }
+
+

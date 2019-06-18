@@ -76,15 +76,20 @@ public class LoginActivity extends BaseActivity {
         getSupportActionBar().hide(); //hide the title bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
-        setContentView(R.layout.activity_login);
+
         sessionManager = new SessionManager(this);
-        userOrganizationListData = new ArrayList<>();
-        assignViews();
-        hideKeyboard();
-        init();
+        if (validateUser()) {
+            finish();
+            startActivity(new Intent(LoginActivity.this, SchoolListActivity.class));
+        } else {
+            setContentView(R.layout.activity_login);
+            userOrganizationListData = new ArrayList<>();
+            assignViews();
+            hideKeyboard();
+            init();
+        }
 
         checkPermission();
-
         Constants.androidDeviceid = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         Log.e(BaseActivity.class.getName(), Constants.androidDeviceid);
@@ -223,6 +228,15 @@ public class LoginActivity extends BaseActivity {
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEdTxtEmail.getWindowToken(), 0);
+    }
+
+    private boolean validateUser() {
+        //sessionManager = new SessionManager(LoginActivity.this);
+        if (sessionManager.getSessionUsername().equals("") && sessionManager.getSessionUserId().equals("") && sessionManager.getPrefsOrganizationApiKey().equals("") && sessionManager.getPrefsOrganizationSecretKey().equals("")) {
+            return false;////user not available
+        } else {
+            return true;////user available
+        }
     }
 
 
