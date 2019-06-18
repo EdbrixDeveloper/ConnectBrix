@@ -848,5 +848,17 @@ public class SessionManager {
         this.updateSessionSsa(null);
         this.updateSessionCustomer(null);
 
+        this.updateAccessToken(null);
+
+
+
+        this.updateSessionUserEmail(null);
+        this.updateUserType(null);
+        this.updateSchoolDisplayName(null);
+        this.updateSessionProfileImageUrl(null);
+        this.updateSchoolLoginUrl(null);
+        this.updateOrganizationApiKey(null);
+        this.updateOrganizationSecretKey(null);
+
     }
 }
