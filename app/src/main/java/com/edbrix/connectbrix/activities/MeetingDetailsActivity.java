@@ -158,7 +158,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         radioFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meetingAvilabilityStatus("0");
+                meetingAvilabilityStatus("2");
                 //showToast("Radio Female");
             }
         });
