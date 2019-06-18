@@ -127,7 +127,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         textView_Date.setTypeface(null, Typeface.BOLD);
 
         textView_Count.setTypeface(null, Typeface.BOLD);
-        textView_Count.setText("Total meetings: " + userMeetingsDate.getMeetingCount());
+        textView_Count.setText("" + userMeetingsDate.getMeetingCount());//Total meetings:
         notifyDataSetChanged();
 
         return convertView;
