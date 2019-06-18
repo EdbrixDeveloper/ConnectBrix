@@ -324,8 +324,10 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
 
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage().toString());
+                                    finish();
                                     Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
                                     startActivity(intent);
+
                                     /*sessionManager.updateSessionUsername(userName);
                                     sessionManager.updateSessionPassword(password);
                                     mEmailVal.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "" : response.getUser().getEmail().toString());
