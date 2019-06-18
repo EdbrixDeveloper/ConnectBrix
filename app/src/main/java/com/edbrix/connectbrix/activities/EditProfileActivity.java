@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -362,14 +363,25 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
     }
 
     private boolean validation() {
-        /*if (NewPassword.isEmpty() || NewPassword == null) {
-            showToast("Enter New Password");
+
+        String firstName = mFirstNameVal.getText().toString().trim();
+        String lastName = mLastNameVal.getText().toString().trim();
+
+        if (firstName.isEmpty() || firstName == null) {
+            showToast("Enter First Name");
             return false;
-        } else if (ConfirmPassword.isEmpty() || ConfirmPassword == null) {
-            showToast("Enter Confirm Password");
+        } else if (lastName.isEmpty() || lastName == null) {
+            showToast("Enter Last Name");
             return false;
-        }*/
-        return true;
+        } else if (isValidMobile(mPhone1Val.getText().toString().trim()) != true) {
+            mPhone1Val.setError("Enter Valid Phone Number");
+            return false;
+        } else if (isValidMobile(mPhone2Val.getText().toString().trim()) != true) {
+            mPhone2Val.setError("Enter Valid Phone Number");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /*@Override
@@ -388,5 +400,20 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isValidMobile(String phone) {
+        boolean check = false;
+        if (!Pattern.matches("[a-zA-Z]+", phone)) {
+            if (phone.length() < 6 || phone.length() > 13) {
+                // if(phone.length() != 10) {
+                check = false;
+            } else {
+                check = true;
+            }
+        } else {
+            check = false;
+        }
+        return check;
     }
 }

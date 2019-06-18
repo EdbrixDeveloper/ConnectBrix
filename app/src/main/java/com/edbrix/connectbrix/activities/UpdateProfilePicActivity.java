@@ -266,6 +266,9 @@ public class UpdateProfilePicActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage());
+                                    Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
 

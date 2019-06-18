@@ -49,7 +49,7 @@ public class UserProfileActivity extends BaseActivity {
     private RelativeLayout mUpdatePhotoLayout;
     LinearLayout mLinearLayoutUserInfo;
 
-    public static final int  RESULT_UPDATE_PROFILE_PIC = 258;
+    public static final int RESULT_UPDATE_PROFILE_PIC = 258;
 
     UserOptionsListAdapter userOptionsListAdapter;
     ArrayList<String> userOptions = new ArrayList<>();
@@ -76,7 +76,6 @@ public class UserProfileActivity extends BaseActivity {
         userOptionsImages.add(R.drawable.apptour);
 
         sessionManager = new SessionManager(this);
-        GetUserPersonalData();
 
         setUserDetails();
 
@@ -110,10 +109,14 @@ public class UserProfileActivity extends BaseActivity {
         int randomNumber = generateRandomIntIntRange(0001, 9999);
         String imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
 
+        if (imageUrl.isEmpty() || imageUrl == null) {
+            GetUserPersonalData();
+        } else {
+            Glide.with(this).load(imageUrl)
+                    //.apply(RequestOptions.circleCropTransform())//.apply(RequestOptions.bitmapTransform(new FitCenter()))
+                    .into(mImgProfile);
+        }
 
-        Glide.with(this).load(imageUrl)
-                //.apply(RequestOptions.circleCropTransform())//.apply(RequestOptions.bitmapTransform(new FitCenter()))
-                .into(mImgProfile);
 
     }
 
@@ -145,7 +148,7 @@ public class UserProfileActivity extends BaseActivity {
             public void onClick(View v) {
                 intent = new Intent(UserProfileActivity.this, UpdateProfilePicActivity.class);
                 //startActivity(intent);
-                startActivityForResult(intent,RESULT_UPDATE_PROFILE_PIC);
+                startActivityForResult(intent, RESULT_UPDATE_PROFILE_PIC);
             }
         });
     }
@@ -265,7 +268,7 @@ public class UserProfileActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         invalidateOptionsMenu();
         if (requestCode == RESULT_UPDATE_PROFILE_PIC && resultCode == RESULT_OK) {
-           setUserDetails();
+            setUserDetails();
         }
     }
 }
