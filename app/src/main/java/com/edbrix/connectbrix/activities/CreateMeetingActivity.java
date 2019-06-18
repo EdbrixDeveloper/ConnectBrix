@@ -320,6 +320,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", "1");
+                                    intent.putExtra("IsCalenderActivity", "N");
                                     startActivity(intent);
                                 }
                             }
