@@ -91,7 +91,7 @@ public class ChangePasswordActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -150,5 +150,14 @@ public class ChangePasswordActivity extends BaseActivity {
             Log.e(TAG, e.getMessage());
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        setResult(RESULT_OK);
+        Intent intent = new Intent(ChangePasswordActivity.this,UserProfileActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }

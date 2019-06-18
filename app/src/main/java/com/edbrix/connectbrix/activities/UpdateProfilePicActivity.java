@@ -213,9 +213,14 @@ public class UpdateProfilePicActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                setResult(RESULT_OK);
+
+               /* setResult(RESULT_OK);
                 finish();
-                return true;
+                Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);
+                startActivity(intent);
+               */
+               onBackPressed();
+               return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -293,7 +298,10 @@ public class UpdateProfilePicActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
         setResult(RESULT_OK);
+        Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);
+        startActivity(intent);
         super.onBackPressed();
     }
 

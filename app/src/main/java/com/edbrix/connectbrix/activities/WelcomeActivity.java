@@ -204,4 +204,13 @@ public class WelcomeActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        setResult(RESULT_OK);
+        Intent intent = new Intent(WelcomeActivity.this,UserProfileActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
 }

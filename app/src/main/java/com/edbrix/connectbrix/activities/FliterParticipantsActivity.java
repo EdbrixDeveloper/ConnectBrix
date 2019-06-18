@@ -714,7 +714,8 @@ public class FliterParticipantsActivity extends BaseActivity {
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast(response.getMessage().toString());
+                                    showToast("Participant Successfully added");
+                                    //showToast(response.getMessage().toString());
                                     /*Intent intent = new Intent(FliterParticipantsActivity.this,MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId",MeetingDbId);
                                     intent.putExtra("IsHost",IsHost);

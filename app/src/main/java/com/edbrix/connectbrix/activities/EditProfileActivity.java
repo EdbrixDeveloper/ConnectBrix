@@ -398,7 +398,7 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -417,5 +417,14 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
             check = false;
         }
         return check;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        setResult(RESULT_OK);
+        Intent intent = new Intent(EditProfileActivity.this,UserProfileActivity.class);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }
