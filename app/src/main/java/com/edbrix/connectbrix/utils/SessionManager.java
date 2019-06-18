@@ -841,17 +841,12 @@ public class SessionManager {
         this.updateSessionUserLastName(null);
         this.updateSessionProfileImageBase64(null);
         this.updateSessionCredentials(null, null, null);
-
         this.updateSessionUserTicketId(null);
         this.updateSessionUserTicketName(null);
         this.updateSessionState(null);
         this.updateSessionSsa(null);
         this.updateSessionCustomer(null);
-
         this.updateAccessToken(null);
-
-
-
         this.updateSessionUserEmail(null);
         this.updateUserType(null);
         this.updateSchoolDisplayName(null);

@@ -232,10 +232,10 @@ public class LoginActivity extends BaseActivity {
 
     private boolean validateUser() {
         //sessionManager = new SessionManager(LoginActivity.this);
-        if (sessionManager.getSessionUsername().equals("") && sessionManager.getSessionUserId().equals("") && sessionManager.getPrefsOrganizationApiKey().equals("") && sessionManager.getPrefsOrganizationSecretKey().equals("")) {
-            return false;////user not available
-        } else {
+        if (!sessionManager.getSessionUsername().equals("") && !sessionManager.getSessionUserId().equals("") && !sessionManager.getPrefsOrganizationApiKey().equals("") && !sessionManager.getPrefsOrganizationSecretKey().equals("")) {
             return true;////user available
+        } else {
+            return false;////user not available
         }
     }
 

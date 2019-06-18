@@ -134,11 +134,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         btnMAddParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Integer.parseInt(mTextViewParticipantCount.getText().toString()) <= 20) {
                 Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
                 intent.putExtra("meetingDbId", meetingDbId);
                 intent.putExtra("IsHost", IsHost);
                 startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
                 //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
+                }else {
+                    showToast("The participants in the meeting have exceeded the limit, if you want to add participants remove previous one.");
+                }
             }
         });
 
@@ -197,13 +201,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
 
-        if(!zoomSDK.isInitialized()) {
+        if (!zoomSDK.isInitialized()) {
             Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
             return;
         }
 
         final MeetingService meetingService = zoomSDK.getMeetingService();
-        if(meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
+        if (meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
 
             long lMeetingNo = 0;
             try {
@@ -213,7 +217,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 return;
             }
 
-            if(meetingService.getCurrentRtcMeetingNumber() == lMeetingNo) {
+            if (meetingService.getCurrentRtcMeetingNumber() == lMeetingNo) {
                 meetingService.returnToMeeting(this);
                 return;
             }
@@ -655,7 +659,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-           showBusyProgress();
+            showBusyProgress();
         }
 
         @Override
@@ -663,7 +667,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             String token = APIUserInfoHelper.getZoomToken(params[0]);
             String accessToken = APIUserInfoHelper.getZoomAccessToken(params[0]);
 
-            if(token != null && !token.isEmpty() && accessToken != null && !accessToken.isEmpty()) {
+            if (token != null && !token.isEmpty() && accessToken != null && !accessToken.isEmpty()) {
                 APIUserInfo apiUserInfo = new APIUserInfo(params[0], token, accessToken);
                 APIUserInfoHelper.saveAPIUserInfo(apiUserInfo);
                 return apiUserInfo;
@@ -675,8 +679,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         @Override
         protected void onPostExecute(APIUserInfo apiUserInfo) {
             super.onPostExecute(apiUserInfo);
-           hideBusyProgress();
-            if(apiUserInfo == null)
+            hideBusyProgress();
+            if (apiUserInfo == null)
                 Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
         }
     }
