@@ -81,6 +81,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
 
+    boolean CheckedFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,12 +138,12 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
                 if (Integer.parseInt(mTextViewParticipantCount.getText().toString()) < 20) {
-                Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
-                intent.putExtra("meetingDbId", meetingDbId);
-                intent.putExtra("IsHost", IsHost);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
-                //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
-                }else {
+                    Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
+                    intent.putExtra("meetingDbId", meetingDbId);
+                    intent.putExtra("IsHost", IsHost);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                    //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
+                } else {
                     showToast("The participants in the meeting have exceeded the limit, if you want to add participants remove previous one.");
                 }
             }
@@ -150,16 +152,23 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         radioMale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meetingAvilabilityStatus("1");
-                //showToast("Radio Male");
+
+                if (CheckedFlag == true) {
+                    CheckedFlag = false;
+                    meetingAvilabilityStatus("1");
+                    //showToast("Radio Male");
+                }
             }
         });
 
         radioFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meetingAvilabilityStatus("2");
-                //showToast("Radio Female");
+                if (CheckedFlag == false) {
+                    CheckedFlag = true;
+                    meetingAvilabilityStatus("2");
+                    //showToast("Radio Female");
+                }
             }
         });
 
