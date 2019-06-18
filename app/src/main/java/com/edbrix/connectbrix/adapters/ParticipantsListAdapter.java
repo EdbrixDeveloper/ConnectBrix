@@ -104,6 +104,8 @@ public class ParticipantsListAdapter extends BaseAdapter {
 
         if ((UserType.equals("T") || UserType.equals("A")) && IsHost.equals("1")) {
             holder.remove.setVisibility(View.VISIBLE);
+            holder.status.setVisibility(View.VISIBLE);
+            holder.txtIsAvaliable.setVisibility(View.VISIBLE);
         }
 
         //holder.participantName.setText(participantList.get(position).toString());

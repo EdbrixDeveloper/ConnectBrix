@@ -54,17 +54,18 @@
                     android:id="@+id/imgStatus"
                     android:layout_width="20dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/waiting" />
+                    android:src="@drawable/waiting"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtIsAvaliable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Status"
                     android:layout_marginLeft="3dp"
+                    android:text="Status"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="12dp" />
-
+                    android:textSize="12dp"
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -77,8 +78,8 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.2"
-            android:visibility="gone"
-            android:src="@drawable/delete_forever" />
+            android:src="@drawable/delete_forever"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>
