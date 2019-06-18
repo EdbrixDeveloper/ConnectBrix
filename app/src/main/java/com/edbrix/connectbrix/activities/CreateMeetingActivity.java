@@ -56,7 +56,7 @@ public class CreateMeetingActivity extends BaseActivity {
     String comesFor;
     String isHost;
     SessionManager sessionManager;
-    boolean isDateSelect = false,isTimeSelect = false;
+    boolean isDateSelect = false, isTimeSelect = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,9 +204,9 @@ public class CreateMeetingActivity extends BaseActivity {
                             str_time = dateFormat.format(date);
                             meetingDate = str_date + " " + str_time;
 
-                        }else if(isDateSelect != true){
+                        } else if (isDateSelect != true) {
                             str_date = finalSimpleDateFormat.format(date);
-                        }else if(isTimeSelect != true){
+                        } else if (isTimeSelect != true) {
                             String strDateFormat = "hh:mm a";
                             DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
                             str_time = dateFormat.format(date);
@@ -244,7 +244,7 @@ public class CreateMeetingActivity extends BaseActivity {
             jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
             jsonObject.put("UserId", sessionManager.getSessionUserId());
-            jsonObject.put("MeetingId",meetingDbId);
+            jsonObject.put("MeetingId", meetingDbId);
             jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
             jsonObject.put("Agenda", mCMeetingAgendaVal.getText().toString().trim());
 
@@ -267,8 +267,9 @@ public class CreateMeetingActivity extends BaseActivity {
                                     showToast(response.getMessage());
                                     meetingDbId = response.getMeetingId();
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
-                                    intent.putExtra("meetingDbId",meetingDbId);
-                                    intent.putExtra("IsHost",isHost);
+                                    intent.putExtra("meetingDbId", meetingDbId);
+                                    intent.putExtra("IsHost", isHost);
+                                    intent.putExtra("IsCalenderActivity", "N");
                                     startActivity(intent);
                                 }
                             }
@@ -315,10 +316,10 @@ public class CreateMeetingActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage());
-                                    meetingDbId = ""+response.getMeetingId();
+                                    meetingDbId = "" + response.getMeetingId();
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
-                                    intent.putExtra("meetingDbId",meetingDbId);
-                                    intent.putExtra("IsHost","1");
+                                    intent.putExtra("meetingDbId", meetingDbId);
+                                    intent.putExtra("IsHost", "1");
                                     startActivity(intent);
                                 }
                             }

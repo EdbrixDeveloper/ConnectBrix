@@ -164,6 +164,7 @@ public class SchoolListActivity extends BaseActivity {
         intent.putExtra("meetingDbId", meetingDbId);
         intent.putExtra("MeetingId", MeetingId);
         intent.putExtra("IsHost", IsHost);
+        intent.putExtra("IsCalenderActivity", "N");
         startActivity(intent);
     }
 

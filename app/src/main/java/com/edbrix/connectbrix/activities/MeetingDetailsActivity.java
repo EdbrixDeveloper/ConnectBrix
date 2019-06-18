@@ -76,7 +76,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String meetingDbId = "", MeetingId = "", IsHost = "";
+    private String meetingDbId = "", MeetingId = "", IsHost = "", IsCalenderActivity = "";
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
@@ -97,6 +97,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         meetingDbId = intent.getStringExtra("meetingDbId");
         /* MeetingId = intent.getStringExtra("MeetingId");*/
         IsHost = intent.getStringExtra("IsHost");
+        IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
 
         invalidateOptionsMenu();
         fieldsVisibilityBasedOnUser();
@@ -599,10 +600,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
     @Override
     public void onBackPressed() {
-        Intent mIntent = new Intent(mContext, SchoolListActivity.class);
-        finishAffinity();
-        startActivity(mIntent);
-        super.onBackPressed();
+        if (IsCalenderActivity.equals("Y")) {
+            finish();
+        } else {
+            Intent mIntent = new Intent(mContext, SchoolListActivity.class);
+            finishAffinity();
+            startActivity(mIntent);
+            super.onBackPressed();
+        }
+
     }
 
 

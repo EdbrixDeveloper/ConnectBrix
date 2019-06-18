@@ -59,7 +59,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private MeetingListData meetingListData;
     private UserMeetingByDateParentData userMeetingByDateParentData;
     String dateForGetEvents;
-    ArrayList<UserMeetingListResponseData>userMeetingListResponseData;
+    ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
         SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date tempDate = null;
-
 
 
         prepareListData();
@@ -104,9 +103,10 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(CalenderViewMeetingListActivity.this,MeetingDetailsActivity.class);
+                Intent intent = new Intent(CalenderViewMeetingListActivity.this, MeetingDetailsActivity.class);
                 intent.putExtra("meetingDbId", userMeetingListResponseData.get(position).getId());
                 intent.putExtra("IsHost", userMeetingListResponseData.get(position).getIsHost());
+                intent.putExtra("IsCalenderActivity", "Y");
                 startActivity(intent);
             }
         });
@@ -115,7 +115,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CalenderViewMeetingListActivity.this, CreateMeetingActivity.class);
-                intent.putExtra("comesFor","new");
+                intent.putExtra("comesFor", "new");
                 startActivity(intent);
             }
         });
@@ -283,7 +283,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
             jo.put("UserId", sessionManager.getSessionUserId());
-            jo.put("MeetingDate",dateForGetEvents);
+            jo.put("MeetingDate", dateForGetEvents);
 
             GsonRequest<UserMeetingByDateParentData> getMeetingByDateRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingByDate, jo.toString(), UserMeetingByDateParentData.class,
                     new Response.Listener<UserMeetingByDateParentData>() {
@@ -315,7 +315,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     hideBusyProgress();
-                    Log.e(TAG,error.getMessage());
+                    Log.e(TAG, error.getMessage());
                 }
             });
             getMeetingByDateRequest.setRetryPolicy(Application.getDefaultRetryPolice());
