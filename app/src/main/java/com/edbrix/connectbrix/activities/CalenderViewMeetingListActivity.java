@@ -19,11 +19,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolListWithCalendarAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.data.GetMeetingsByMonthYearResposeData;
 import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.MyEventDay;
 import com.edbrix.connectbrix.data.UserMeetingByDateParentData;
@@ -56,7 +58,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     ArrayList<String> daysForEvent = new ArrayList<>();
     private List<EventDay> mEventDays = new ArrayList<>();
     SimpleDateFormat finalSimpleDateFormat;
-    private MeetingListData meetingListData;
+    private GetMeetingsByMonthYearResposeData meetingListData;
     private UserMeetingByDateParentData userMeetingByDateParentData;
     String dateForGetEvents;
     ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
@@ -69,19 +71,22 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         sessionManager = new SessionManager(this);
         assignViews();
-        meetingListData = new MeetingListData();
+        meetingListData = new GetMeetingsByMonthYearResposeData();
         userMeetingListResponseData = new ArrayList<>();
 
-        finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
-        Date date = new Date();
-        mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
-        SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date tempDate = null;
-
-
-        prepareListData();
-
         try {
+            finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+            Date date = new Date();
+            mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
+            SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date tempDate = null;
+            Date getMonthYear = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+
+            String getMonthYear_str_date = tempSimpleDateFormat.format(getMonthYear);
+            String [] temp_date_str = getMonthYear_str_date.split("-");
+            prepareMeetingByMonthYear(temp_date_str[0],temp_date_str[1]);
+
+
             tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
             dateForGetEvents = tempSimpleDateFormat.format(tempDate);
             prepareMeetingListByDate(dateForGetEvents);
@@ -147,13 +152,25 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             }
         });
 
+        mCalendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+                Calendar calendar = mCalendarView.getCurrentPageDate();
+                Date date = calendar.getTime();
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String forwardPageDate = tempSimpleDateFormat.format(date);
+                Log.e(TAG, forwardPageDate);
+                String[] splitString = forwardPageDate.split("-");
+                prepareMeetingByMonthYear(splitString[0], splitString[1]);
+            }
+        });
     }
 
     private void addEventToCalendar(String date) {
         Log.e(TAG, date);
         int count = 0;
         try {
-            SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy");
+            SimpleDateFormat convertDateTime = new SimpleDateFormat("MM/dd/yyyy");
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Date dateTime = convertDateTime.parse(date);
             String tempDate = sdf.format(dateTime);
@@ -221,7 +238,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     }
 
 
-    private void prepareListData() {
+    /*private void prepareListData() {
         try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
@@ -248,7 +265,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                         mMeetingListWithCalender.setVisibility(View.VISIBLE);
 
                                         for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {
-                                            /*daysForEvent.add(meetingListData.getUserMeetingsDates().get(i).getDate());*/
+                                            *//*daysForEvent.add(meetingListData.getUserMeetingsDates().get(i).getDate());*//*
                                             addEventToCalendar(meetingListData.getUserMeetingsDates().get(i).getDate());
                                         }
 
@@ -272,7 +289,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             showToast("Something went wrong. Please try again later.");
         }
 
-    }
+    }*/
 
     private void prepareMeetingListByDate(String dateForGetEvents) {
 
@@ -321,6 +338,58 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             getMeetingByDateRequest.setRetryPolicy(Application.getDefaultRetryPolice());
             getMeetingByDateRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(getMeetingByDateRequest, "getMeetingByDateRequest");
+
+        } catch (Exception e) {
+            hideBusyProgress();
+            showToast("Something went wrong. Please try again later.");
+        }
+    }
+
+
+    private void prepareMeetingByMonthYear(String year, String month) {
+
+        Log.e(TAG, year);
+        Log.e(TAG, month);
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("UserId", sessionManager.getSessionUserId());
+            jo.put("Year", year);
+            jo.put("Month", month);
+
+            GsonRequest<GetMeetingsByMonthYearResposeData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getAvailableMeetingDates, jo.toString(), GetMeetingsByMonthYearResposeData.class,
+                    new Response.Listener<GetMeetingsByMonthYearResposeData>() {
+                        @Override
+                        public void onResponse(@NonNull GetMeetingsByMonthYearResposeData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+
+                                    meetingListData = response;
+                                    if (meetingListData.getMeetingDates() != null && meetingListData.getMeetingDates().size() > 0) {
+
+                                        for (int i = 0; i < meetingListData.getMeetingDates().size(); i++) {
+                                            /*daysForEvent.add(meetingListData.getUserMeetingsDates().get(i).getDate());*/
+                                            addEventToCalendar(meetingListData.getMeetingDates().get(i));
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    Log.e(TAG, error.getMessage());
+                }
+            });
+            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingListData");
 
         } catch (Exception e) {
             hideBusyProgress();

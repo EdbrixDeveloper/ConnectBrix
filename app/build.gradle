@@ -51,10 +51,10 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
-   // implementation 'com.github.bumptech.glide:glide:4.3.0'
+    //implementation 'com.github.bumptech.glide:glide:4.3.0'
     //implementation 'jp.wasabeef:glide-transformations:4.0.0'
 
-    implementation 'com.applandeo:material-calendar-view:1.0.1'
+    implementation 'com.applandeo:material-calendar-view:1.4.0'
 
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-iid:17.0.4'

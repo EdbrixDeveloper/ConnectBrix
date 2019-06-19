@@ -35,6 +35,7 @@ public class Constants {
     public final static String createMeeting = BASE_URL.concat("connectbrix/createmeeting");
     public final static String getMeetingByDate = BASE_URL.concat("connectbrix/getmeetingsbydate");
     public final static String updateMeeting = BASE_URL.concat("connectbrix/updatemeeting");
+    public final static String getAvailableMeetingDates = BASE_URL.concat("connectbrix/getavailablemeetingdates");
 
 
 }
