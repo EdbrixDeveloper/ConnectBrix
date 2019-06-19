@@ -388,6 +388,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
                                         mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
+                                        if(Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) >0){
+                                            mBtnMJoin.setVisibility(View.VISIBLE);
+                                        }
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
                                         participantArrayList = new ArrayList<>();
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();

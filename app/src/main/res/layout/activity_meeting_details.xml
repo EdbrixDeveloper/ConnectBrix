@@ -207,6 +207,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Join Now"
+                android:visibility="gone"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="14dp" />
