@@ -1,6 +1,9 @@
 package com.edbrix.connectbrix.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,12 +50,14 @@ public class SchoolListActivity extends BaseActivity {
 
     public static final int RESULT_UPDATE_PROFILE = 200;
 
+    public static final int REFRESH_DATA = 1;
+
     FloatingActionButton floating_action_button_fab_with_listview;
     boolean doubleBackToExitPressedOnce = false;
     SessionManager sessionManager;
     private MeetingListData meetingListData;
 
-    private MyContinousAsyncTask myContinouslyRunningAsyncTask;
+    /*private MyContinousAsyncTask myContinouslyRunningAsyncTask;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +81,8 @@ public class SchoolListActivity extends BaseActivity {
         if (sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) {
             floating_action_button_fab_with_listview.show();
         }
-
-        //prepareListData();
+        registerEventReceiver();
+        prepareListData();
 
         imgCalender.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +136,7 @@ public class SchoolListActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
                 intent.putExtra("comesFor", "new");
+                intent.putExtra("IsCalenderActivity", "N");
                 startActivity(intent);
             }
         });
@@ -164,8 +170,10 @@ public class SchoolListActivity extends BaseActivity {
         intent.putExtra("meetingDbId", meetingDbId);
         intent.putExtra("MeetingId", MeetingId);
         intent.putExtra("IsHost", IsHost);
+        intent.putExtra("RefreshFlag", "N");
         intent.putExtra("IsCalenderActivity", "N");
-        startActivity(intent);
+        //startActivity(intent);
+        startActivityForResult(intent, REFRESH_DATA);
     }
 
     /*@Override
@@ -268,18 +276,38 @@ public class SchoolListActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         invalidateOptionsMenu();
         if (requestCode == RESULT_UPDATE_PROFILE && resultCode == RESULT_OK) {
             setImageToUserProfileIcon();
         }
 
-        /*if (resultCode == RESULT_OK) {
+        if (requestCode == 1) {
             prepareListData();
-        }*/
+        }
     }
 
+    final String eventName = "com.edbrix.connectbrix.EVENT";
+
+    private void registerEventReceiver() {
+        IntentFilter eventFilter = new IntentFilter();
+        eventFilter.addAction(eventName);
+        registerReceiver(eventReceiver, eventFilter);
+    }
+
+    private BroadcastReceiver eventReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String RefreshFlag = intent.getStringExtra("RefreshFlag");
+            if (RefreshFlag.equals("Y")) {
+                prepareListData();
+            }
+            //This code will be executed when the broadcast in activity B is launched
+        }
+    };
+
     //clock
-    private Timer timer;
+    /*private Timer timer;
     private TimerTask timerTask;
 
 
@@ -309,14 +337,11 @@ public class SchoolListActivity extends BaseActivity {
         protected String doInBackground(String... params) {
             timer = new Timer();
             timerTask = new TimerTask() {
-
                 @Override
                 public void run() {
                     SchoolListActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //tvPontuacao.setText(BatalhaConfigs.USUARIO_PONTUACAO);
-                            //getAllBattles();
                             Log.i(SchoolListActivity.class.getName(), "Calling From Timer Async Task...");
                             prepareListData();
                         }
@@ -329,14 +354,10 @@ public class SchoolListActivity extends BaseActivity {
 
     }
 
-    /**
-     * timer para atualizar o adapter
-     */
     private void clockTask() {
         myContinouslyRunningAsyncTask = new MyContinousAsyncTask();
         myContinouslyRunningAsyncTask.execute("execute");
-
-    }
+    }*/
 }
 
 

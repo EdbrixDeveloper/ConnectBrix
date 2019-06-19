@@ -726,6 +726,7 @@ public class FliterParticipantsActivity extends BaseActivity {
                                     // TODO Add extras or a data URI to this intent as appropriate.
                                     resultIntent.putExtra("meetingDbId",MeetingDbId);
                                     resultIntent.putExtra("IsHost",IsHost);
+                                    resultIntent.putExtra("RefreshFlag","Y");
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
 

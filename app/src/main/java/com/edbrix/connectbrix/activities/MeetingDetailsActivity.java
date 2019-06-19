@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -76,7 +77,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String meetingDbId = "", MeetingId = "", IsHost = "", IsCalenderActivity = "";
+    private String meetingDbId = "", MeetingId = "", IsHost = "", RefreshFlag = "", IsCalenderActivity = "";
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
@@ -99,6 +100,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         meetingDbId = intent.getStringExtra("meetingDbId");
         /* MeetingId = intent.getStringExtra("MeetingId");*/
         IsHost = intent.getStringExtra("IsHost");
+        RefreshFlag = intent.getStringExtra("RefreshFlag");
         IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
 
         invalidateOptionsMenu();
@@ -495,11 +497,14 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         menuInflater.inflate(R.menu.meeting_details_menu, menu);
 
         MenuItem shareItem = menu.findItem(R.id.menuEdit);
+        MenuItem shareItem2 = menu.findItem(R.id.menuDelete);
 
         // show the button when some condition is true
         shareItem.setVisible(false);
+        shareItem2.setVisible(false);
         if ((sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) && IsHost.equals("1")) {
             shareItem.setVisible(true);
+            shareItem2.setVisible(true);
         }
 
         return true;
@@ -524,8 +529,69 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 startActivity(intent);
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
+
+            case R.id.menuDelete:
+                showConfirmationDialogForDeletionMeetingByHost();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showConfirmationDialogForDeletionMeetingByHost() {
+        alertDialogManager.Dialog("Conformation", "Do you want to delete this meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+            @Override
+            public void onPositiveClick() {
+                deleteMeetingByHostUser();
+            }
+
+            @Override
+            public void onNegativeClick() {
+            }
+        }).show();
+    }
+
+    private void deleteMeetingByHostUser() {
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+
+            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("MeetingId", meetingDbId);
+            //jo.put("UserId", sessionManager.getSessionUserId());
+
+            Log.i(MeetingDetailsActivity.class.getName(), Constants.deleteMeetingDetails + "\n\n" + jo.toString());
+
+            GsonRequest<MeetingDetailsData> deleteMeetingRequest = new GsonRequest<>(Request.Method.POST, Constants.deleteMeetingDetails, jo.toString(), MeetingDetailsData.class,
+                    new Response.Listener<MeetingDetailsData>() {
+                        @Override
+                        public void onResponse(@NonNull MeetingDetailsData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    RefreshFlag = "Y";
+                                    onBackPressed();
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+
+                }
+            });
+            deleteMeetingRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            deleteMeetingRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(deleteMeetingRequest, "DeleteMeetingDetails");
+
+        } catch (JSONException e) {
+            hideBusyProgress();
+            showToast("Something went wrong. Please try again later.");
+        }
+
     }
 
     @Override
@@ -568,7 +634,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 meetingDbId = data.getStringExtra("meetingDbId");
                 /* MeetingId = data.getStringExtra("MeetingId");*/
                 IsHost = data.getStringExtra("IsHost");
-
+                RefreshFlag = data.getStringExtra("RefreshFlag");
                 invalidateOptionsMenu();
                 fieldsVisibilityBasedOnUser();
                 prepareListData();
@@ -580,16 +646,57 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     @Override
     public void onBackPressed() {
         if (IsCalenderActivity.equals("Y")) {
-            finish();
-        } else {
-            Intent mIntent = new Intent(mContext, SchoolListActivity.class);
-            finishAffinity();
+            if (RefreshFlag.equals("Y")) {
+                /*setResult(SchoolListActivity.REFRESH_DATA);
+                finish();*/
+                Intent resultIntent = new Intent();
+                // TODO Add extras or a data URI to this intent as appropriate.
+                resultIntent.putExtra("RefreshFlag", "Y");
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            } else {
+                finish();
+            }
+        } else if (IsCalenderActivity.equals("C")) {
+            /*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
+            mIntent.putExtra("RefreshFlag", "Y");
             startActivity(mIntent);
-            super.onBackPressed();
+            finish();*/
+            /*Intent resultIntent = new Intent();
+            // TODO Add extras or a data URI to this intent as appropriate.
+            resultIntent.putExtra("RefreshFlag", "Y");
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();*/
+            launchEvent();
+        } else {
+            if (RefreshFlag.equals("Y")) {
+
+                Intent resultIntent = new Intent();
+                // TODO Add extras or a data URI to this intent as appropriate.
+                resultIntent.putExtra("RefreshFlag", "Y");
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+
+            } else {
+                finish();
+                /*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
+                finishAffinity();
+                startActivity(mIntent);
+                super.onBackPressed();*/
+            }
         }
 
     }
 
+
+    final String eventName = "com.edbrix.connectbrix.EVENT";
+
+    private void launchEvent() {
+        Intent eventIntent = new Intent(eventName);
+        eventIntent.putExtra("RefreshFlag", "Y");
+        this.sendBroadcast(eventIntent);
+        finish();
+    }
 
     private void removeParticipant(String RecordId, int position) {
         try {
@@ -671,3 +778,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     }
 
 }
+
+//raw code
+/*Intent mIntent = new Intent(mContext, SchoolListActivity.class);
+            finishAffinity();
+            startActivity(mIntent);*/

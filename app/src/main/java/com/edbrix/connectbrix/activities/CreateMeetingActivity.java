@@ -55,6 +55,7 @@ public class CreateMeetingActivity extends BaseActivity {
     String tempMeetingDate;
     String comesFor;
     String isHost;
+    String IsCalenderActivity = "";
     SessionManager sessionManager;
     boolean isDateSelect = false, isTimeSelect = false;
 
@@ -71,6 +72,7 @@ public class CreateMeetingActivity extends BaseActivity {
         Intent intent = getIntent();
         comesFor = intent.getStringExtra("comesFor");
         isHost = intent.getStringExtra("IsHost");
+        IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
         if (comesFor.equals("edit")) {
             getSupportActionBar().setTitle("Edit Meeting");
             mBtnCreateMeeting.setText("Update Meeting");
@@ -269,8 +271,10 @@ public class CreateMeetingActivity extends BaseActivity {
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", isHost);
-                                    intent.putExtra("IsCalenderActivity", "N");
+                                    intent.putExtra("RefreshFlag", "Y");
+                                    intent.putExtra("IsCalenderActivity", "C");
                                     startActivity(intent);
+                                    finish();
                                 }
                             }
 
@@ -315,13 +319,15 @@ public class CreateMeetingActivity extends BaseActivity {
                                 showToast(error);
                             } else {
                                 if (response.getSuccess() == 1) {
-                                   // showToast(response.getMessage());
+                                    // showToast(response.getMessage());
                                     meetingDbId = "" + response.getMeetingId();
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", "1");
-                                    intent.putExtra("IsCalenderActivity", "N");
+                                    intent.putExtra("RefreshFlag", "Y");
+                                    intent.putExtra("IsCalenderActivity", "C");
                                     startActivity(intent);
+                                    finish();
                                 }
                             }
 

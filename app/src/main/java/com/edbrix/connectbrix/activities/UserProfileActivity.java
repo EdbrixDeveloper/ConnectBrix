@@ -179,8 +179,9 @@ public class UserProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                setResult(RESULT_OK);
-                finish();
+                //setResult(RESULT_OK);
+                //finish();
+                onBackPressed();
                 return true;
             case R.id.menuLogout:
                 //startActivity(new Intent(UserProfileActivity.this, LoginActivity.class));
