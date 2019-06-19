@@ -44,6 +44,7 @@ public class ForgotPasswordActivity extends BaseActivity {
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     boolean isEmailValid = false;
     ArrayList<UserOrganizationListData> userOrganizationListData = new ArrayList<>();
+    public static final int RESULT_FORGOT_PASSWORD = 4;
     SessionManager sessionManager;
 
     @Override
@@ -69,6 +70,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             public void onClick(View v) {
 
                 if (checkFieldValidation() == true) {
+                    checkEmailValidation();
                     if (isEmailValid == true) {
 
                         getOrganizationList(mEdTxtEmail.getText().toString());
@@ -111,7 +113,7 @@ public class ForgotPasswordActivity extends BaseActivity {
                                     intent.putExtra("organizationList", userOrganizationListData);
                                     intent.putExtra("email", mEdTxtEmail.getText().toString());
                                     intent.putExtra("comesFrom", "forgotPasswordActivity");
-                                    startActivity(intent);
+                                    startActivityForResult(intent,RESULT_FORGOT_PASSWORD);
 
                                 }
                             }
@@ -179,18 +181,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     // code to execute when EditText loses focus
-                    String email = mEdTxtEmail.getText().toString();
-                    if (!email.equals("")) {
-                        if (email.matches(emailPattern)) {
-                            mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
-                            isEmailValid = true;
-                        } else {
-                            mEdTxtEmail.setError("Enter valid email address");
-                            mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
-                            isEmailValid = false;
-                        }
-
-                    }
+                    checkEmailValidation();
                 }
             }
         });
@@ -223,6 +214,22 @@ public class ForgotPasswordActivity extends BaseActivity {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private void checkEmailValidation()
+    {
+        String email = mEdTxtEmail.getText().toString();
+        if (!email.equals("")) {
+            if (email.matches(emailPattern)) {
+                mEdTxtEmail.setBackgroundResource(R.drawable.flash_screen_background);
+                isEmailValid = true;
+            } else {
+                mEdTxtEmail.setError("Enter valid email address");
+                mEdTxtEmail.setBackgroundResource(R.drawable.error_background);
+                isEmailValid = false;
+            }
+
         }
     }
 }

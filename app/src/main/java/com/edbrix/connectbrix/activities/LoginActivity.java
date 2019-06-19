@@ -68,6 +68,7 @@ public class LoginActivity extends BaseActivity {
     boolean doubleBackToExitPressedOnce = false;
 
     final public int CHECK_PERMISSIONS = 123;
+    public static final int RESULT_LOGIN = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,7 +284,7 @@ public class LoginActivity extends BaseActivity {
                                     Intent intent = new Intent(LoginActivity.this, OrgnizationListActivity.class);
                                     intent.putExtra("organizationList", userOrganizationListData);
                                     intent.putExtra("comesFrom", "loginActivity");
-                                    startActivity(intent);
+                                    startActivityForResult(intent,RESULT_LOGIN);
                                 }
                             }
 
