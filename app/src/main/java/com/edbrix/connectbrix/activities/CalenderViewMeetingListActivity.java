@@ -1,6 +1,9 @@
 package com.edbrix.connectbrix.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -74,6 +77,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         sessionManager = new SessionManager(this);
         assignViews();
+        registerEventReceiver();
         meetingListData = new GetMeetingsByMonthYearResposeData();
         userMeetingListResponseData = new ArrayList<>();
 
@@ -422,11 +426,66 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         invalidateOptionsMenu();
 
         if (requestCode == 1) {
+            try {
+                finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+                Date date = new Date();
+                mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date getMonthYear = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+                Date tempDate = null;
+
+                String getMonthYear_str_date = tempSimpleDateFormat.format(getMonthYear);
+                String[] temp_date_str = getMonthYear_str_date.split("-");
+                prepareMeetingByMonthYear(temp_date_str[0], temp_date_str[1]);
+
+                tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+                dateForGetEvents = tempSimpleDateFormat.format(tempDate);
+                prepareMeetingListByDate(dateForGetEvents);
+
+            } catch (Exception ex) {
+
+            }
             //prepareListData();
-            showToast("Calling in Activity Result");
+            //showToast("Calling in Activity Result");
         }
     }
 
+    final String eventName = "com.edbrix.connectbrix.CALEN";
+
+    private void registerEventReceiver() {
+        IntentFilter eventFilter = new IntentFilter();
+        eventFilter.addAction(eventName);
+        registerReceiver(eventReceiver1, eventFilter);
+    }
+
+    private BroadcastReceiver eventReceiver1 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String RefreshFlag = intent.getStringExtra("RefreshFlag");
+            if (RefreshFlag.equals("Y")) {
+                try {
+                    finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+                    Date date = new Date();
+                    mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
+                    SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date getMonthYear = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+                    Date tempDate = null;
+
+                    String getMonthYear_str_date = tempSimpleDateFormat.format(getMonthYear);
+                    String[] temp_date_str = getMonthYear_str_date.split("-");
+                    prepareMeetingByMonthYear(temp_date_str[0], temp_date_str[1]);
+
+                    tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+                    dateForGetEvents = tempSimpleDateFormat.format(tempDate);
+                    prepareMeetingListByDate(dateForGetEvents);
+
+                } catch (Exception ex) {
+
+                }
+            }
+            //This code will be executed when the broadcast in activity B is launched
+        }
+    };
 
 
 }

@@ -272,7 +272,8 @@ public class CreateMeetingActivity extends BaseActivity {
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", isHost);
                                     intent.putExtra("RefreshFlag", "Y");
-                                    intent.putExtra("IsCalenderActivity", "C");
+                                    //intent.putExtra("IsCalenderActivity", "C");
+                                    intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
                                     startActivity(intent);
                                     finish();
                                 }
@@ -325,7 +326,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", "1");
                                     intent.putExtra("RefreshFlag", "Y");
-                                    intent.putExtra("IsCalenderActivity", "C");
+                                    intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
                                     startActivity(intent);
                                     finish();
                                 }

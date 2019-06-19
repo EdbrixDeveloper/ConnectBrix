@@ -542,7 +542,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 intent.putExtra("meetingDateTime", mTxtMeetingDate.getText().toString() + " " + mTxtMeetingTime.getText().toString());
                 intent.putExtra("meetingAgenda", mTxtMeetingDetails.getText().toString());
                 intent.putExtra("IsHost", IsHost);
+                intent.putExtra("IsCalenderActivity", IsCalenderActivity);
                 startActivity(intent);
+                finish();
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
 
@@ -663,8 +665,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     public void onBackPressed() {
         if (IsCalenderActivity.equals("Y")) {
             if (RefreshFlag.equals("Y")) {
-                /*setResult(SchoolListActivity.REFRESH_DATA);
-                finish();*/
+
                 Intent resultIntent = new Intent();
                 // TODO Add extras or a data URI to this intent as appropriate.
                 resultIntent.putExtra("RefreshFlag", "Y");
@@ -673,16 +674,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             } else {
                 finish();
             }
+        } else if (IsCalenderActivity.equals("YC")) {
+            launchEvent2();
         } else if (IsCalenderActivity.equals("C")) {
-            /*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
-            mIntent.putExtra("RefreshFlag", "Y");
-            startActivity(mIntent);
-            finish();*/
-            /*Intent resultIntent = new Intent();
-            // TODO Add extras or a data URI to this intent as appropriate.
-            resultIntent.putExtra("RefreshFlag", "Y");
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();*/
             launchEvent();
         } else {
             if (RefreshFlag.equals("Y")) {
@@ -695,10 +689,6 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
             } else {
                 finish();
-                /*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
-                finishAffinity();
-                startActivity(mIntent);
-                super.onBackPressed();*/
             }
         }
 
@@ -706,9 +696,17 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
 
     final String eventName = "com.edbrix.connectbrix.EVENT";
+    final String eventName2 = "com.edbrix.connectbrix.CALEN";
 
     private void launchEvent() {
         Intent eventIntent = new Intent(eventName);
+        eventIntent.putExtra("RefreshFlag", "Y");
+        this.sendBroadcast(eventIntent);
+        finish();
+    }
+
+    private void launchEvent2() {
+        Intent eventIntent = new Intent(eventName2);
         eventIntent.putExtra("RefreshFlag", "Y");
         this.sendBroadcast(eventIntent);
         finish();
@@ -736,6 +734,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 hideBusyProgress();
                                 if (response.getSuccess() == 1) {
                                     //showToast("Removed "+participantList.get(position).getName());
+                                    RefreshFlag = "Y";
                                     showToast("Removed selected participant");
                                     //participantList.remove(position);
                                     //notifyDataSetChanged();
@@ -813,6 +812,31 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 }
 
 //raw code
+
+/*setResult(SchoolListActivity.REFRESH_DATA);
+                finish();*/
+///////
+
+/*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
+            mIntent.putExtra("RefreshFlag", "Y");
+            startActivity(mIntent);
+            finish();*/
+            /*Intent resultIntent = new Intent();
+            // TODO Add extras or a data URI to this intent as appropriate.
+            resultIntent.putExtra("RefreshFlag", "Y");
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();*/
+
+////////
+
+
+/*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
+                finishAffinity();
+                startActivity(mIntent);
+                super.onBackPressed();*/
+
+///////
+
 /*Intent mIntent = new Intent(mContext, SchoolListActivity.class);
             finishAffinity();
             startActivity(mIntent);*/
