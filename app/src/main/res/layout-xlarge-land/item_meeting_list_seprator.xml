@@ -14,13 +14,14 @@
         android:layout_weight="1"
         android:paddingLeft="@dimen/app_min_padding"
         android:text="28/May/2019"
+        android:layout_gravity="center_vertical"
         android:textColor="@color/colorButtonText"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView_Count"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="21dp"
+        android:layout_height="20dp"
         android:layout_gravity="right|end|top"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="2dp"

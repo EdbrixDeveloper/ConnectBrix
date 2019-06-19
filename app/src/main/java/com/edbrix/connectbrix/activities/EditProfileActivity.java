@@ -287,7 +287,9 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
 
 
             jsonObject.put("FirstName", mFirstNameVal.getText().toString());
+            sessionManager.updateSessionUserFirstName(mFirstNameVal.getText().toString());
             jsonObject.put("LastName", mLastNameVal.getText().toString());
+            sessionManager.updateSessionUserLastName(mLastNameVal.getText().toString());
             jsonObject.put("MobileNumber", mPhone1Val.getText().toString());
             jsonObject.put("MobileNumber2", mPhone2Val.getText().toString());
             jsonObject.put("Address", mAddressVal.getText().toString());
