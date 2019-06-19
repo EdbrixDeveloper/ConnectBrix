@@ -264,7 +264,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                 showToast(error);
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast(response.getMessage());
+                                    //showToast(response.getMessage());
                                     meetingDbId = response.getMeetingId();
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
@@ -315,7 +315,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                 showToast(error);
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast(response.getMessage());
+                                   // showToast(response.getMessage());
                                     meetingDbId = "" + response.getMeetingId();
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);

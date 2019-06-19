@@ -136,7 +136,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
                     //.apply(RequestOptions.bitmapTransform(new FitCenter()))
                     .into(holder.partcipantImage);
         } else {
-            holder.partcipantImage.setImageBitmap(null);
+            holder.partcipantImage.setImageResource(R.drawable.usersp);
         }
 
         //holder.txtIsAvaliable.setText(participantList.get(position).getOrgName());
@@ -145,7 +145,8 @@ public class ParticipantsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                onButtonActionListener.onButtonClicked(participantList.get(position).getName(), participantList.get(position).getRecordId(), position);
+                String ParticipantName = participantList.get(position).getName().isEmpty() ? participantList.get(position).getEmail() : participantList.get(position).getName();
+                onButtonActionListener.onButtonClicked(ParticipantName, participantList.get(position).getRecordId(), position);
 
                 /*alertDialogManager.Dialog("Conformation", "Do you want to remove "+participantList.get(position).getName()+"?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                     @Override

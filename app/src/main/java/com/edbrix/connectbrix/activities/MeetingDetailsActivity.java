@@ -172,19 +172,6 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
         });
 
-        /*mParticipantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                String recordId = meetingDetailsData.getMeeting().getParticipantList().get(position).getRecordId();
-                deleteSelectedParticipant(recordId);
-
-            }
-
-        });*/
-
         onButtonActionListener = new ParticipantsListAdapter.OnButtonActionListener() {
             @Override
             public void onButtonClicked(String ParticipantName, String RecordId, int Position) {
@@ -319,23 +306,6 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             radioFemale.setVisibility(View.GONE);
             msgName = "start";
         }
-    }
-
-    private void deleteSelectedParticipant(String RecordId) {
-        alertDialogManager.Dialog("Conformation", "Do you want to remove participant?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
-            @Override
-            public void onPositiveClick() {
-                removeParticipant(RecordId);
-                //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
-            }
-
-            @Override
-            public void onNegativeClick() {
-                //Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                //AcPreventiveMaintenanceDashboardActivity.this.startActivity(myIntent);
-            }
-        }).show();
     }
 
     private void assignViews() {
@@ -550,7 +520,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 intent.putExtra("meetingTitle", mTxtMeetingTitle.getText().toString());
                 intent.putExtra("meetingDateTime", mTxtMeetingDate.getText().toString() + " " + mTxtMeetingTime.getText().toString());
                 intent.putExtra("meetingAgenda", mTxtMeetingDetails.getText().toString());
-                intent.putExtra("isHost", IsHost);
+                intent.putExtra("IsHost", IsHost);
                 startActivity(intent);
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
