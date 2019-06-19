@@ -170,6 +170,19 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 prepareMeetingByMonthYear(splitString[0], splitString[1]);
             }
         });
+
+        mCalendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
+            @Override
+            public void onChange() {
+                Calendar calendar = mCalendarView.getCurrentPageDate();
+                Date date = calendar.getTime();
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String forwardPageDate = tempSimpleDateFormat.format(date);
+                Log.e(TAG, forwardPageDate);
+                String[] splitString = forwardPageDate.split("-");
+                prepareMeetingByMonthYear(splitString[0], splitString[1]);
+            }
+        });
     }
 
     private void addEventToCalendar(String date) {
