@@ -42,13 +42,19 @@
             android:src="@drawable/usersp" />
 
     </LinearLayout>
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/actionBarLayout"
+        android:background="@color/colorButtonText"/>
 
     <!--android:layout_below="@+id/linearLayout_Status"-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/actionBarLayout">
+        android:layout_below="@+id/viewLine">
 
         <ExpandableListView
             android:id="@+id/schoolList_listView_schoolList"

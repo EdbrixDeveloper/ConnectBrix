@@ -104,7 +104,7 @@ public class OrgnizationListActivity extends BaseActivity {
                             } else {
 
                                 if (response.getSuccess() == 1) {
-                                    showToast("Login Successfully");
+                                    //showToast("Login Successfully");
 
                                     sessionManager.updateAccessToken(response.getAccessToken());
                                     sessionManager.updateSessionUserID(response.getUser().getId());
