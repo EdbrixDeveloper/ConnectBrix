@@ -18,6 +18,10 @@ public class Meeting {
     @SerializedName("StartDateTime")
     @Expose
     private String startDateTime;
+    @SerializedName("HostId")
+    @Expose
+    private String hostId;
+
     @SerializedName("MeetingId")
     @Expose
     private String meetingId;
@@ -83,5 +87,13 @@ public class Meeting {
 
     public void setParticipantCount(String participantCount) {
         this.participantCount = participantCount;
+    }
+
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
     }
 }

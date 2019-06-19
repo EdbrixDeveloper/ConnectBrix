@@ -298,11 +298,8 @@ public class UpdateProfilePicActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        setResult(RESULT_OK);
-        Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);
-        startActivity(intent);
         super.onBackPressed();
+        finish();
     }
 
 

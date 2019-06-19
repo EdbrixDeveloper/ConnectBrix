@@ -32,10 +32,12 @@ import com.edbrix.connectbrix.data.MeetingDetailsData;
 import com.edbrix.connectbrix.data.ParticipantList;
 import com.edbrix.connectbrix.helper.APIUserInfoHelper;
 import com.edbrix.connectbrix.helper.ApiUserStartMeetingHelper;
+import com.edbrix.connectbrix.helper.ZoomMeetingUISettingHelper;
 import com.edbrix.connectbrix.utils.AuthConstants;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
+import com.edbrix.connectbrix.utils.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +51,8 @@ import us.zoom.sdk.JoinMeetingParams;
 import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.MeetingServiceListener;
 import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.StartMeetingOptions;
+import us.zoom.sdk.StartMeetingParams4NormalUser;
 import us.zoom.sdk.ZoomSDK;
 import us.zoom.sdk.ZoomSDKAuthenticationListener;
 import us.zoom.sdk.ZoomSDKInitializeListener;
@@ -83,6 +87,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
 
     boolean CheckedFlag = false;
+    private boolean isResumed=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +211,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         }
 
         final MeetingService meetingService = zoomSDK.getMeetingService();
-        if (meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
+        /*if (meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
 
             long lMeetingNo = 0;
             try {
@@ -244,7 +249,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         int ret = -1;
         ret = ApiUserStartMeetingHelper.getInstance().startMeetingWithNumber(this, MeetingId);
-        Log.i(TAG, "onClickBtnStartMeeting, ret=" + ret);
+        Log.i(TAG, "onClickBtnStartMeeting, ret=" + ret);*/
+
+        StartMeetingOptions opts = ZoomMeetingUISettingHelper.getMeetingOptions();
+
+        StartMeetingParams4NormalUser params = new StartMeetingParams4NormalUser();
+        params.meetingNo = MeetingId;
+
+        meetingService.startMeetingWithParams(getApplicationContext(), params, opts);
+
     }
 
     private void joinMeeting() {
@@ -774,6 +787,23 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             hideBusyProgress();
             if (apiUserInfo == null)
                 Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isResumed=false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isResumed=true;
+       /* refreshUI();*/
+        if(APIUserInfoHelper.getAPIUserInfo() == null) {
+            RetrieveUserInfoTask task = new RetrieveUserInfoTask();//retrieve api user token
+            task.execute(USER_ID);
         }
     }
 

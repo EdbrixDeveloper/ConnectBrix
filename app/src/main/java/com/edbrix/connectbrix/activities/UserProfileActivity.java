@@ -129,17 +129,17 @@ public class UserProfileActivity extends BaseActivity {
                 if (position == 0) {
                     intent = new Intent(UserProfileActivity.this, EditProfileActivity.class);
                     startActivity(intent);
-                    finish();
+                    /*finish();*/
                 } else if (position == 1) {
                     intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
                     startActivity(intent);
-                    finish();
+                  /*  finish();*/
                 } else if (position == 2) {
                     PrefManager prefManager = new PrefManager(getApplicationContext());
                     prefManager.setFirstTimeLaunch(true);
                     intent = new Intent(UserProfileActivity.this, WelcomeActivity.class);
                     startActivity(intent);
-                    finish();
+                  /*  finish();*/
                 }
             }
         });
@@ -150,7 +150,7 @@ public class UserProfileActivity extends BaseActivity {
                 intent = new Intent(UserProfileActivity.this, UpdateProfilePicActivity.class);
                 //startActivity(intent);
                 startActivityForResult(intent, RESULT_UPDATE_PROFILE_PIC);
-                finish();
+                /*finish();*/
             }
         });
     }

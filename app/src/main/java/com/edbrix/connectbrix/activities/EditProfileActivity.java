@@ -423,10 +423,7 @@ public class EditProfileActivity extends BaseActivity implements OnStatePickerLi
 
     @Override
     public void onBackPressed() {
-        finish();
-        setResult(RESULT_OK);
-        Intent intent = new Intent(EditProfileActivity.this,UserProfileActivity.class);
-        startActivity(intent);
         super.onBackPressed();
+        finish();
     }
 }

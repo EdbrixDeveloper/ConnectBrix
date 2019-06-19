@@ -28,7 +28,7 @@ public interface AuthConstants {
     /* If you would like to ask your user to login with their own credentials, you don't need to fill up the following. */
 
     // Change it to your user ID
-    public final static String USER_ID = "Your user ID from REST API";
+    public static String USER_ID = "Your user ID from REST API";
 
     // Change it to your zoom token
     public final static String ZOOM_TOKEN = "Your zoom token from REST API";

@@ -155,10 +155,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        setResult(RESULT_OK);
-        Intent intent = new Intent(ChangePasswordActivity.this,UserProfileActivity.class);
-        startActivity(intent);
         super.onBackPressed();
+        finish();
     }
 }

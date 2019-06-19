@@ -123,7 +123,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, UserProfileActivity.class));
+        /*startActivity(new Intent(WelcomeActivity.this, UserProfileActivity.class));*/
         finish();
     }
 
@@ -207,10 +207,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        setResult(RESULT_OK);
-        Intent intent = new Intent(WelcomeActivity.this,UserProfileActivity.class);
-        startActivity(intent);
         super.onBackPressed();
+        finish();
     }
 }
