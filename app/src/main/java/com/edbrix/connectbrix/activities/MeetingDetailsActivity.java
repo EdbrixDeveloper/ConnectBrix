@@ -121,7 +121,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
 
-                alertDialogManager.Dialog("Conformation", "Do you want to " + msgName + " meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                alertDialogManager.Dialog("Confirmation", "Do you want to " + msgName + " meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                     @Override
                     public void onPositiveClick() {
 
@@ -183,7 +183,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onButtonClicked(String ParticipantName, String RecordId, int Position) {
 
-                alertDialogManager.Dialog("Conformation", "Do you want to remove " + ParticipantName + "?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                alertDialogManager.Dialog("Confirmation", "Do you want to remove " + ParticipantName + "?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                     @Override
                     public void onPositiveClick() {
                         removeParticipant(RecordId, Position);
@@ -558,7 +558,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     }
 
     private void showConfirmationDialogForDeletionMeetingByHost() {
-        alertDialogManager.Dialog("Conformation", "Do you want to delete this meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+        alertDialogManager.Dialog("Confirmation", "Do you want to delete this meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
             @Override
             public void onPositiveClick() {
                 deleteMeetingByHostUser();
