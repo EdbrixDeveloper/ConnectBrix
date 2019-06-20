@@ -211,7 +211,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         }
 
         final MeetingService meetingService = zoomSDK.getMeetingService();
-        /*if (meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
+        if (meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
 
             long lMeetingNo = 0;
             try {
@@ -249,14 +249,14 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         int ret = -1;
         ret = ApiUserStartMeetingHelper.getInstance().startMeetingWithNumber(this, MeetingId);
-        Log.i(TAG, "onClickBtnStartMeeting, ret=" + ret);*/
+        Log.i(TAG, "onClickBtnStartMeeting, ret=" + ret);
 
-        StartMeetingOptions opts = ZoomMeetingUISettingHelper.getMeetingOptions();
+        /*StartMeetingOptions opts = ZoomMeetingUISettingHelper.getMeetingOptions();
 
         StartMeetingParams4NormalUser params = new StartMeetingParams4NormalUser();
         params.meetingNo = MeetingId;
 
-        meetingService.startMeetingWithParams(getApplicationContext(), params, opts);
+        meetingService.startMeetingWithParams(getApplicationContext(), params, opts);*/
 
     }
 
@@ -361,7 +361,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
+                                    Log.i(TAG+"HOST_ID : ",response.getMeeting().getHostId());
                                     meetingDetailsData = response;
+                                    Constants.HOST_ID = meetingDetailsData.getMeeting().getHostId();
                                     mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
 
                                     if (meetingDetailsData.getMeeting().getStartDateTime() == null || meetingDetailsData.getMeeting().getStartDateTime().isEmpty()) {
@@ -787,8 +789,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         protected void onPostExecute(APIUserInfo apiUserInfo) {
             super.onPostExecute(apiUserInfo);
             hideBusyProgress();
-            if (apiUserInfo == null)
-                Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+            if (apiUserInfo == null){}
+                //Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -802,10 +804,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     protected void onResume() {
         super.onResume();
         isResumed=true;
-       /* refreshUI();*/
         if(APIUserInfoHelper.getAPIUserInfo() == null) {
             RetrieveUserInfoTask task = new RetrieveUserInfoTask();//retrieve api user token
-            task.execute(USER_ID);
+            task.execute(Constants.HOST_ID);
         }
     }
 

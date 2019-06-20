@@ -10,7 +10,7 @@ public class Constants {
     // TODO Change it to your APP Secret
     public final static String APP_SECRET__ = "MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1IWVkYnJpeEAxOA==";
 
-    public  static String HOST_ID = "";
+    public static String HOST_ID = null;
 
     private final static String BASE_URL = "http://services.edbrix.net/";
 

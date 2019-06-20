@@ -19,10 +19,10 @@ public interface AuthConstants {
     public final static String WEB_DOMAIN = "zoom.us";
 
     // Change it to your APP Key
-    public final static String APP_KEY = "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn";
+    public final static String APP_KEY = "oAgme9pfT76_tblaFDCBDA";//"apB-EZsURsypx0Vzd35xyA";//"qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn";
 
     // Change it to your APP Secret
-    public final static String APP_SECRET = "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL";
+    public final static String APP_SECRET = "qpe34Q5grdsSdfNiXgY6gFatjFmd3RxiRmtK";//"d0LRGuxRtWj8oLXwJ2X9vZ8jQPaCRNvXcUKY";//"ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL";
 
     // ==============
     /* If you would like to ask your user to login with their own credentials, you don't need to fill up the following. */

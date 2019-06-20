@@ -21,6 +21,10 @@ public class Meeting {
     @SerializedName("HostId")
     @Expose
     private String hostId;
+    @SerializedName("HostToken")
+    @Expose
+    private String hostToken;
+
 
     @SerializedName("MeetingId")
     @Expose
@@ -95,5 +99,13 @@ public class Meeting {
 
     public void setHostId(String hostId) {
         this.hostId = hostId;
+    }
+
+    public String getHostToken() {
+        return hostToken;
+    }
+
+    public void setHostToken(String hostToken) {
+        this.hostToken = hostToken;
     }
 }
