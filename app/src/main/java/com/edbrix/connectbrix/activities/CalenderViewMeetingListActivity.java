@@ -23,8 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
-import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;
+/*import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener;*/
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+import com.applandeo.materialcalendarview.listeners.OnNavigationButtonClickListener;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolListWithCalendarAdapter;
@@ -162,10 +163,10 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             }
         });
 
-        mCalendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
+       /* mCalendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
-                Calendar calendar = mCalendarView.getCurrentPageDate();
+                Calendar calendar = mCalendarView.getFirstSelectedDate();
                 Date date = calendar.getTime();
                 SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String forwardPageDate = tempSimpleDateFormat.format(date);
@@ -178,6 +179,32 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         mCalendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
             @Override
             public void onChange() {
+                Calendar calendar = mCalendarView.getCurrentPageDate();
+                Date date = calendar.getTime();
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String forwardPageDate = tempSimpleDateFormat.format(date);
+                Log.e(TAG, forwardPageDate);
+                String[] splitString = forwardPageDate.split("-");
+                prepareMeetingByMonthYear(splitString[0], splitString[1]);
+            }
+        });*/
+
+        mCalendarView.setOnForwardButtonClickListener(new OnNavigationButtonClickListener() {
+            @Override
+            public void onClick() {
+                Calendar calendar = mCalendarView.getCurrentPageDate();
+                Date date = calendar.getTime();
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String forwardPageDate = tempSimpleDateFormat.format(date);
+                Log.e(TAG, forwardPageDate);
+                String[] splitString = forwardPageDate.split("-");
+                prepareMeetingByMonthYear(splitString[0], splitString[1]);
+            }
+        });
+
+        mCalendarView.setOnPreviousButtonClickListener(new OnNavigationButtonClickListener() {
+            @Override
+            public void onClick() {
                 Calendar calendar = mCalendarView.getCurrentPageDate();
                 Date date = calendar.getTime();
                 SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
