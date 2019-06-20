@@ -94,9 +94,9 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         textViewMeetingTime.setText(meetingTime[1] + " " + meetingTime[2]);
         textViewPartycipentCount.setText(userMeeting.getMeetingParticipantsCount());
 
-        /*if (userMeeting.getIsHost() == 0) {
+        if (userMeeting.getIsHost() == 0) {
             myMeetingList.setBackground(null);
-        }*/
+        }
 
         return convertView;
     }

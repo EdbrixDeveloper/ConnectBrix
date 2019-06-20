@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:gravity="center"
+            android:background="@drawable/trangle_shape"
             android:orientation="vertical">
 
             <TextView
@@ -55,6 +56,8 @@
                 android:layout_marginLeft="5dp"
                 android:text="School Anual Function Meeting"
                 android:textSize="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textStyle="bold" />
 
             <TextView
@@ -63,6 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="Meeting for discuss about anual function."
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textSize="12dp" />
 
             <LinearLayout
