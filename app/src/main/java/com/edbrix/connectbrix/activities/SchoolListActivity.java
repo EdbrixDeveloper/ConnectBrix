@@ -182,7 +182,7 @@ public class SchoolListActivity extends BaseActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
 
-                if (meetingListData != null) {
+                if (userMeetingsDateList != null) {
 
                     /*final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
                     final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
@@ -424,6 +424,12 @@ public class SchoolListActivity extends BaseActivity {
             //This code will be executed when the broadcast in activity B is launched
         }
     };
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(eventReceiver);
+        super.onStop();
+    }
 
     //clock
     /*private Timer timer;

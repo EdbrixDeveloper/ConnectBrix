@@ -87,7 +87,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
 
     boolean CheckedFlag = false;
-    private boolean isResumed=false;
+    private boolean isResumed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,8 +196,6 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
 
         };
-
-
     }
 
     private void startMeeting() {
@@ -361,9 +359,12 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    Log.i(TAG+"HOST_ID : ",response.getMeeting().getHostId());
+                                    Log.i(TAG + "HOST_ID : ", response.getMeeting().getHostId());
                                     meetingDetailsData = response;
                                     Constants.HOST_ID = meetingDetailsData.getMeeting().getHostId();
+                                    if (Constants.HOST_ID != null) {
+                                        executeBackgroundTaskForUserInfo();
+                                    }
                                     mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
 
                                     if (meetingDetailsData.getMeeting().getStartDateTime() == null || meetingDetailsData.getMeeting().getStartDateTime().isEmpty()) {
@@ -390,7 +391,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
                                         mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
-                                        if(Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) >0){
+                                        if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0) {
                                             mBtnMJoin.setVisibility(View.VISIBLE);
                                         }
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
@@ -398,6 +399,14 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
                                         mParticipantList.setAdapter(participantsListAdapter);
+                                        participantsListAdapter.notifyDataSetChanged();
+
+                                    } else {
+                                        mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
+                                        participantArrayList = new ArrayList<>();
+                                        participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
+                                        mParticipantList.setAdapter(participantsListAdapter);
+                                        participantsListAdapter.notifyDataSetChanged();
                                     }
                                 }
                             }
@@ -789,22 +798,32 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         protected void onPostExecute(APIUserInfo apiUserInfo) {
             super.onPostExecute(apiUserInfo);
             hideBusyProgress();
-            if (apiUserInfo == null){}
-                //Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+            if (apiUserInfo == null) {
+                Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
-        isResumed=false;
+        isResumed = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        isResumed=true;
-        if(APIUserInfoHelper.getAPIUserInfo() == null) {
+        isResumed = true;
+
+        if (APIUserInfoHelper.getAPIUserInfo() == null) {
+            RetrieveUserInfoTask task = new RetrieveUserInfoTask();//retrieve api user token
+            task.execute(Constants.HOST_ID);
+        }
+    }*/
+
+    private void executeBackgroundTaskForUserInfo() {
+        if (APIUserInfoHelper.getAPIUserInfo() == null) {
             RetrieveUserInfoTask task = new RetrieveUserInfoTask();//retrieve api user token
             task.execute(Constants.HOST_ID);
         }

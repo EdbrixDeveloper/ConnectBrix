@@ -514,5 +514,10 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         }
     };
 
+    @Override
+    protected void onStop() {
+        unregisterReceiver(eventReceiver1);
+        super.onStop();
+    }
 
 }

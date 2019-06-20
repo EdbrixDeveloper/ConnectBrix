@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/actionBarLayout"
-        android:background="@color/colorButtonText"/>
+        android:background="@color/colorDarkParimary"/>
 
     <!--android:layout_below="@+id/linearLayout_Status"-->
     <android.support.v4.widget.SwipeRefreshLayout
