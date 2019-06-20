@@ -125,11 +125,12 @@ public class ChangePasswordActivity extends BaseActivity {
                             } else {
 
                                 if (response.getSuccess() == 1) {
-                                    finish();
+
                                     showToast(response.getMessage());
                                     sessionManager.updateSessionPassword(NewPassword);
-                                    Intent intent = new Intent(ChangePasswordActivity.this, UserProfileActivity.class);
-                                    startActivity(intent);
+                                    finish();
+                                    /*Intent intent = new Intent(ChangePasswordActivity.this, UserProfileActivity.class);
+                                    startActivity(intent);*/
                                 }
                             }
 
