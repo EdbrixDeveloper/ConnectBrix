@@ -35,6 +35,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class CreateMeetingActivity extends BaseActivity {
 
@@ -112,6 +113,35 @@ public class CreateMeetingActivity extends BaseActivity {
                 final Button btnSet = (Button) dialogView.findViewById(R.id.btnSet);
                 final Button btnCancel = (Button) dialogView.findViewById(R.id.btnCancel);
 
+                if (!mCMeetingDateVal.getText().toString().isEmpty()) {
+                    try {
+                        StringTokenizer tk = new StringTokenizer(mCMeetingDateVal.getText().toString());
+                        String str_date = tk.nextToken();
+                        String time = tk.nextToken();
+                        String amPm = tk.nextToken();
+
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
+                        Date date = sdf.parse(str_date);
+
+                        long startDate = date.getTime();
+                        calendarView.setDate(startDate);
+
+
+                        int hour = Integer.valueOf(time.substring(0, time.indexOf(":")));
+                        int min = Integer.valueOf(time.substring(time.indexOf(":") + 1, time.length()));
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            timePicker.setHour(hour);
+                            timePicker.setMinute(min);
+                        } else {
+                            timePicker.setCurrentHour(hour);
+                            timePicker.setCurrentMinute(min);
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 calendarView.setMinDate(System.currentTimeMillis() - 1000);
 
@@ -217,7 +247,8 @@ public class CreateMeetingActivity extends BaseActivity {
 
                         mCMeetingDateVal.setText(meetingDate);
 
-                        SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        //SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
                         SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
                         try {
                             Date dateTime = convertDateTime.parse(meetingDate);
@@ -250,7 +281,7 @@ public class CreateMeetingActivity extends BaseActivity {
             jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
             jsonObject.put("Agenda", mCMeetingAgendaVal.getText().toString().trim());
 
-            SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat tempSimpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");//"yyyy-MM-dd hh:mm:ss"
             SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
             Date dateTime = convertDateTime.parse(mCMeetingDateVal.getText().toString());
 

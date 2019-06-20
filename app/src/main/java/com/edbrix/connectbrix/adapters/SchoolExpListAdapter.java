@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edbrix.connectbrix.R;
@@ -15,28 +16,34 @@ import com.edbrix.connectbrix.data.UserMeeting;
 import com.edbrix.connectbrix.data.UserMeetingsDate;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SchoolExpListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     // child data in format of header title, child title
-    private MeetingListData meetingListData;
 
+    //private MeetingListData meetingListData;
+    ArrayList<UserMeetingsDate> userMeetingsDateList;
 
-    public SchoolExpListAdapter(Context _context, MeetingListData meetingListData) {
+    public SchoolExpListAdapter(Context _context, ArrayList<UserMeetingsDate> userMeetingsDateList) {
+        //MeetingListData meetingListData
         this._context = _context;
-        this.meetingListData = meetingListData;
+        //this.meetingListData = meetingListData;
+        this.userMeetingsDateList = userMeetingsDateList;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosititon);
+        //return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosititon);
+        return userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosititon);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return Long.parseLong(meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId());
+        //return Long.parseLong(meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId());
+        return Long.parseLong(userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId());
     }
 
     @Override
@@ -49,7 +56,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_meeting_list, null);
         }
-
+        LinearLayout myMeetingList = (LinearLayout) convertView.findViewById(R.id.myMeetingList);
         TextView textViewMeetingDay = (TextView) convertView.findViewById(R.id.textViewMeetingDay);
         TextView textViewMeetingMonth = (TextView) convertView.findViewById(R.id.textViewMeetingMonth);
         TextView textViewMeetingName = (TextView) convertView.findViewById(R.id.textViewMeetingName);
@@ -86,22 +93,31 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
 
         textViewMeetingTime.setText(meetingTime[1] + " " + meetingTime[2]);
         textViewPartycipentCount.setText(userMeeting.getMeetingParticipantsCount());
+
+        /*if (userMeeting.getIsHost() == 0) {
+            myMeetingList.setBackground(null);
+        }*/
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().size();
+        //return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().size();
+        return userMeetingsDateList.get(groupPosition).getUserMeetings().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return meetingListData.getUserMeetingsDates().get(groupPosition);
+        //return meetingListData.getUserMeetingsDates().get(groupPosition);
+        return userMeetingsDateList.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return meetingListData.getUserMeetingsDates().size();
+
+        //return meetingListData.getUserMeetingsDates().size();
+        return userMeetingsDateList.size();
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,9 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
+import com.edbrix.connectbrix.commons.EndlessScrollListener;
 import com.edbrix.connectbrix.data.MeetingListData;
+import com.edbrix.connectbrix.data.UserMeetingsDate;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
@@ -35,6 +38,7 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,6 +63,11 @@ public class SchoolListActivity extends BaseActivity {
 
     /*private MyContinousAsyncTask myContinouslyRunningAsyncTask;*/
 
+    // Listview Pagingnation Purpose
+    ArrayList<UserMeetingsDate> userMeetingsDateList;
+    private int requestCount = 0;
+    private boolean loading = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +91,65 @@ public class SchoolListActivity extends BaseActivity {
             floating_action_button_fab_with_listview.show();
         }
         registerEventReceiver();
-        prepareListData();
+        //prepareListData();
 
+
+        userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+
+        if (requestCount < 1) {
+            if (loading) {
+                prepareListData(String.valueOf(requestCount), 0);
+            }
+        }
+
+        schoolList_listView_schoolList.setOnScrollListener(
+                new AbsListView.OnScrollListener() {
+                    private int currentVisibleItemCount;
+                    private int currentScrollState;
+                    private int currentFirstVisibleItem;
+                    private int totalItem;
+                    //private LinearLayout lBelow;
+
+
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        // TODO Auto-generated method stub
+                        this.currentScrollState = scrollState;
+                        //this.isScrollCompleted();
+                        if (loading) {
+                            requestCount = requestCount + 1;
+                            prepareListData(String.valueOf(requestCount), currentScrollState);//String.valueOf(page)
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem,
+                                         int visibleItemCount, int totalItemCount) {
+                        // TODO Auto-generated method stub
+                        this.currentFirstVisibleItem = firstVisibleItem;
+                        this.currentVisibleItemCount = visibleItemCount;
+                        this.totalItem = totalItemCount;
+
+                        /*if (loading) {
+                            requestCount = requestCount + 1;
+                            prepareListData(String.valueOf(requestCount), firstVisibleItem);//String.valueOf(page)
+                        }*/
+
+                    }
+
+                    private void isScrollCompleted() {
+                        if (totalItem - currentFirstVisibleItem == currentVisibleItemCount
+                                && this.currentScrollState == SCROLL_STATE_IDLE) {
+                            /** To do code here*/
+
+
+                        }
+                    }
+                }
+        );
+
+
+        ////
         imgCalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,9 +184,13 @@ public class SchoolListActivity extends BaseActivity {
 
                 if (meetingListData != null) {
 
-                    final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                    /*final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
                     final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
-                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
+                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();*/
+
+                    final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                    final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
+                    final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
 
                     goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
                 }
@@ -144,7 +214,10 @@ public class SchoolListActivity extends BaseActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                prepareListData();
+                userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+                requestCount = 0;
+                loading = true;
+                prepareListData("0", 0);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -219,7 +292,8 @@ public class SchoolListActivity extends BaseActivity {
         }, 2000);
     }
 
-    private void prepareListData() {
+    //
+    private void prepareListData(final String page, final int currentFirstVisibleItem) {
         try {
             //showBusyProgress();
             JSONObject jo = new JSONObject();
@@ -227,6 +301,8 @@ public class SchoolListActivity extends BaseActivity {
             jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
             jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("Page", page);
+
 
             Log.i(SchoolListActivity.class.getName(), Constants.getMeetingList + "\n\n" + jo.toString());
 
@@ -244,14 +320,50 @@ public class SchoolListActivity extends BaseActivity {
                                     if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
                                         schoolList_listView_schoolList.setVisibility(View.VISIBLE);
-                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, meetingListData);
+
+                                        /*if (meetingListData.getUserMeetingsDates().size() < 10) {
+                                            loading = false;
+                                        }*/
+                                        /*int cnt = 0;
+                                        for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {//meetingListData.getUserMeetingsDates().size()
+                                            if (meetingListData.getUserMeetingsDates().get(i).getUserMeetings() != null) {
+                                                cnt += userMeetingsDateList.get(i).getUserMeetings().size();
+                                            }
+                                        }
+
+                                        if (cnt < 10) {
+                                            loading = false;
+                                        }*/
+
+                                        for (UserMeetingsDate userMeetingsDate :
+                                                meetingListData.getUserMeetingsDates()) {
+                                            userMeetingsDateList.add(userMeetingsDate);
+                                        }
+
+                                        int cnt = 0;
+                                        for (int j = 0; j < userMeetingsDateList.size(); j++) {//meetingListData.getUserMeetingsDates().size()
+                                            if (userMeetingsDateList.get(j).getUserMeetings() != null) {
+                                                cnt += userMeetingsDateList.get(j).getUserMeetings().size();
+                                            }
+                                        }
+
+                                        if (cnt < 20) {
+                                            loading = false;
+                                        }
+
+                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList);//meetingListData
                                         schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
-                                        for (int i = 0; i < meetingListData.getUserMeetingsDates().size(); i++) {
+                                        schoolList_listView_schoolList.setSelectionFromTop(currentFirstVisibleItem, 0);
+                                        for (int i = 0; i < userMeetingsDateList.size(); i++) {//meetingListData.getUserMeetingsDates().size()
                                             schoolList_listView_schoolList.expandGroup(i);
                                         }
+                                        pmAcExpListAdapter.notifyDataSetChanged();
                                     } else {
-                                        schoolList_listView_schoolList.setVisibility(View.GONE);
-                                        txtDataFound.setVisibility(View.VISIBLE);
+                                        loading = false;
+                                        if (userMeetingsDateList.size() < 1) {
+                                            schoolList_listView_schoolList.setVisibility(View.GONE);
+                                            txtDataFound.setVisibility(View.VISIBLE);
+                                        }
                                     }
                                 }
                             }
@@ -283,7 +395,11 @@ public class SchoolListActivity extends BaseActivity {
         }
 
         if (requestCode == 1) {
-            prepareListData();
+            //prepareListData();
+            requestCount = 0;
+            loading = true;
+            userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+            prepareListData("0", 0);
         }
     }
 
@@ -300,7 +416,10 @@ public class SchoolListActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String RefreshFlag = intent.getStringExtra("RefreshFlag");
             if (RefreshFlag.equals("Y")) {
-                prepareListData();
+                requestCount = 0;
+                loading = true;
+                userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+                prepareListData("0", 0);
             }
             //This code will be executed when the broadcast in activity B is launched
         }
