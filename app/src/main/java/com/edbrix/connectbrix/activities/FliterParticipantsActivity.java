@@ -724,9 +724,9 @@ public class FliterParticipantsActivity extends BaseActivity {
 
                                     Intent resultIntent = new Intent();
                                     // TODO Add extras or a data URI to this intent as appropriate.
-                                    resultIntent.putExtra("meetingDbId",MeetingDbId);
-                                    resultIntent.putExtra("IsHost",IsHost);
-                                    resultIntent.putExtra("RefreshFlag","Y");
+                                    resultIntent.putExtra("meetingDbId", MeetingDbId);
+                                    resultIntent.putExtra("IsHost", IsHost);
+                                    resultIntent.putExtra("RefreshFlag", "Y");
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
 
@@ -775,7 +775,6 @@ public class FliterParticipantsActivity extends BaseActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mInputSearch.getWindowToken(), 0);
     }
-
 
 
 }

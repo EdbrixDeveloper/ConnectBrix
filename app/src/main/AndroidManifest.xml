@@ -38,6 +38,8 @@
         <activity android:name=".activities.OrgnizationListActivity" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.SelectCountryActivity" />
+        <activity android:name=".activities.SelectStateActivity" />
         <activity android:name=".activities.ParticipantListItemActivity" />
         <activity
             android:name=".activities.CreateMeetingActivity"

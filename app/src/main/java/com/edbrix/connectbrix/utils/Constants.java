@@ -11,6 +11,9 @@ public class Constants {
     public final static String APP_SECRET__ = "MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1IWVkYnJpeEAxOA==";
 
     public static String HOST_ID = null;
+    public static int StateId = -1;
+    public static int CountryId = -1;
+    public static String StateName = "";
 
     private final static String BASE_URL = "http://services.edbrix.net/";
 
@@ -18,6 +21,10 @@ public class Constants {
     public final static String organizationList = BASE_URL.concat("auth/authorganizationlistbyuseremail");
     public final static String resetPassword = BASE_URL.concat("auth/resetpassword");
     public final static String changePassword = BASE_URL.concat("auth/changepassword");
+
+    public final static String getCountryList = BASE_URL.concat("common/getcountrylist");
+    public final static String getStateList = BASE_URL.concat("common/getstatelistbycountry");
+
 
     public final static String getUserPersonalData = BASE_URL.concat("auth/getuserdetails");
     public final static String updateUserPersonalData = BASE_URL.concat("auth/updateuserdetails");
