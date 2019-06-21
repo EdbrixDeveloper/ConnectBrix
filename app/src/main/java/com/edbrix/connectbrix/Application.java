@@ -1,6 +1,7 @@
 package com.edbrix.connectbrix;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,10 @@ import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.Crashlytics;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.OkHttpStack;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.File;
 
@@ -60,10 +65,10 @@ public class Application extends android.app.Application {
       //  FontsOverride.setDefaultFont(this, "MONOSPACE");
         // FontsOverride.setDefaultFont(this, "SERIF", "MyFontAsset3.ttf");
         // FontsOverride.setDefaultFont(this, "SANS_SERIF", "MyFontAsset4.ttf");
-        //getFirebaseToken();
+        getFirebaseToken();
     }
 
-    /*private void getFirebaseToken() {
+    private void getFirebaseToken() {
         // Get token
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -84,7 +89,7 @@ public class Application extends android.app.Application {
                         //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-    }*/
+    }
 
     //////////////////////// Volley request ///////////////////////////////////////////////////////////////////////////////////////
     public RequestQueue getRequestQueue() {

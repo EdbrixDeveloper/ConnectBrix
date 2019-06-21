@@ -55,7 +55,7 @@ public class NotificationUtils {
 
 
         // notification icon
-        final int icon = R.drawable.connect_brix_flash;
+        final int icon = R.drawable.connect_brix_flash_small;
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent resultPendingIntent =

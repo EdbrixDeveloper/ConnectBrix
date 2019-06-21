@@ -4,6 +4,7 @@ package com.edbrix.connectbrix.helper;
 import us.zoom.sdk.InstantMeetingOptions;
 import us.zoom.sdk.JoinMeetingOptions;
 import us.zoom.sdk.MeetingOptions;
+import us.zoom.sdk.MeetingViewsOptions;
 import us.zoom.sdk.StartMeetingOptions;
 
 public class ZoomMeetingUISettingHelper {
@@ -60,6 +61,8 @@ public class ZoomMeetingUISettingHelper {
         opts.meeting_views_options = meetingOptions.meeting_views_options;
         opts.no_meeting_error_message = meetingOptions.no_meeting_error_message;
         opts.participant_id = meetingOptions.participant_id;
+
+
         return opts;
     }
 

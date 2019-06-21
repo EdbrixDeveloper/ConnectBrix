@@ -11,6 +11,9 @@
         <item>Other</item>
     </string-array>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+
     <!--For App Tour-->
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>

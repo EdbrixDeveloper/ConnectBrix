@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
+
     implementation files('libs/gson-2.2.4.jar')
     implementation files('libs/json_simple-1.1.jar')
     //implementation files('libs/com.fasterxml.jackson.databind.jar')
@@ -83,3 +84,4 @@ dependencies {
 configurations {
     all*.exclude group: 'com.google.code.gson'
 }
+apply plugin: 'com.google.gms.google-services'

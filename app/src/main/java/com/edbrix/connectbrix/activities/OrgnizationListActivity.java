@@ -16,6 +16,7 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.OrgnizationListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.ForgotPasswordResponseData;
+import com.edbrix.connectbrix.data.SaveDeviceTokenResponseData;
 import com.edbrix.connectbrix.data.UserLoginResponseData;
 import com.edbrix.connectbrix.data.UserOrganizationListData;
 import com.edbrix.connectbrix.utils.Constants;
@@ -118,6 +119,8 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());
 
+                                    saveDeviceTokenForNotification(userOrganizationListData.get(position).getId(),response.getUser().getId());
+
                                     //Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
                                     finish();
                                     startActivity(new Intent(OrgnizationListActivity.this, SchoolListActivity.class));
@@ -185,6 +188,51 @@ public class OrgnizationListActivity extends BaseActivity {
             Log.e(TAG, e.getMessage());
         }
 
+    }
+
+    private void saveDeviceTokenForNotification(String orgnizationId,String userId) {
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Token", sessionManager.getSessionFCMToken());
+            jsonObject.put("Type", "A");
+            jsonObject.put("ProductId", "7");
+            jsonObject.put("OrganizationId",orgnizationId);
+            jsonObject.put("UserId",userId);
+
+            GsonRequest<SaveDeviceTokenResponseData> saveDeviceTokenRequest = new GsonRequest<>(Request.Method.POST, Constants.savedevicetoken, jsonObject.toString(), SaveDeviceTokenResponseData.class,
+                    new Response.Listener<SaveDeviceTokenResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull SaveDeviceTokenResponseData response) {
+
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+
+                                if (response.getSuccess() == 1) {
+                                    showToast(response.getMessage());
+
+                                    Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            saveDeviceTokenRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            saveDeviceTokenRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(saveDeviceTokenRequest, "saveDeviceTokenRequest");
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

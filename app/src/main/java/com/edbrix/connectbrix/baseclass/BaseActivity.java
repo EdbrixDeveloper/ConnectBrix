@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -27,7 +28,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Random;
 
-//import com.brahamaputra.mahindra.brahamaputra.commons.OfflineStorageWrapper;
+
 
 
 public class BaseActivity extends AppCompatActivity {
