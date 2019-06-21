@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edbrix.connectbrix.R;
@@ -19,7 +20,7 @@ public class SchoolListWithCalendarAdapter extends BaseAdapter {
     ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
     private static LayoutInflater inflater = null;
 
-    public SchoolListWithCalendarAdapter(Activity calenderViewMeetingActivity, ArrayList<UserMeetingListResponseData> userMeetingListResponseData){
+    public SchoolListWithCalendarAdapter(Activity calenderViewMeetingActivity, ArrayList<UserMeetingListResponseData> userMeetingListResponseData) {
         this.calenderViewMeetingActivity = calenderViewMeetingActivity;
         this.userMeetingListResponseData = userMeetingListResponseData;
         inflater = (LayoutInflater) calenderViewMeetingActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,37 +50,42 @@ public class SchoolListWithCalendarAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.mTextViewMeetingDay = (TextView) view.findViewById(R.id.textViewMeetingDay);
-            holder.mTextViewMeetingMonth = (TextView)  view.findViewById(R.id.textViewMeetingMonth);
-            holder.mTextViewMeetingName = (TextView)  view.findViewById(R.id.textViewMeetingName);
-            holder.mTextViewAgenda = (TextView)  view.findViewById(R.id.textViewAgenda);
-            holder.mTextViewMeetingTime = (TextView)  view.findViewById(R.id.textViewMeetingTime);
-            holder.mTextViewPartycipentCount = (TextView)  view.findViewById(R.id.textViewPartycipentCount);
-
+            holder.mTextViewMeetingMonth = (TextView) view.findViewById(R.id.textViewMeetingMonth);
+            holder.mTextViewMeetingName = (TextView) view.findViewById(R.id.textViewMeetingName);
+            holder.mTextViewAgenda = (TextView) view.findViewById(R.id.textViewAgenda);
+            holder.mTextViewMeetingTime = (TextView) view.findViewById(R.id.textViewMeetingTime);
+            holder.mTextViewPartycipentCount = (TextView) view.findViewById(R.id.textViewPartycipentCount);
+            holder.myMeetingList = (LinearLayout) convertView.findViewById(R.id.myMeetingList);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        String [] dateTime = userMeetingListResponseData.get(position).getStartDateTime().split(" ");
-        String [] date = dateTime[0].split("/");
+        String[] dateTime = userMeetingListResponseData.get(position).getStartDateTime().split(" ");
+        String[] date = dateTime[0].split("/");
         holder.mTextViewMeetingDay.setText(date[0]);
         holder.mTextViewMeetingMonth.setText(date[1]);
         holder.mTextViewMeetingName.setText(userMeetingListResponseData.get(position).getTitle());
         holder.mTextViewAgenda.setText(userMeetingListResponseData.get(position).getAgenda());
-        holder.mTextViewMeetingTime.setText(dateTime[1]+" "+dateTime[2]);
+        holder.mTextViewMeetingTime.setText(dateTime[1] + " " + dateTime[2]);
         holder.mTextViewPartycipentCount.setText(userMeetingListResponseData.get(position).getParticipantCount());
+
+        if (userMeetingListResponseData.get(position).getIsHost().equals("0")) {
+            holder.myMeetingList.setBackground(null);
+        }
 
         return view;
     }
 
     static class ViewHolder {
 
-         TextView mTextViewMeetingDay;
-         TextView mTextViewMeetingMonth;
-         TextView mTextViewMeetingName;
-         TextView mTextViewAgenda;
-         TextView mTextViewMeetingTime;
-         TextView mTextViewPartycipentCount;
+        TextView mTextViewMeetingDay;
+        TextView mTextViewMeetingMonth;
+        TextView mTextViewMeetingName;
+        TextView mTextViewAgenda;
+        TextView mTextViewMeetingTime;
+        TextView mTextViewPartycipentCount;
+        LinearLayout myMeetingList;
 
     }
 

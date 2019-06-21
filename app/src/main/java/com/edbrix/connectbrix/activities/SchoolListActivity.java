@@ -181,20 +181,22 @@ public class SchoolListActivity extends BaseActivity {
         schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
-
-                if (userMeetingsDateList != null) {
+                try {
+                    if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
 
                     /*final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
                     final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
                     final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();*/
 
-                    final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                    final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
-                    final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
+                        final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                        final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
+                        final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
 
-                    goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
+                        goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
+                    }
+                } catch (Exception ex) {
+                    Log.i("SchoolList:onChildClick", ex.getMessage().toString());
                 }
-
                 return false;
             }
         });
@@ -429,6 +431,12 @@ public class SchoolListActivity extends BaseActivity {
     protected void onStop() {
         unregisterReceiver(eventReceiver);
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        registerEventReceiver();
+        super.onResume();
     }
 
     //clock

@@ -449,4 +449,9 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         super.onStop();
     }
 
+    @Override
+    protected void onResume() {
+        registerEventReceiver();
+        super.onResume();
+    }
 }

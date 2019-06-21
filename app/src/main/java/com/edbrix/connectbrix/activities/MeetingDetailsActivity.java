@@ -359,9 +359,10 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    Log.i(TAG + "HOST_ID : ", response.getMeeting().getHostId());
+                                    String str_HostId=response.getMeeting().getHostId()==null?"":response.getMeeting().getHostId();
+                                    Log.i(TAG + "HOST_ID : ", str_HostId);
                                     meetingDetailsData = response;
-                                    Constants.HOST_ID = meetingDetailsData.getMeeting().getHostId();
+                                    Constants.HOST_ID = str_HostId;//meetingDetailsData.getMeeting().getHostId();
                                     if (Constants.HOST_ID != null) {
                                         executeBackgroundTaskForUserInfo();
                                     }
@@ -421,50 +422,6 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
             getAssignAvailabilityLearnersListRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingDetails");
-
-        } catch (JSONException e) {
-            hideBusyProgress();
-            showToast("Something went wrong. Please try again later.");
-        }
-
-    }
-
-    private void removeParticipant(String RecordId) {
-        try {
-            showBusyProgress();
-            JSONObject jo = new JSONObject();
-
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
-            jo.put("MeetingId", meetingDbId);
-            jo.put("RecordId", RecordId);
-
-            Log.i(MeetingDetailsActivity.class.getName(), Constants.deleteMeetingParticipant + "\n\n" + jo.toString());
-
-            GsonRequest<MeetingDetailsData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.deleteMeetingParticipant, jo.toString(), MeetingDetailsData.class,
-                    new Response.Listener<MeetingDetailsData>() {
-                        @Override
-                        public void onResponse(@NonNull MeetingDetailsData response) {
-                            hideBusyProgress();
-                            if (response.getError() != null) {
-                                showToast(response.getError().getErrorMessage());
-                            } else {
-                                if (response.getSuccess() == 1) {
-                                    showToast("Removed Participant");
-                                    prepareListData();
-                                }
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hideBusyProgress();
-
-                }
-            });
-            getAssignAvailabilityLearnersListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
-            getAssignAvailabilityLearnersListRequest.setShouldCache(false);
-            Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "deleteMeetingParticipant");
 
         } catch (JSONException e) {
             hideBusyProgress();

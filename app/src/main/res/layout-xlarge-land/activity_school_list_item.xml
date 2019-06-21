@@ -12,9 +12,11 @@
         android:weightSum="4">
 
         <LinearLayout
+            android:id="@+id/myMeetingList"
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:layout_weight="0"
+            android:background="@drawable/trangle_shape"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,10 +55,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="School Anual Function Meeting"
-                android:textSize="22dp"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="School Anual Function Meeting"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <TextView

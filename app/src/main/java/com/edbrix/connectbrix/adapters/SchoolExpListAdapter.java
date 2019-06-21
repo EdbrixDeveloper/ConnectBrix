@@ -64,15 +64,6 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         TextView textViewMeetingTime = (TextView) convertView.findViewById(R.id.textViewMeetingTime);
         TextView textViewPartycipentCount = (TextView) convertView.findViewById(R.id.textViewPartycipentCount);
 
-        ///
-        /*import android.text.format.DateFormat;
-
-        String dayOfTheWeek = (String) DateFormat.format("EEEE", date); // Thursday
-        String day          = (String) DateFormat.format("dd",   date); // 20
-        String monthString  = (String) DateFormat.format("MMM",  date); // Jun
-        String monthNumber  = (String) DateFormat.format("MM",   date); // 06
-        String year         = (String) DateFormat.format("yyyy", date); // 2013*/
-
         String day = "", monthString = "";
         try {
             SimpleDateFormat dateFormatprev = new SimpleDateFormat("dd/MMM/yyyy");
@@ -160,3 +151,14 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
     }
 
 }
+
+
+
+///
+        /*import android.text.format.DateFormat;
+
+        String dayOfTheWeek = (String) DateFormat.format("EEEE", date); // Thursday
+        String day          = (String) DateFormat.format("dd",   date); // 20
+        String monthString  = (String) DateFormat.format("MMM",  date); // Jun
+        String monthNumber  = (String) DateFormat.format("MM",   date); // 06
+        String year         = (String) DateFormat.format("yyyy", date); // 2013*/
