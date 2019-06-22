@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -69,6 +70,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
 
     public static final int REFRESH_DATA = 1;
+    String RefreshFlag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +259,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 return true;*/
             case R.id.menuCalender:
                 startActivity(new Intent(this, SchoolListActivity.class));
+                //onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -417,7 +420,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private BroadcastReceiver eventReceiver1 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String RefreshFlag = intent.getStringExtra("RefreshFlag");
+            RefreshFlag = intent.getStringExtra("RefreshFlag");
             if (RefreshFlag.equals("Y")) {
                 try {
                     finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
@@ -443,7 +446,24 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         }
     };
 
+
     @Override
+    public void onBackPressed() {
+
+        if (RefreshFlag.equals("Y")) {
+
+            Intent resultIntent = new Intent();
+            // TODO Add extras or a data URI to this intent as appropriate.
+            resultIntent.putExtra("RefreshFlag", "Y");
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+
+        } else {
+            finish();
+        }
+    }
+
+    /*@Override
     protected void onStop() {
         unregisterReceiver(eventReceiver1);
         super.onStop();
@@ -453,5 +473,5 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     protected void onResume() {
         registerEventReceiver();
         super.onResume();
-    }
+    }*/
 }

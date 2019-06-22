@@ -154,13 +154,15 @@ public class SchoolListActivity extends BaseActivity {
             );
 
 
-            ////
-            imgCalender.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
-                }
-            });
+        ////
+        imgCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
+                Intent intent = new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class);
+                startActivityForResult(intent, REFRESH_DATA);
+            }
+        });
 
             //////////////// User Profile //////////////////////
 
@@ -432,7 +434,7 @@ public class SchoolListActivity extends BaseActivity {
         }
     };
 
-    @Override
+    /*@Override
     protected void onStop() {
         unregisterReceiver(eventReceiver);
         super.onStop();
@@ -442,7 +444,7 @@ public class SchoolListActivity extends BaseActivity {
     protected void onResume() {
         registerEventReceiver();
         super.onResume();
-    }
+    }*/
 
     private boolean validateUser() {
         //sessionManager = new SessionManager(LoginActivity.this);
