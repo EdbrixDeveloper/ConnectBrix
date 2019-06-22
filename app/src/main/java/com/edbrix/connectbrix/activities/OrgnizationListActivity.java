@@ -118,7 +118,7 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateSchoolLoginUrl(response.getUser().getSchoolLoginUrl());
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());
-                                    finish();
+                                    //finish();
                                     saveDeviceTokenForNotification(userOrganizationListData.get(position).getId(),response.getUser().getId());
 
 
