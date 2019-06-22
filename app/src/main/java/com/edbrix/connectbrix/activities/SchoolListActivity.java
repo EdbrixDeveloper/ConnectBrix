@@ -71,159 +71,164 @@ public class SchoolListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_school_list);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        imgCalender = (ImageView) findViewById(R.id.calender);
-        imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
-        floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
-        schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
-        txtDataFound = (TextView) findViewById(R.id.txtDataFound);
-        txtDataFound.setVisibility(View.GONE);
-
-        meetingListData = new MeetingListData();
-        alertDialogManager = new AlertDialogManager(SchoolListActivity.this);
         sessionManager = new SessionManager(SchoolListActivity.this);
+        if (!validateUser()) {
+            finish();
+            startActivity(new Intent(SchoolListActivity.this, LoginActivity.class));
+        } else {
+            setContentView(R.layout.activity_school_list);
 
-        floating_action_button_fab_with_listview.hide();
-        if (sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) {
-            floating_action_button_fab_with_listview.show();
-        }
-        registerEventReceiver();
-        //prepareListData();
+            mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
+            mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+            imgCalender = (ImageView) findViewById(R.id.calender);
+            imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
+            floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
+            schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
+            txtDataFound = (TextView) findViewById(R.id.txtDataFound);
+            txtDataFound.setVisibility(View.GONE);
+
+            meetingListData = new MeetingListData();
+            alertDialogManager = new AlertDialogManager(SchoolListActivity.this);
 
 
-        userMeetingsDateList = new ArrayList<UserMeetingsDate>();
-
-        if (requestCount < 1) {
-            if (loading) {
-                prepareListData(String.valueOf(requestCount), 0);
+            floating_action_button_fab_with_listview.hide();
+            if (sessionManager.getSessionUserType().equals("T") || sessionManager.getSessionUserType().equals("A")) {
+                floating_action_button_fab_with_listview.show();
             }
-        }
-
-        schoolList_listView_schoolList.setOnScrollListener(
-                new AbsListView.OnScrollListener() {
-                    private int currentVisibleItemCount;
-                    private int currentScrollState;
-                    private int currentFirstVisibleItem;
-                    private int totalItem;
-                    //private LinearLayout lBelow;
+            registerEventReceiver();
+            //prepareListData();
 
 
-                    @Override
-                    public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        // TODO Auto-generated method stub
-                        this.currentScrollState = scrollState;
-                        //this.isScrollCompleted();
-                        if (loading) {
-                            requestCount = requestCount + 1;
-                            prepareListData(String.valueOf(requestCount), currentScrollState);//String.valueOf(page)
+            userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+
+            if (requestCount < 1) {
+                if (loading) {
+                    prepareListData(String.valueOf(requestCount), 0);
+                }
+            }
+
+            schoolList_listView_schoolList.setOnScrollListener(
+                    new AbsListView.OnScrollListener() {
+                        private int currentVisibleItemCount;
+                        private int currentScrollState;
+                        private int currentFirstVisibleItem;
+                        private int totalItem;
+                        //private LinearLayout lBelow;
+
+
+                        @Override
+                        public void onScrollStateChanged(AbsListView view, int scrollState) {
+                            // TODO Auto-generated method stub
+                            this.currentScrollState = scrollState;
+                            //this.isScrollCompleted();
+                            if (loading) {
+                                requestCount = requestCount + 1;
+                                prepareListData(String.valueOf(requestCount), currentScrollState);//String.valueOf(page)
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem,
-                                         int visibleItemCount, int totalItemCount) {
-                        // TODO Auto-generated method stub
-                        this.currentFirstVisibleItem = firstVisibleItem;
-                        this.currentVisibleItemCount = visibleItemCount;
-                        this.totalItem = totalItemCount;
+                        @Override
+                        public void onScroll(AbsListView view, int firstVisibleItem,
+                                             int visibleItemCount, int totalItemCount) {
+                            // TODO Auto-generated method stub
+                            this.currentFirstVisibleItem = firstVisibleItem;
+                            this.currentVisibleItemCount = visibleItemCount;
+                            this.totalItem = totalItemCount;
 
                         /*if (loading) {
                             requestCount = requestCount + 1;
                             prepareListData(String.valueOf(requestCount), firstVisibleItem);//String.valueOf(page)
                         }*/
 
-                    }
+                        }
 
-                    private void isScrollCompleted() {
-                        if (totalItem - currentFirstVisibleItem == currentVisibleItemCount
-                                && this.currentScrollState == SCROLL_STATE_IDLE) {
-                            /** To do code here*/
+                        private void isScrollCompleted() {
+                            if (totalItem - currentFirstVisibleItem == currentVisibleItemCount
+                                    && this.currentScrollState == SCROLL_STATE_IDLE) {
+                                /** To do code here*/
 
 
+                            }
                         }
                     }
+            );
+
+
+            ////
+            imgCalender.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
                 }
-        );
+            });
 
+            //////////////// User Profile //////////////////////
 
-        ////
-        imgCalender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
-            }
-        });
+            setImageToUserProfileIcon();
+            imgUserProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SchoolListActivity.this, UserProfileActivity.class);
+                    startActivityForResult(intent, RESULT_UPDATE_PROFILE);
+                }
+            });
 
-        //////////////// User Profile //////////////////////
+            //////////////////////////////////////
 
-        setImageToUserProfileIcon();
-        imgUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SchoolListActivity.this, UserProfileActivity.class);
-                startActivityForResult(intent, RESULT_UPDATE_PROFILE);
-            }
-        });
+            schoolList_listView_schoolList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    schoolList_listView_schoolList.expandGroup(groupPosition);
+                    return true;
+                }
+            });
 
-        //////////////////////////////////////
-
-        schoolList_listView_schoolList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                schoolList_listView_schoolList.expandGroup(groupPosition);
-                return true;
-            }
-        });
-
-        schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
-                try {
-                    if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
+            schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
+                    try {
+                        if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
 
                     /*final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
                     final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
                     final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();*/
 
-                        final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                        final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
-                        final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
+                            final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
+                            final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
+                            final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
 
-                        goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
+                            goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
+                        }
+                    } catch (Exception ex) {
+                        Log.i("SchoolList:onChildClick", ex.getMessage().toString());
                     }
-                } catch (Exception ex) {
-                    Log.i("SchoolList:onChildClick", ex.getMessage().toString());
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
 
-        ///////////
-        floating_action_button_fab_with_listview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
-                intent.putExtra("comesFor", "new");
-                intent.putExtra("IsCalenderActivity", "N");
-                startActivity(intent);
-            }
-        });
+            ///////////
+            floating_action_button_fab_with_listview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
+                    intent.putExtra("comesFor", "new");
+                    intent.putExtra("IsCalenderActivity", "N");
+                    startActivity(intent);
+                }
+            });
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                userMeetingsDateList = new ArrayList<UserMeetingsDate>();
-                requestCount = 0;
-                loading = true;
-                prepareListData("0", 0);
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+                    requestCount = 0;
+                    loading = true;
+                    prepareListData("0", 0);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
     }
 
     private void setImageToUserProfileIcon() {
@@ -437,6 +442,15 @@ public class SchoolListActivity extends BaseActivity {
     protected void onResume() {
         registerEventReceiver();
         super.onResume();
+    }
+
+    private boolean validateUser() {
+        //sessionManager = new SessionManager(LoginActivity.this);
+        if (!sessionManager.getSessionUsername().equals("") && !sessionManager.getSessionUserId().equals("") && !sessionManager.getPrefsOrganizationApiKey().equals("") && !sessionManager.getPrefsOrganizationSecretKey().equals("")) {
+            return true;////user available
+        } else {
+            return false;////user not available
+        }
     }
 
     //clock

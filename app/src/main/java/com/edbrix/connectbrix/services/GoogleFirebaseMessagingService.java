@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -82,6 +83,8 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject data = json.getJSONObject("data");
 
             String title = data.getString("title");
+            //String tempMsg = String.valueOf(Html.fromHtml(data.getString("message"), null, null));
+            //String massage = tempMsg.replaceAll("\\[", "").replaceAll("\\]","");
             String massage = data.getString("message");
             String agenda = data.getString("agenda");
             String meetingDate = data.getString("meeting_date");
@@ -105,7 +108,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
                 // play notification sound
                 NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
                 notificationUtils.playNotificationSound();
-                sendNotification(getApplicationContext(), title, massage,agenda, meetingDate, resultIntent);
+                sendNotification(getApplicationContext(), title, massage, agenda, meetingDate, resultIntent);
 
                 sendResult("receive");//0008 for notification list update
 
@@ -117,13 +120,13 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
 
                 // check for image attachment
                 if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, massage, agenda,meetingDate, resultIntent);
+                    showNotificationMessage(getApplicationContext(), title, massage, agenda, meetingDate, resultIntent);
                 } else {
                     // image is present, show notification with image
                     showNotificationMessageWithBigImage(getApplicationContext(), title, massage, agenda, meetingDate, resultIntent, imageUrl);
                 }
             }
-            Log.i(TAG,data.toString());
+            Log.i(TAG, data.toString());
 
 
         } catch (Exception e) {
@@ -134,26 +137,28 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Showing notification with text only
      */
-    private void showNotificationMessage(Context context, String title, String message,String agenda, String timeStamp, Intent intent) {
+    private void showNotificationMessage(Context context, String title, String message, String agenda, String timeStamp, Intent intent) {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
-        sendNotification(context, title, message,agenda, timeStamp, intent);
+        notificationUtils.showNotificationMessage(title, message, agenda, timeStamp, intent);
+        sendNotification(context, title, message, agenda, timeStamp, intent);
     }
 
     /**
      * Showing notification with text and image
      */
-    private void showNotificationMessageWithBigImage(Context context, String title, String message,String agenda, String timeStamp, Intent intent, String imageUrl) {
+    private void showNotificationMessageWithBigImage(Context context, String title, String message, String agenda, String timeStamp, Intent intent, String imageUrl) {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
-        sendNotification(context, title, message,agenda, timeStamp, intent);
+        notificationUtils.showNotificationMessage(title, message, agenda, timeStamp, intent, imageUrl);
+        sendNotification(context, title, message, agenda, timeStamp, intent);
 
     }
 
-    private void sendNotification(Context context, String title, String message,String agenda, String timeStamp, Intent intent) {
+    private void sendNotification(Context context, String title, String message, String agenda, String timeStamp, Intent intent) {
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.connect_brix_flash);
+
+        String content = message+" "+timeStamp;
 
         //Intent intent = new Intent(this, DashboardActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -164,9 +169,9 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setLargeIcon(icon)
-                        .setSmallIcon(R.drawable.connect_brix_flash)//.setSmallIcon(R.drawable.ic_circle)
+                        .setSmallIcon(R.drawable.connect_brix_flash_small)//.setSmallIcon(R.drawable.ic_circle)
                         .setContentTitle(title)//.setContentTitle(getString(R.string.fcm_message))
-                        .setContentText(message).setContentText(agenda).setContentText(timeStamp)
+                        .setContentText(content)
                         //.setGroup(getApplicationContext().getPackageName())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)

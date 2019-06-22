@@ -118,12 +118,13 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateSchoolLoginUrl(response.getUser().getSchoolLoginUrl());
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());
-
+                                    finish();
                                     saveDeviceTokenForNotification(userOrganizationListData.get(position).getId(),response.getUser().getId());
 
+
                                     //Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
-                                    finish();
-                                    startActivity(new Intent(OrgnizationListActivity.this, SchoolListActivity.class));
+//
+//                                    startActivity(new Intent(OrgnizationListActivity.this, SchoolListActivity.class));
 
                                 }
                             }
@@ -210,7 +211,7 @@ public class OrgnizationListActivity extends BaseActivity {
                             } else {
 
                                 if (response.getSuccess() == 1) {
-                                    showToast(response.getMessage());
+                                    //showToast(response.getMessage());
 
                                     Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
                                     startActivity(intent);
