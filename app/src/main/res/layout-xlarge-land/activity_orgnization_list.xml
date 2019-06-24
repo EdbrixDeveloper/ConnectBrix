@@ -10,6 +10,8 @@
         android:id="@+id/orgnizationList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginRight="150dp"
+        android:layout_marginLeft="150dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp"
         tools:ignore="MissingConstraints" />

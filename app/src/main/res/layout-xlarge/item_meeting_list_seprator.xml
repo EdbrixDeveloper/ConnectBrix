@@ -14,6 +14,7 @@
         android:layout_weight="1"
         android:paddingLeft="@dimen/app_min_padding"
         android:text="28/May/2019"
+        android:textSize="22dp"
         android:layout_gravity="center_vertical"
         android:textColor="@color/colorButtonText"
         android:textStyle="bold" />
@@ -21,15 +22,15 @@
 
     <TextView
         android:id="@+id/textView_Count"
-        android:layout_width="21dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:background="@drawable/badge_background"
         android:gravity="center"
-        android:padding="1dp"
         android:text="0"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"

@@ -49,10 +49,13 @@
         android:layout_below="@+id/actionBarLayout"
         android:background="@color/colorDarkParimary"/>
     <!--android:layout_below="@+id/linearLayout_Status"-->
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_below="@+id/viewLine"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:layout_height="wrap_content">
 
         <ExpandableListView
@@ -60,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:groupIndicator="@color/colorPrimary"
+
             tools:listheader="@layout/item_meeting_list_seprator"
             tools:listitem="@layout/item_meeting_list" />
 
