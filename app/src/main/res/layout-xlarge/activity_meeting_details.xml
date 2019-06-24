@@ -50,9 +50,9 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/date_image" />
+                            android:layout_width="31dp"
+                            android:layout_height="31dp"
+                            android:src="@drawable/date_picker" />
 
                          <TextView
                         android:id="@+id/txtMeetingDate"
@@ -135,12 +135,14 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_weight="1"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:layout_marginLeft="170dp"
+                android:layout_marginRight="170dp"
                 android:background="@color/colorPrimary"
                 android:text="Add Participants"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
-                android:textSize="14dp" />
+                android:textSize="19dp" />
 
         </LinearLayout>
 
@@ -203,7 +205,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="170dp"
+                android:layout_marginLeft="170dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Join Now"

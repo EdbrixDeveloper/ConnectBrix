@@ -49,7 +49,7 @@
                 android:background="@drawable/flash_screen_background"
                 android:inputType="textPersonName"
                 android:focusable="false"
-                android:drawableRight="@drawable/ic_date_range_black_24dp"
+                android:drawableRight="@drawable/date_picker"
                 android:padding="13dp" />
 
             <TextView

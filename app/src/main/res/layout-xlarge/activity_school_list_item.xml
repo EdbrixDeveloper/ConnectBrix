@@ -17,7 +17,7 @@
             android:layout_weight="0"
             android:gravity="center"
             android:id="@+id/myMeetingList"
-            android:background="@drawable/trangle_shape"
+            android:background="@drawable/trangle_shape_for_tab"
             android:orientation="vertical">
 
             <TextView

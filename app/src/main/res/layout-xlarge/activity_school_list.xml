@@ -28,15 +28,16 @@
 
         <ImageView
             android:id="@+id/calender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_weight="0.2"
             android:src="@drawable/calender" />
 
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgUserProfile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="34dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="0.1"
             android:src="@drawable/usersp" />

@@ -456,7 +456,7 @@ public class SchoolListActivity extends BaseActivity {
     }
 
     //clock
-    /*private Timer timer;
+    /*private Timer timer_1;
     private TimerTask timerTask;
 
 
@@ -468,9 +468,9 @@ public class SchoolListActivity extends BaseActivity {
             myContinouslyRunningAsyncTask.cancel(true);
         }
 
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
+        if (timer_1 != null) {
+            timer_1.cancel();
+            timer_1.purge();
         }
     }
 
@@ -484,7 +484,7 @@ public class SchoolListActivity extends BaseActivity {
     public class MyContinousAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            timer = new Timer();
+            timer_1 = new Timer();
             timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -497,7 +497,7 @@ public class SchoolListActivity extends BaseActivity {
                     });
                 }
             };
-            timer.scheduleAtFixedRate(timerTask, 100, 6000);//10000
+            timer_1.scheduleAtFixedRate(timerTask, 100, 6000);//10000
             return "execute";
         }
 

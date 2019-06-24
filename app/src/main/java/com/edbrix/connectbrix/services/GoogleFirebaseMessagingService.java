@@ -20,6 +20,7 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
 import com.edbrix.connectbrix.utils.NotificationUtils;
+import com.edbrix.connectbrix.utils.SessionManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -34,6 +35,21 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
 
     private final String SERVICE_RESULT = "com.service.result";
     private final String SERVICE_MESSAGE = "com.service.message";
+    private SessionManager sessionManager;
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        //doNewToken(sessionManager.getSessionDeviceToken(),s);
+        sessionManager = new SessionManager(this);
+        if (!(sessionManager.getSessionUserId().equals("")) && !(sessionManager.getSessionDeviceToken().equals(""))) {
+            //doNewToken("", s, sessionManager);
+        } else {
+            sessionManager.updateSessionFCMToken(s);
+        }
+        Log.d(TAG, "NewToken: " + s);
+
+
+    }
 
 
     @Override
