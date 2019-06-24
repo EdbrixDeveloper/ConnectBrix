@@ -2,6 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/zm_white">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/img_width"
+            android:layout_height="@dimen/img_height"
+            android:src="@drawable/connectbrix_meetinglist3" />
+
+    </LinearLayout>
+
+
+</RelativeLayout><!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/bg_screen3">
 
     <LinearLayout
@@ -37,4 +58,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</RelativeLayout>-->

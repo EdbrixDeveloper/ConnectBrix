@@ -158,7 +158,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(Context context, String title, String message, String agenda, String timeStamp, Intent intent) {
         Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.connect_brix_flash);
 
-        String content = message+" "+timeStamp;
+        String content = message + " " + timeStamp;
 
         //Intent intent = new Intent(this, DashboardActivity.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -169,7 +169,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setLargeIcon(icon)
-                        .setSmallIcon(R.drawable.connect_brix_flash_small)//.setSmallIcon(R.drawable.ic_circle)
+                        //.setSmallIcon(R.drawable.notification_icon)//.setSmallIcon(R.drawable.ic_circle)
                         .setContentTitle(title)//.setContentTitle(getString(R.string.fcm_message))
                         .setContentText(content)
                         //.setGroup(getApplicationContext().getPackageName())

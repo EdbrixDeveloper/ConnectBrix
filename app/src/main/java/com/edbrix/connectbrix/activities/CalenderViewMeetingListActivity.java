@@ -76,7 +76,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_view_meeting_list);
-        getSupportActionBar().setTitle("Meeting List");
+        getSupportActionBar().setTitle("Meetings");
 
         sessionManager = new SessionManager(this);
         assignViews();
