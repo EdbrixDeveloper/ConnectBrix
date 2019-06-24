@@ -169,7 +169,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setLargeIcon(icon)
-                        //.setSmallIcon(R.drawable.notification_icon)//.setSmallIcon(R.drawable.ic_circle)
+                        .setSmallIcon(R.drawable.connect_brix)//.setSmallIcon(R.drawable.ic_circle)
                         .setContentTitle(title)//.setContentTitle(getString(R.string.fcm_message))
                         .setContentText(content)
                         //.setGroup(getApplicationContext().getPackageName())
