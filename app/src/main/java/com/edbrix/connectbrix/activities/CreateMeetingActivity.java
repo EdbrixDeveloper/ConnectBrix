@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -227,6 +228,36 @@ public class CreateMeetingActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         meetingDate = new String();
+
+                        ////////////////
+                        if (str_date == null || str_date.isEmpty()) {
+                            String todate = finalSimpleDateFormat.format(currentdate());
+                            str_date = todate.toString(); //here you get current date
+                        }
+
+                        if (str_time == null || str_time.isEmpty()) {
+                            str_time="";
+                            int hour, minuteTemp;
+                            String am_pm;
+                            hour = timePicker.getCurrentHour();
+                            minuteTemp = timePicker.getCurrentMinute();
+                            if (hour > 12) {
+                                am_pm = "PM";
+                                hour = hour - 12;
+                            } else {
+                                am_pm = "AM";
+                            }
+
+                            if (minuteTemp < 10) {
+                                str_time += " " + hour + ":0" + minuteTemp + " " + am_pm;
+                                str_temp_time += " " + hour + ":0" + minuteTemp;
+                            } else {
+                                str_time += " " + hour + ":" + minuteTemp + " " + am_pm;
+                                str_temp_time += " " + hour + ":" + minuteTemp;
+                            }
+                        }
+                        ///////////////
+
                         meetingDate = str_date + " " + str_time;
                         Date date = new Date();
                         if (meetingDate.equals("null null")) {
@@ -267,6 +298,13 @@ public class CreateMeetingActivity extends BaseActivity {
 
             }
         });
+    }
+
+
+    private Date currentdate() {
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 0);
+        return cal.getTime();
     }
 
     private void updateMeeting() {
