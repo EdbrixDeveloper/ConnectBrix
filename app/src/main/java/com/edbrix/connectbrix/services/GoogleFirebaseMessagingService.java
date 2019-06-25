@@ -10,20 +10,29 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
+import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.NotificationUtils;
 import com.edbrix.connectbrix.utils.SessionManager;
+import com.edbrix.connectbrix.volley.JsonRequest;
+import com.edbrix.connectbrix.volley.SettingsMy;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Random;
@@ -215,5 +224,59 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
         if (message != null)
             intent.putExtra(SERVICE_MESSAGE, message);
         localBroadcastManager.sendBroadcast(intent);
+    }
+
+    private void doNewToken(String prvToken, final String newToken, final SessionManager sessionManager) {
+
+        if (!prvToken.equals(newToken)) {
+            try {
+                JSONObject jo = new JSONObject();
+                try {
+                    jo.put("UserId", sessionManager.getSessionUserId());
+                    jo.put("AccessToken", sessionManager.getSessionDeviceToken());
+                    jo.put("DeviceId", Constants.androidDeviceid);
+                    jo.put("DeviceToken", newToken);
+
+                } catch (JSONException e) {
+                    Log.e(GoogleFirebaseMessagingService.class.getName(), e.getMessage().toString());
+                    return;
+                }
+
+                Log.e(GoogleFirebaseMessagingService.class.getName(), "In the doNewToken() :" + jo.toString());
+
+                JsonRequest doNewToken = new JsonRequest(Request.Method.POST, Constants.updatedevicetoken, jo,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(@NonNull JSONObject response) {
+                                try {
+                                    if (response != null) {
+                                        if (response.has("Success")) {
+                                            int success = response.getInt("Success");
+                                            if (success == 1) {
+                                                sessionManager.updateSessionFCMToken(newToken);
+                                            } else {
+
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(GoogleFirebaseMessagingService.class.getName(), "Exception :" + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //showToast(SettingsMy.getErrorMessage(error));
+                        Log.e(GoogleFirebaseMessagingService.class.getName(), "onErrorResponse :" + SettingsMy.getErrorMessage(error));
+                    }
+                });
+                doNewToken.setRetryPolicy(Application.getDefaultRetryPolice());
+                doNewToken.setShouldCache(false);
+                Application.getInstance().addToRequestQueue(doNewToken, "doNewToken");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
