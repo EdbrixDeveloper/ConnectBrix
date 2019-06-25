@@ -3,6 +3,7 @@ package com.edbrix.connectbrix.adapters;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,25 +26,35 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
 
     //private MeetingListData meetingListData;
-    ArrayList<UserMeetingsDate> userMeetingsDateList;
+    private ArrayList<UserMeetingsDate> userMeetingsDateListAdapter;
 
-    public SchoolExpListAdapter(Context _context, ArrayList<UserMeetingsDate> userMeetingsDateList) {
+    private ArrayList<UserMeetingsDate> originalList;
+
+    private OnChildItemClickActionListener onChildItemClickActionListener;
+
+    public interface OnChildItemClickActionListener {
+        public void onChildItemClicked(UserMeeting usermeeting, int position);
+    }
+
+    public SchoolExpListAdapter(Context _context, ArrayList<UserMeetingsDate> userMeetingsDateListtemp, OnChildItemClickActionListener onChildItemClickActionListener) {
         //MeetingListData meetingListData
         this._context = _context;
         //this.meetingListData = meetingListData;
-        this.userMeetingsDateList = userMeetingsDateList;
+        this.userMeetingsDateListAdapter = userMeetingsDateListtemp;
+        this.originalList = userMeetingsDateListtemp;
+        this.onChildItemClickActionListener = onChildItemClickActionListener;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         //return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosititon);
-        return userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosititon);
+        return userMeetingsDateListAdapter.get(groupPosition).getUserMeetings().get(childPosititon);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         //return Long.parseLong(meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId());
-        return Long.parseLong(userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId());
+        return Long.parseLong(userMeetingsDateListAdapter.get(groupPosition).getUserMeetings().get(childPosition).getId());
     }
 
     @Override
@@ -56,6 +67,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_meeting_list, null);
         }
+        LinearLayout ll_mainMeetingList = (LinearLayout) convertView.findViewById(R.id.ll_mainMeetingList);
         LinearLayout myMeetingList = (LinearLayout) convertView.findViewById(R.id.myMeetingList);
         TextView textViewMeetingDay = (TextView) convertView.findViewById(R.id.textViewMeetingDay);
         TextView textViewMeetingMonth = (TextView) convertView.findViewById(R.id.textViewMeetingMonth);
@@ -89,26 +101,33 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
             myMeetingList.setBackground(null);
         }
 
+        ll_mainMeetingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChildItemClickActionListener.onChildItemClicked(userMeeting, childPosition);
+            }
+        });
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
         //return meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().size();
-        return userMeetingsDateList.get(groupPosition).getUserMeetings().size();
+        return userMeetingsDateListAdapter.get(groupPosition).getUserMeetings().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
         //return meetingListData.getUserMeetingsDates().get(groupPosition);
-        return userMeetingsDateList.get(groupPosition);
+        return userMeetingsDateListAdapter.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
 
         //return meetingListData.getUserMeetingsDates().size();
-        return userMeetingsDateList.size();
+        return userMeetingsDateListAdapter.size();
     }
 
     @Override
@@ -150,8 +169,40 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-}
 
+    public void filterData(String query) {
+
+        query = query.toLowerCase();
+        Log.v("SchoolExpListAdapter", String.valueOf(userMeetingsDateListAdapter.size()));
+        userMeetingsDateListAdapter = new ArrayList<UserMeetingsDate>();
+
+        if (query.isEmpty()) {
+            userMeetingsDateListAdapter.addAll(originalList);
+        } else {
+
+            //UserMeeting userMeeting
+            for (UserMeetingsDate userMeetingsDate : originalList) {
+                ArrayList<UserMeeting> countryList = userMeetingsDate.getUserMeetings();
+                ArrayList<UserMeeting> newList = new ArrayList<UserMeeting>();
+
+                for (UserMeeting country : countryList) {
+                    if (country.getTitle().toLowerCase().contains(query)) {//||country.getName().toLowerCase().contains(query)
+                        newList.add(country);
+                    }
+                }
+                if (newList.size() > 0) {
+                    UserMeetingsDate nContinent = new UserMeetingsDate(userMeetingsDate.getDate(), userMeetingsDate.getMeetingCount(), newList);
+                    userMeetingsDateListAdapter.add(nContinent);
+                }
+            }
+        }
+
+        Log.v("SchoolExpListAdapter", String.valueOf(userMeetingsDateListAdapter.size()));
+        notifyDataSetChanged();
+
+    }
+
+}
 
 
 ///

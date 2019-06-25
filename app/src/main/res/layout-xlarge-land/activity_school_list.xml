@@ -38,7 +38,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_weight="0.3"
-            android:src="@drawable/calender" />
+            android:src="@drawable/calendar2" />
 
         <LinearLayout
             android:id="@+id/linearLayoutCircular"

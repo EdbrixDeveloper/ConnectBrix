@@ -10,11 +10,15 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +35,7 @@ import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.commons.EndlessScrollListener;
 import com.edbrix.connectbrix.data.MeetingListData;
+import com.edbrix.connectbrix.data.UserMeeting;
 import com.edbrix.connectbrix.data.UserMeetingsDate;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
@@ -40,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,6 +60,10 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgSearch;
     private LinearLayout linearLayoutCircular;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private TextInputLayout mInputLayoutSearch;
+    private EditText mInputSearch;
+    private boolean searchFlag = false;
 
     public static final int RESULT_UPDATE_PROFILE = 200;
 
@@ -70,6 +80,7 @@ public class SchoolListActivity extends BaseActivity {
     ArrayList<UserMeetingsDate> userMeetingsDateList;
     private int requestCount = 0;
     private boolean loading = true;
+    private SchoolExpListAdapter.OnChildItemClickActionListener onChildItemClickActionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +97,11 @@ public class SchoolListActivity extends BaseActivity {
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
-            linearLayoutCircular = (LinearLayout)findViewById(R.id.linearLayoutCircular);
+            linearLayoutCircular = (LinearLayout) findViewById(R.id.linearLayoutCircular);
+
+            mInputLayoutSearch = (TextInputLayout) findViewById(R.id.input_layout_search);
+            mInputSearch = (EditText) findViewById(R.id.input_search);
+
             floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -159,15 +174,59 @@ public class SchoolListActivity extends BaseActivity {
             );
 
 
-        ////
-        imgCalender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
-                Intent intent = new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class);
-                startActivityForResult(intent, REFRESH_DATA);
-            }
-        });
+            ////
+            imgCalender.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //startActivity(new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class));
+                    Intent intent = new Intent(SchoolListActivity.this, CalenderViewMeetingListActivity.class);
+                    startActivityForResult(intent, REFRESH_DATA);
+                }
+            });
+
+            /////Search for Listview
+            imgSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (searchFlag == true) {
+                        searchFlag = false;
+                        mInputLayoutSearch.setVisibility(View.GONE);
+                        mInputSearch.setText("");
+                    } else {
+                        searchFlag = true;
+                        mInputLayoutSearch.setVisibility(View.VISIBLE);
+                        mInputSearch.setText("");
+                    }
+
+
+                }
+            });
+
+
+            mInputSearch.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                    String text = mInputSearch.getText().toString()
+                            .toLowerCase(Locale.getDefault());
+                    pmAcExpListAdapter.filterData(text);
+                    expandAll();
+                }
+            });
 
             //////////////// User Profile //////////////////////
 
@@ -182,6 +241,21 @@ public class SchoolListActivity extends BaseActivity {
 
             //////////////////////////////////////
 
+            onChildItemClickActionListener = new SchoolExpListAdapter.OnChildItemClickActionListener() {
+                @Override
+                public void onChildItemClicked(UserMeeting usermeeting, int position) {
+                    if (usermeeting != null) {
+
+                        final String meetingDbId = usermeeting.getId() == null ? "" : usermeeting.getId().toString();
+                        final String meetingId = usermeeting.getMeetingId() == null ? "" : usermeeting.getMeetingId().toString();
+                        final String isHost = usermeeting.getIsHost() == null ? "" : usermeeting.getIsHost().toString();
+
+                        goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
+                    }
+                }
+
+            };
+
             schoolList_listView_schoolList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                 @Override
                 public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -190,15 +264,11 @@ public class SchoolListActivity extends BaseActivity {
                 }
             });
 
-            schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            /*schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
                     try {
                         if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
-
-                    /*final String meetingDbId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                    final String meetingId = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
-                    final String isHost = meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : meetingListData.getUserMeetingsDates().get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();*/
 
                             final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
                             final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
@@ -211,7 +281,7 @@ public class SchoolListActivity extends BaseActivity {
                     }
                     return false;
                 }
-            });
+            });*/
 
 
             ///////////
@@ -238,6 +308,15 @@ public class SchoolListActivity extends BaseActivity {
         }
     }
 
+
+    //method to expand all groups
+    private void expandAll() {
+        int count = pmAcExpListAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            schoolList_listView_schoolList.expandGroup(i);
+        }
+    }
+
     private void setImageToUserProfileIcon() {
         if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
             Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
@@ -261,6 +340,9 @@ public class SchoolListActivity extends BaseActivity {
         intent.putExtra("IsCalenderActivity", "N");
         //startActivity(intent);
         startActivityForResult(intent, REFRESH_DATA);
+        mInputSearch.setText("");
+        mInputLayoutSearch.setVisibility(View.GONE);
+        searchFlag = false;
     }
 
     /*@Override
@@ -365,7 +447,7 @@ public class SchoolListActivity extends BaseActivity {
                                             loading = false;
                                         }
 
-                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList);//meetingListData
+                                        pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList, onChildItemClickActionListener);//meetingListData
                                         schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
                                         schoolList_listView_schoolList.setSelectionFromTop(currentFirstVisibleItem, 0);
                                         for (int i = 0; i < userMeetingsDateList.size(); i++) {//meetingListData.getUserMeetingsDates().size()
