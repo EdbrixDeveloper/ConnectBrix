@@ -25,9 +25,13 @@ public class UserMeeting {
     @SerializedName("MeetingId")
     @Expose
     private String meetingId;
+    @SerializedName("isAvailable")
+    @Expose
+    private String isAvailable = "";
     @SerializedName("IsHost")
     @Expose
     private Integer isHost;
+
 
     public String getId() {
         return id;
@@ -83,6 +87,14 @@ public class UserMeeting {
 
     public void setMeetingId(String meetingId) {
         this.meetingId = meetingId;
+    }
+
+    public String getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public Integer getIsHost() {

@@ -123,6 +123,8 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 Intent intent = new Intent(CalenderViewMeetingListActivity.this, MeetingDetailsActivity.class);
                 intent.putExtra("meetingDbId", userMeetingListResponseData.get(position).getId());
                 intent.putExtra("IsHost", userMeetingListResponseData.get(position).getIsHost());
+                intent.putExtra("isAvailable", userMeetingListResponseData.get(position).getIsAvailable());
+                intent.putExtra("IsHost", userMeetingListResponseData.get(position).getIsHost());
                 intent.putExtra("IsCalenderActivity", "Y");
                 intent.putExtra("RefreshFlag", "N");
                 //startActivity(intent);

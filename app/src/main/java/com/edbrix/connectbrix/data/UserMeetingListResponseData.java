@@ -22,6 +22,9 @@ public class UserMeetingListResponseData implements Serializable {
     @SerializedName("IsHost")
     @Expose
     private String isHost;
+    @SerializedName("isAvailable")
+    @Expose
+    private String isAvailable = "";
     @SerializedName("ParticipantCount")
     @Expose
     private String participantCount;
@@ -66,6 +69,14 @@ public class UserMeetingListResponseData implements Serializable {
 
     public void setIsHost(String isHost) {
         this.isHost = isHost;
+    }
+
+    public String getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public String getParticipantCount() {

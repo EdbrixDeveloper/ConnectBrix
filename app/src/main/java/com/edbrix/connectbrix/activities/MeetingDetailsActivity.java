@@ -124,6 +124,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
         }
 
+        if (isAvailable.equals("1")) {
+            radioMale.setChecked(true);
+            radioFemale.setChecked(false);
+            mBtnMJoin.setVisibility(View.VISIBLE);
+        } else if (isAvailable.equals("2")) {
+            radioMale.setChecked(false);
+            radioFemale.setChecked(true);
+            mBtnMJoin.setVisibility(View.GONE);
+        }
         mBtnMJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +178,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
                 if (CheckedFlag == 0 || CheckedFlag == 2) {
                     CheckedFlag = 1;
+                    mBtnMJoin.setVisibility(View.VISIBLE);
                     meetingAvilabilityStatus("1");
                     //showToast("Radio Male");
                 }
@@ -180,6 +190,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             public void onClick(View v) {
                 if (CheckedFlag == 0 || CheckedFlag == 1) {
                     CheckedFlag = 2;
+                    mBtnMJoin.setVisibility(View.GONE);
                     meetingAvilabilityStatus("2");
                     //showToast("Radio Female");
                 }
@@ -404,7 +415,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
                                         mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
-                                        if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0) {
+                                        if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0 && isAvailable.equals("1")) {
                                             mBtnMJoin.setVisibility(View.VISIBLE);
                                         }
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
