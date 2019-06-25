@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -71,6 +72,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private Button btnMAddParticipants;
     private Button mBtnMJoin;
     private ListView mParticipantList;
+    private ImageView mMeetingListImg;
+    private TextView mTxtDataFound;
+
     RadioButton radioMale;
     RadioButton radioFemale;
     RadioGroup radioSex;
@@ -83,12 +87,12 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String meetingDbId = "", MeetingId = "", IsHost = "", RefreshFlag = "", IsCalenderActivity = "";
+    private String meetingDbId = "", MeetingId = "", isAvailable = "", IsHost = "", RefreshFlag = "", IsCalenderActivity = "";
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
 
-    boolean CheckedFlag = false;
+    int CheckedFlag = 0;
     private boolean isResumed = false;
 
     @Override
@@ -106,6 +110,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         Intent intent = getIntent();
         meetingDbId = intent.getStringExtra("meetingDbId");
         /* MeetingId = intent.getStringExtra("MeetingId");*/
+        isAvailable = intent.getStringExtra("isAvailable");
         IsHost = intent.getStringExtra("IsHost");
         RefreshFlag = intent.getStringExtra("RefreshFlag");
         IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
@@ -162,8 +167,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             @Override
             public void onClick(View v) {
 
-                if (CheckedFlag == true) {
-                    CheckedFlag = false;
+                if (CheckedFlag == 0 || CheckedFlag == 2) {
+                    CheckedFlag = 1;
                     meetingAvilabilityStatus("1");
                     //showToast("Radio Male");
                 }
@@ -173,8 +178,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         radioFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckedFlag == false) {
-                    CheckedFlag = true;
+                if (CheckedFlag == 0 || CheckedFlag == 1) {
+                    CheckedFlag = 2;
                     meetingAvilabilityStatus("2");
                     //showToast("Radio Female");
                 }
@@ -336,9 +341,12 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);
         mParticipantList = (ListView) findViewById(R.id.participantList);
 
+        mMeetingListImg = (ImageView) findViewById(R.id.meetingListImg);
+        mTxtDataFound = (TextView) findViewById(R.id.txtDataFound);
+
         radioMale = (RadioButton) findViewById(R.id.radioMale);
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
-        radioSex = (RadioGroup)findViewById(R.id.radioSex);
+        radioSex = (RadioGroup) findViewById(R.id.radioSex);
         mTextViewParticipantCount = (TextView) findViewById(R.id.textViewParticipantCount);
     }
 
@@ -363,7 +371,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    String str_HostId=response.getMeeting().getHostId()==null?"":response.getMeeting().getHostId();
+                                    String str_HostId = response.getMeeting().getHostId() == null ? "" : response.getMeeting().getHostId();
                                     Log.i(TAG + "HOST_ID : ", str_HostId);
                                     meetingDetailsData = response;
                                     Constants.HOST_ID = str_HostId;//meetingDetailsData.getMeeting().getHostId();
@@ -400,6 +408,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                             mBtnMJoin.setVisibility(View.VISIBLE);
                                         }
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
+                                        mMeetingListImg.setVisibility(View.GONE);
+                                        mTxtDataFound.setVisibility(View.GONE);
+                                        mParticipantList.setVisibility(View.VISIBLE);
                                         participantArrayList = new ArrayList<>();
                                         participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
@@ -407,11 +418,15 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         participantsListAdapter.notifyDataSetChanged();
 
                                     } else {
-                                        mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
+                                        mMeetingListImg.setVisibility(View.VISIBLE);
+                                        mTxtDataFound.setVisibility(View.VISIBLE);
+                                        mParticipantList.setVisibility(View.GONE);
+                                        /*mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
                                         participantArrayList = new ArrayList<>();
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
                                         mParticipantList.setAdapter(participantsListAdapter);
-                                        participantsListAdapter.notifyDataSetChanged();
+                                        participantsListAdapter.notifyDataSetChanged();*/
+
                                     }
                                 }
                             }
