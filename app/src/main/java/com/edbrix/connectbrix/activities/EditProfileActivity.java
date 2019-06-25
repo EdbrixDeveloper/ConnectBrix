@@ -43,7 +43,7 @@ public class EditProfileActivity extends BaseActivity {
     private static final String TAG = EditProfileActivity.class.getName();
     private CircleImageView mImgProfile;
     private TextView mEmail;
-    private EditText mEmailVal;
+    private TextView mEmailVal;
     private TextView mFirstName;
     private EditText mFirstNameVal;
     private TextView mLastName;
@@ -82,7 +82,7 @@ public class EditProfileActivity extends BaseActivity {
     private void assignViews() {
         mImgProfile = (CircleImageView) findViewById(R.id.imgProfile);
         mEmail = (TextView) findViewById(R.id.email);
-        mEmailVal = (EditText) findViewById(R.id.emailVal);
+        mEmailVal = (TextView) findViewById(R.id.emailVal);
         mFirstName = (TextView) findViewById(R.id.firstName);
         mFirstNameVal = (EditText) findViewById(R.id.firstNameVal);
         mLastName = (TextView) findViewById(R.id.lastName);

@@ -45,22 +45,21 @@
                 android:textSize="14dp"
                 android:text="Email" />
 
-            <!--<TextView
+            <TextView
                 android:id="@+id/emailVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
-                android:background="@drawable/flash_screen_background"
                 android:padding="13dp"
-                android:text="test@gmail.com" />-->
+                android:text="test@gmail.com" />
 
-            <EditText
+            <!--<EditText
                 android:id="@+id/emailVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/flash_screen_background"
                 android:inputType="textEmailAddress"
-                android:padding="13dp" />
+                android:padding="13dp" />-->
             <TextView
                 android:id="@+id/firstName"
                 android:layout_width="match_parent"
@@ -195,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorButtonText"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:textAllCaps="false"
                 android:text="Update Profile" />
         </LinearLayout>
