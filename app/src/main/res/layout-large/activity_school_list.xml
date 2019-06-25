@@ -28,15 +28,15 @@
 
         <ImageView
             android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="0.3"
             android:src="@drawable/search" />
 
         <ImageView
             android:id="@+id/calender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_weight="0.3"
             android:src="@drawable/calendar2" />
 
