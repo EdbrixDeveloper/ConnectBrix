@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="22dp"
                     android:padding="13dp"
-                    android:text="test@gmail.com" />
+                    android:text="" />
 
                 <!--<EditText
                     android:id="@+id/emailVal"
