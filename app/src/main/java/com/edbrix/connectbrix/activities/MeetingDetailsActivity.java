@@ -542,7 +542,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 intent.putExtra("IsHost", IsHost);
                 intent.putExtra("IsCalenderActivity", IsCalenderActivity);
                 startActivity(intent);
-                finish();
+                //finish();25062019 by008
                 //startActivity(new Intent(this, FliterParticipantsActivity.class));
                 return true;
 

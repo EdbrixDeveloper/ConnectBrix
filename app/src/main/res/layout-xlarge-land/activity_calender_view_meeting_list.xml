@@ -63,6 +63,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
+                    android:textSize="22dp"
                     android:text="04/Feb/2019" />
 
             </LinearLayout>
