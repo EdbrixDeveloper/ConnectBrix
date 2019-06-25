@@ -33,13 +33,20 @@
             android:layout_weight="0.3"
             android:src="@drawable/calender" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgUserProfile"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_weight="0"
-            android:src="@drawable/usersp" />
+        <LinearLayout
+            android:id="@+id/linearLayoutCircular"
+            android:layout_width="34dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="0.3">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgUserProfile"
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/usersp" />
+
+        </LinearLayout>
 
     </LinearLayout>
     <View

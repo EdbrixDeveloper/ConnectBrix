@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -51,6 +52,7 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgCalender;
     private ImageView imgUserProfile;
     private ImageView imgSearch;
+    private LinearLayout linearLayoutCircular;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static final int RESULT_UPDATE_PROFILE = 200;
@@ -84,6 +86,7 @@ public class SchoolListActivity extends BaseActivity {
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
+            linearLayoutCircular = (LinearLayout)findViewById(R.id.linearLayoutCircular);
             floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -169,7 +172,7 @@ public class SchoolListActivity extends BaseActivity {
             //////////////// User Profile //////////////////////
 
             setImageToUserProfileIcon();
-            imgUserProfile.setOnClickListener(new View.OnClickListener() {
+            linearLayoutCircular.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(SchoolListActivity.this, UserProfileActivity.class);

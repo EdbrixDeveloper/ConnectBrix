@@ -46,7 +46,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
+                        android:layout_weight="1.4"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -61,14 +61,14 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="3dp"
                         android:text="dd/MMM/yyyy"
-                        android:textSize="19dp" />
+                        android:textSize="22dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.6"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -83,7 +83,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="3dp"
                         android:text="hh:mm AM"
-                        android:textSize="19dp" />
+                        android:textSize="22dp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:text="Meeting Details"
-                android:textSize="19dp" />
+                android:textSize="22dp" />
 
             </LinearLayout>
 
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_weight="1"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginLeft="170dp"
                 android:layout_marginRight="170dp"
                 android:background="@color/colorPrimary"
@@ -176,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Are you avaliable?"
-                android:textSize="19dp" />
+                android:textSize="22dp" />
 
             <RadioGroup
                 android:id="@+id/radioSex"
@@ -205,8 +205,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="170dp"
                 android:layout_marginLeft="170dp"
+                android:layout_marginRight="170dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Join Now"

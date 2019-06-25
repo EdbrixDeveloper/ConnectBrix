@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private ListView mParticipantList;
     RadioButton radioMale;
     RadioButton radioFemale;
+    RadioGroup radioSex;
     String msgName = "join";
     private boolean mbPendingStartMeeting = false;
 
@@ -317,6 +319,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             mTxtQuestion.setVisibility(View.GONE);
             radioMale.setVisibility(View.GONE);
             radioFemale.setVisibility(View.GONE);
+            radioSex.setVisibility(View.GONE);
             msgName = "start";
         }
     }
@@ -335,6 +338,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         radioMale = (RadioButton) findViewById(R.id.radioMale);
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
+        radioSex = (RadioGroup)findViewById(R.id.radioSex);
         mTextViewParticipantCount = (TextView) findViewById(R.id.textViewParticipantCount);
     }
 

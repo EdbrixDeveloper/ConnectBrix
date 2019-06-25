@@ -125,11 +125,11 @@ public class ParticipantsListAdapter extends BaseAdapter {
         } else if (participantList.get(position).getStatus().equals("1")) {
             holder.txtIsAvaliable.setText("Accepted");
             holder.txtIsAvaliable.setTextColor(Color.parseColor("#47a54b"));
-            holder.status.setImageResource(R.drawable.accepted);
+            holder.status.setImageResource(R.drawable.tick_mark);
         } else if (participantList.get(position).getStatus().equals("2")) {
             holder.txtIsAvaliable.setText("Rejected");
             holder.txtIsAvaliable.setTextColor(Color.parseColor("#d1395c"));
-            holder.status.setImageResource(R.drawable.rejected);
+            holder.status.setImageResource(R.drawable.rejected_status);
         }
         if (participantList.get(position).getImageUrl() != null && !participantList.get(position).getImageUrl().isEmpty()) {
             Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
