@@ -50,6 +50,7 @@ public class SchoolListActivity extends BaseActivity {
     private TextView txtDataFound;
     private ImageView imgCalender;
     private ImageView imgUserProfile;
+    private ImageView imgSearch;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static final int RESULT_UPDATE_PROFILE = 200;
@@ -82,6 +83,7 @@ public class SchoolListActivity extends BaseActivity {
             mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
+            imgSearch = (ImageView) findViewById(R.id.search);
             floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);

@@ -15,23 +15,30 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.7"
+            android:layout_weight="3.1"
             android:text="Meetings"
             android:textColor="@color/colorButtonText"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/search"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/search" />
+
+        <ImageView
             android:id="@+id/calender"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_weight="0.2"
-            android:src="@drawable/calender" />
+            android:layout_weight="0.3"
+            android:src="@drawable/calendar2" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -39,7 +46,7 @@
             android:layout_width="34dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="0.1"
+            android:layout_weight="0.3"
             android:src="@drawable/usersp" />
 
     </LinearLayout>
@@ -49,13 +56,29 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/actionBarLayout"
-        android:background="@color/colorDarkParimary"/>
+        android:background="@color/colorDarkParimary" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewLine"
+        android:layout_marginTop="5dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/input_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search" />
+
+    </android.support.design.widget.TextInputLayout>
     <!--android:layout_below="@+id/linearLayout_Status"-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
-        android:layout_below="@+id/viewLine"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_search">
 
         <ExpandableListView
             android:id="@+id/schoolList_listView_schoolList"
@@ -95,8 +118,8 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:clickable="true"
-        android:visibility="gone"
         android:src="@drawable/ic_action_name"
+        android:visibility="gone"
         app:elevation="4dp" />
 
 </RelativeLayout>

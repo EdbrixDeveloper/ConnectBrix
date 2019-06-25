@@ -22,7 +22,7 @@
         <com.applandeo.materialcalendarview.CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
+            android:layout_height="450dp"
             app:headerColor="@color/colorPrimary"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="0dp" />
