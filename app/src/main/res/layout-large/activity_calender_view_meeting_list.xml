@@ -72,7 +72,7 @@
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="35dp"
         android:gravity="center"
         android:layout_below="@+id/linearLayoutText"
         android:visibility="gone"
@@ -83,10 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/meetingListImg"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="No meeting available."
-        android:textSize="15dp"
+        android:textSize="12dp"
         android:visibility="gone" />
 
     <android.support.design.widget.FloatingActionButton

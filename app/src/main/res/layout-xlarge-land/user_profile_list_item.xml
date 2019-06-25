@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/imgUserOption"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:src="@drawable/ic_launcher_background"

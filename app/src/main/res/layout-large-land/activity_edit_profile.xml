@@ -35,6 +35,7 @@
             android:layout_margin="10dp"
             android:paddingRight="150dp"
             android:paddingLeft="150dp"
+            android:paddingTop="15dp"
             android:orientation="vertical"
             android:paddingBottom="15dp">
 
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:padding="13dp"
+                android:visibility="gone"
                 android:text="" />
 
             <!--<EditText
@@ -195,6 +197,7 @@
                 android:background="@color/colorPrimary"
                 android:textColor="@color/colorButtonText"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
                 android:textAllCaps="false"
                 android:text="Update Profile" />
         </LinearLayout>

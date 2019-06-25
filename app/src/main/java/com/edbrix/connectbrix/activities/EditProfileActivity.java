@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -153,7 +154,12 @@ public class EditProfileActivity extends BaseActivity {
                                 if (response.getSuccess() == 1) {
                                     /*sessionManager.updateSessionUsername(userName);
                                     sessionManager.updateSessionPassword(password);*/
-                                    mEmailVal.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "" : response.getUser().getEmail().toString());
+
+                                    String sourceString = response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "Email:" + "<b>" + "-" + "<b>" : "Email:" + "<b>" + response.getUser().getEmail().toString() + "<b>";
+                                    //String sourceString = "<b>" + id + "</b> " + name;
+                                    mEmail.setText(Html.fromHtml(sourceString));
+                                    //mEmail.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "Email:-" : "Email:"+response.getUser().getEmail().toString());
+                                    //mEmailVal.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "" : response.getUser().getEmail().toString());
                                     mFirstNameVal.setText(response.getUser().getFirstName() == null || response.getUser().getFirstName().isEmpty() ? "" : response.getUser().getFirstName().toString());
                                     mLastNameVal.setText(response.getUser().getLastName() == null || response.getUser().getLastName().isEmpty() ? "" : response.getUser().getLastName().toString());
                                     mAddressVal.setText(response.getUser().getAddress() == null || response.getUser().getAddress().isEmpty() ? "" : response.getUser().getAddress().toString());
