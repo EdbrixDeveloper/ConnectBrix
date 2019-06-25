@@ -95,12 +95,25 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/meetingListImg"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/linearLayoutText"
+        android:visibility="gone"
+        android:src="@drawable/meetinglist"/>
+
     <TextView
         android:id="@+id/txtDataFound"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="No data found."
+        android:layout_below="@+id/meetingListImg"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="No meeting available."
+        android:textSize="15dp"
         android:visibility="gone" />
 
 
