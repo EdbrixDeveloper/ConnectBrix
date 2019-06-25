@@ -34,10 +34,10 @@
                     android:id="@+id/txtMeetingTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Meeting Title"
+                    android:text=""
                     android:textSize="20dp"
                     android:textStyle="bold" />
-
+<!--Meeting Title-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,9 +60,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:text="dd/MMM/yyyy"
+                        android:text=""
                         android:textSize="15dp" />
-
+<!--dd/MMM/yyyy-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -81,9 +81,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:text="hh:mm AM"
+                        android:text=""
                         android:textSize="15dp" />
-
+<!--hh:mm AM-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -92,9 +92,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:text="Meeting Details"
+                android:text=""
                 android:textSize="14dp" />
-
+<!--Meeting Details-->
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +114,7 @@
                 android:id="@+id/textViewParticipantCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text=""
                 android:textSize="15dp"
                 android:textStyle="bold"/>
 
@@ -151,7 +151,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btns"
+        android:visibility="gone"
         android:layout_below="@+id/mainLinear" />
+
+    <ImageView
+        android:id="@+id/meetingListImg"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:layout_below="@+id/mainLinear"
+        android:visibility="gone"
+        android:src="@drawable/add_participants"/>
+
+    <TextView
+        android:id="@+id/txtDataFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/meetingListImg"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="There is no participant added in the meeting"
+        android:textSize="15dp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/btns"
