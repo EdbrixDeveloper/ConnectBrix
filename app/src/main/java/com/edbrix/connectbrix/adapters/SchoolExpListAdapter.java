@@ -186,7 +186,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
                 ArrayList<UserMeeting> newList = new ArrayList<UserMeeting>();
 
                 for (UserMeeting country : countryList) {
-                    if (country.getTitle().toLowerCase().contains(query)) {//||country.getName().toLowerCase().contains(query)
+                    if (country.getTitle().toLowerCase().contains(query) || country.getHostName().toLowerCase().contains(query)) {//
                         newList.add(country);
                     }
                 }

@@ -31,6 +31,9 @@ public class UserMeeting {
     @SerializedName("IsHost")
     @Expose
     private Integer isHost;
+    @SerializedName("HostName")
+    @Expose
+    private String HostName;
 
 
     public String getId() {
@@ -103,6 +106,14 @@ public class UserMeeting {
 
     public void setIsHost(Integer isHost) {
         this.isHost = isHost;
+    }
+
+    public String getHostName() {
+        return HostName;
+    }
+
+    public void setHostName(String hostName) {
+        HostName = hostName;
     }
 
 }
