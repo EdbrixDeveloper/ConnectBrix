@@ -786,7 +786,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             super.onPostExecute(apiUserInfo);
             hideBusyProgress();
             if (apiUserInfo == null) {
-                Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MeetingDetailsActivity.this, "Faild to retrieve Api user info!", Toast.LENGTH_LONG).show();
             }
 
         }

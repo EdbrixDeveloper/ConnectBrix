@@ -155,7 +155,7 @@
     <ImageView
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="150dp"
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:layout_below="@+id/mainLinear"
@@ -170,7 +170,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="There is no participant added in the meeting"
-        android:textSize="15dp"
+        android:textSize="22dp"
         android:visibility="gone" />
 
     <LinearLayout
