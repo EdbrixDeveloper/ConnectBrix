@@ -57,6 +57,7 @@
         android:layout_below="@+id/linearLayoutText"
         android:layout_marginTop="0dp"
         tools:ignore="MissingConstraints"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="8dp" />
 
     <!--<ExpandableListView
@@ -68,16 +69,26 @@
         tools:listheader="@layout/item_meeting_list_seprator"
         tools:listitem="@layout/item_meeting_list" />
 -->
+    <ImageView
+        android:id="@+id/meetingListImg"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:layout_below="@+id/linearLayoutText"
+        android:visibility="visible"
+        android:src="@drawable/meetinglist"/>
+
     <TextView
         android:id="@+id/txtDataFound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/meetingListImg"
+        android:layout_marginTop="5dp"
         android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/linearLayoutText"
-        android:text="No meeting found."
-        android:textSize="15dp"
-        android:visibility="gone" />
+        android:text="No meeting available."
+        android:textSize="22dp"
+        android:visibility="visible" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/float_btn"

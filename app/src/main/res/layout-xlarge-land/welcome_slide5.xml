@@ -12,8 +12,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/img_width"
-            android:layout_height="@dimen/img_height"
+            android:layout_width="@dimen/img_width_tablet"
+            android:layout_height="@dimen/img_height_tablet"
             android:src="@drawable/connectbrix_meetingdetail5" />
 
     </LinearLayout>

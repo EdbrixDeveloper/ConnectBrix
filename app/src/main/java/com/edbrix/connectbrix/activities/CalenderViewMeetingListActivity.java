@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private ListView mMeetingListWithCalender;
     private TextView mTxtSelectedDate;
     private TextView txtDataFound;
+    private ImageView meetingListImg;
     private FloatingActionButton mFloatingActionButtonFabWithListview;
     SchoolListWithCalendarAdapter schoolListWithCalendarAdapter;
     SessionManager sessionManager;
@@ -157,6 +159,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                     Date date = cal1.getTime();
                     mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
                     txtDataFound.setVisibility(View.VISIBLE);
+                    meetingListImg.setVisibility(View.VISIBLE);
                     mMeetingListWithCalender.setVisibility(View.GONE);
                 }
             }
@@ -244,6 +247,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         mFloatingActionButtonFabWithListview = (FloatingActionButton) findViewById(R.id.float_btn);
         mTxtSelectedDate = (TextView) findViewById(R.id.txtSelectedDate);
         txtDataFound = (TextView) findViewById(R.id.txtDataFound);
+        meetingListImg = (ImageView) findViewById(R.id.meetingListImg);
     }
 
     private void setSchoolListWithCalendarAdapter(ArrayList<String> date) {
@@ -298,6 +302,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                     userMeetingByDateParentData = response;
                                     if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
+                                        meetingListImg.setVisibility(View.GONE);
                                         mMeetingListWithCalender.setVisibility(View.VISIBLE);
                                         userMeetingListResponseData = new ArrayList<>();
 
@@ -307,6 +312,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                     } else {
                                         mMeetingListWithCalender.setVisibility(View.GONE);
                                         txtDataFound.setVisibility(View.VISIBLE);
+                                        meetingListImg.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }
