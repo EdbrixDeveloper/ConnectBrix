@@ -35,6 +35,7 @@ import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.UserOrganizationListData;
 import com.edbrix.connectbrix.data.UserOrganizationListParentData;
+import com.edbrix.connectbrix.utils.AuthConstants;
 import com.edbrix.connectbrix.utils.Conditions;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
@@ -45,10 +46,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import us.zoom.sdk.InviteOptions;
+import us.zoom.sdk.JoinMeetingOptions;
+import us.zoom.sdk.JoinMeetingParams;
+import us.zoom.sdk.MeetingService;
+import us.zoom.sdk.MeetingServiceListener;
+import us.zoom.sdk.MeetingStatus;
+import us.zoom.sdk.ZoomSDK;
+import us.zoom.sdk.ZoomSDKAuthenticationListener;
+import us.zoom.sdk.ZoomSDKInitializeListener;
+
 import static com.edbrix.connectbrix.utils.Constants.APP_KEY__;
 import static com.edbrix.connectbrix.utils.Constants.APP_SECRET__;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSDKInitializeListener, MeetingServiceListener, ZoomSDKAuthenticationListener {
 
     private static final String TAG = LoginActivity.class.getName();
 
@@ -59,6 +70,9 @@ public class LoginActivity extends BaseActivity {
     private Button mBtnLogin;
     private ImageView mEyeIcon;
     private TextView mTextViewForgotPassword;
+    private Button mBtnJoin;
+    private EditText mEdTxtMeetingId;
+
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private boolean isPasswordVisible;
     SessionManager sessionManager;
@@ -79,6 +93,12 @@ public class LoginActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //show the activity in full screen
 
         sessionManager = new SessionManager(this);
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        if (savedInstanceState == null) {
+            zoomSDK.initialize(LoginActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
+        }
+
         if (validateUser()) {
             finish();
             startActivity(new Intent(LoginActivity.this, SchoolListActivity.class));
@@ -194,6 +214,19 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+        //meeting join using meeting id
+        mBtnJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkMeetingId() == true) {
+
+                    String meetingId = mEdTxtMeetingId.getText().toString().trim();
+                    isValidMeetingId(meetingId);
+                }
+            }
+        });
+
     }
 
     private void assignViews() {
@@ -204,6 +237,9 @@ public class LoginActivity extends BaseActivity {
         mBtnLogin = (Button) findViewById(R.id.btnLogin);
         mTextViewForgotPassword = (TextView) findViewById(R.id.textViewForgotPassword);
         mEyeIcon = (ImageView) findViewById(R.id.eyeIcon);
+        mBtnJoin = (Button) findViewById(R.id.btnJoin);
+        mEdTxtMeetingId = (EditText) findViewById(R.id.edTxtMeetingId);
+
         isPasswordVisible = false;//
 
         mEdTxtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -284,7 +320,67 @@ public class LoginActivity extends BaseActivity {
                                     Intent intent = new Intent(LoginActivity.this, OrgnizationListActivity.class);
                                     intent.putExtra("organizationList", userOrganizationListData);
                                     intent.putExtra("comesFrom", "loginActivity");
-                                    startActivityForResult(intent,RESULT_LOGIN);
+                                    startActivityForResult(intent, RESULT_LOGIN);
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            userOrganizationListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            userOrganizationListRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(userOrganizationListRequest, "userOrganizationListRequest");
+
+        } catch (Exception e) {
+
+            hideBusyProgress();
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+    private boolean checkMeetingId() {
+
+        String meetingId = mEdTxtMeetingId.getText().toString().trim();
+
+        Conditions.hideKeyboard(LoginActivity.this);
+
+        if (meetingId.isEmpty() || meetingId == null) {
+            mEdTxtMeetingId.setError("Meeting ID can not be blank");
+            return false;
+        }if (meetingId.length()<9) {
+            mEdTxtMeetingId.setError("Meeting id must be more than 9 character's");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void isValidMeetingId(final String meetingId) {
+
+        try {
+
+            showBusyProgress();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("ZoomMeetingId", meetingId);
+
+
+            GsonRequest<UserOrganizationListParentData> userOrganizationListRequest = new GsonRequest<>(Request.Method.POST, Constants.meetingIdValidOrNot, jsonObject.toString(), UserOrganizationListParentData.class,
+                    new Response.Listener<UserOrganizationListParentData>() {
+                        @Override
+                        public void onResponse(@NonNull UserOrganizationListParentData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                String error = response.getError().getErrorMessage();
+                                showToast(error);
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    joinMeeting(meetingId);
                                 }
                             }
 
@@ -399,6 +495,87 @@ public class LoginActivity extends BaseActivity {
                 return;*/
             }
         }
+    }
+
+    /////////////zoom sdk metods for join methods/////////
+
+    private void joinMeeting(final String meetingNo) {
+        // Step 1: Get meeting number from input field.
+        //String meetingNo = "";//"200395093";
+
+        // Check if the meeting number is empty.
+        if (meetingNo.length() == 0) {
+            Toast.makeText(LoginActivity.this, "You need to enter a meeting number/ vanity id which you want to join.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // Step 2: Get Zoom SDK instance.
+        ZoomSDK zoomSDK = ZoomSDK.getInstance();
+
+        // Check if the zoom SDK is initialized
+        if (!zoomSDK.isInitialized()) {
+            Toast.makeText(LoginActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Step 3: Get meeting service from zoom SDK instance.
+        MeetingService meetingService = zoomSDK.getMeetingService();
+
+        // Step 4: Configure meeting options.
+        JoinMeetingOptions opts = new JoinMeetingOptions();
+
+
+        // Some available options
+        opts.no_driving_mode = false;
+        opts.no_invite = false;
+        opts.no_meeting_end_message = false;
+        opts.no_titlebar = false;
+        opts.no_bottom_toolbar = false;
+        opts.no_dial_in_via_phone = true;
+        opts.no_dial_out_to_phone = true;
+        opts.no_disconnect_audio = false;
+        opts.no_share = false;
+        opts.invite_options = InviteOptions.INVITE_VIA_EMAIL + InviteOptions.INVITE_VIA_SMS + InviteOptions.INVITE_COPY_URL + InviteOptions.INVITE_ENABLE_ALL;
+        opts.no_audio = true;
+        opts.no_video = false;
+        //  opts.meeting_views_options = MeetingViewsOptions.NO_BUTTON_SHARE + MeetingViewsOptions.NO_BUTTON_VIDEO;
+        opts.no_meeting_error_message = true;
+        opts.participant_id = "participant id";
+
+        // Step 5: Setup join meeting parameters
+        JoinMeetingParams params = new JoinMeetingParams();
+
+        params.displayName = "Hello World From Zoom SDK";
+        params.meetingNo = meetingNo;
+
+        // Step 6: Call meeting service to join meeting
+        meetingService.joinMeetingWithParams(LoginActivity.this, params, opts);
+    }
+
+    @Override
+    public void onMeetingStatusChanged(MeetingStatus meetingStatus, int errorCode, int internalErrorCode) {
+
+    }
+
+    @Override
+    public void onZoomSDKLoginResult(long result) {
+
+    }
+
+    @Override
+    public void onZoomSDKLogoutResult(long result) {
+
+    }
+
+    @Override
+    public void onZoomIdentityExpired() {
+
+    }
+
+    @Override
+    public void onZoomSDKInitializeResult(int errorCode, int internalErrorCode) {
+
+        Log.i(TAG, "onZoomSDKInitializeResult, errorCode=" + errorCode + ", internalErrorCode=" + internalErrorCode);
+
     }
 
 }

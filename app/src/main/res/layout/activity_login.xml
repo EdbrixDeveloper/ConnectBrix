@@ -18,19 +18,19 @@
             android:id="@+id/imgConnectBrix"
             android:layout_width="300dp"
             android:layout_height="100dp"
-            android:layout_marginTop="40dp"
             android:layout_gravity="center"
+            android:layout_marginTop="40dp"
             app:srcCompat="@drawable/connect_brix" />
 
         <EditText
             android:id="@+id/edTxtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/flash_screen_background"
             android:layout_marginTop="50dp"
-            android:padding="13dp"
-            android:hint="Email"/>
+            android:background="@drawable/flash_screen_background"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="13dp" />
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -42,9 +42,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/flash_screen_background"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:padding="13dp"
-                android:hint="Password"/>
+                android:padding="13dp" />
 
             <ImageView
                 android:id="@+id/eyeIcon"
@@ -57,16 +57,15 @@
         </FrameLayout>
 
 
-
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorButtonText"
             android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:text="Login"
             android:textAllCaps="false"
-            android:text="Login" />
+            android:textColor="@color/colorButtonText" />
 
         <TextView
             android:id="@+id/textViewForgotPassword"
@@ -76,7 +75,63 @@
             android:gravity="right"
             android:text="Forgot Password?" />
 
+        <TextView
+            android:id="@+id/textViewOr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="or"
+            android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/textViewJoinMeeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="Join a Meeting"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/edTxtMeetingId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/flash_screen_background"
+            android:hint="Meeting ID"
+            android:inputType="text"
+            android:maxLength="11"
+            android:padding="13dp" />
+
+        <Button
+            android:id="@+id/btnJoin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:text="Join"
+            android:textAllCaps="false"
+            android:textColor="@color/colorButtonText" />
+
+        <!--<LinearLayout
+            android:id="@+id/ll_join"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btnJoin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.5"
+                android:background="@color/colorPrimary"
+                android:text="Join"
+                android:textAllCaps="false"
+                android:textColor="@color/colorButtonText" />
+        </LinearLayout>-->
     </LinearLayout>
 
 

@@ -22,6 +22,8 @@ public class Constants {
     public final static String resetPassword = BASE_URL.concat("auth/resetpassword");
     public final static String changePassword = BASE_URL.concat("auth/changepassword");
 
+    public final static String meetingIdValidOrNot = BASE_URL.concat("connectbrix/checkmeetingidvalidornot");  // authenticate
+
     public final static String getCountryList = BASE_URL.concat("common/getcountrylist");
     public final static String getStateList = BASE_URL.concat("common/getstatelistbycountry");
 

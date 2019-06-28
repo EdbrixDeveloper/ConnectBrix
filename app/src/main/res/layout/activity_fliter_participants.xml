@@ -72,14 +72,14 @@
                 android:id="@+id/ll_contacts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="9dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 android:weightSum="10">
 
                 <TextView
                     android:id="@+id/txtChipView"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="8.4"
@@ -87,6 +87,7 @@
 
                 <com.doodle.android.chips.ChipsView
                     android:id="@+id/cv_contacts"
+                    android:layout_marginTop="-13dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.6"
