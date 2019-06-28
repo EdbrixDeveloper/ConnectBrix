@@ -160,7 +160,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         btnMAddParticipants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(mTextViewParticipantCount.getText().toString()) < 20) {
+                String Count = mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString();
+                if (Integer.parseInt(Count) < 20) {
                     Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
                     intent.putExtra("meetingDbId", meetingDbId);
                     intent.putExtra("IsHost", IsHost);
