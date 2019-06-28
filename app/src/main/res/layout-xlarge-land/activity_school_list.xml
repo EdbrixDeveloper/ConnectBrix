@@ -67,6 +67,8 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_search"
         android:layout_width="match_parent"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewLine"
         android:layout_marginTop="5dp"
