@@ -31,7 +31,7 @@
             <com.applandeo.materialcalendarview.CalendarView
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
+                android:layout_height="match_parent"
                 app:headerColor="@color/colorPrimary"
                 tools:layout_editor_absoluteX="18dp"
                 tools:layout_editor_absoluteY="0dp" />
@@ -52,7 +52,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="57dp"
                 android:background="@color/colorBackground"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -60,9 +60,7 @@
                 <TextView
                     android:id="@+id/txtSelectedDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
                     android:text="04/Feb/2019"
                     android:textSize="22dp" />
 
