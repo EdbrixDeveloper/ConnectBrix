@@ -124,7 +124,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/app_normal_margin">
+            android:layout_marginLeft="370dp"
+            android:layout_marginRight="370dp"
+            android:layout_marginTop="@dimen/app_normal_margin"
+            android:layout_marginBottom="10dp">
 
             <Button
                 android:id="@+id/btnMAddParticipants"
@@ -137,7 +140,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="14dp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -222,9 +225,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="370dp"
+                android:layout_marginRight="370dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_background"
+                android:background="@color/colorPrimary"
                 android:text="Join Now"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
