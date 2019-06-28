@@ -22,34 +22,34 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".activities.LoginActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ForgotPasswordActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.LoginActivity"  />
+        <activity android:name=".activities.ForgotPasswordActivity"  />
         <activity
             android:name=".activities.SchoolListActivity"
-            android:theme="@style/AppTheme.NoActionBar"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.MeetingDetailsActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.FlashScreenActivity"  android:screenOrientation="portrait">
+            android:theme="@style/AppTheme.NoActionBar"  />
+        <activity android:name=".activities.MeetingDetailsActivity"  />
+        <activity android:name=".activities.FlashScreenActivity"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ChangePasswordActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.OrgnizationListActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.UserProfileActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.EditProfileActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SelectCountryActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SelectStateActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ParticipantListItemActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ChangePasswordActivity"  />
+        <activity android:name=".activities.OrgnizationListActivity"  />
+        <activity android:name=".activities.UserProfileActivity"  />
+        <activity android:name=".activities.EditProfileActivity"  />
+        <activity android:name=".activities.SelectCountryActivity"  />
+        <activity android:name=".activities.SelectStateActivity"  />
+        <activity android:name=".activities.ParticipantListItemActivity"  />
         <activity
             android:name=".activities.CreateMeetingActivity"
-            android:windowSoftInputMode="adjustPan"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.CalenderViewMeetingListActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SelectParticipantsActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.FliterParticipantsActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SelectParticipantsListItemActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activities.UpdateProfilePicActivity"  android:screenOrientation="portrait"></activity>
-        <activity android:name=".activities.WelcomeActivity"  android:screenOrientation="portrait"></activity>
+            android:windowSoftInputMode="adjustPan"  />
+        <activity android:name=".activities.CalenderViewMeetingListActivity"  />
+        <activity android:name=".activities.SelectParticipantsActivity"  />
+        <activity android:name=".activities.FliterParticipantsActivity"  />
+        <activity android:name=".activities.SelectParticipantsListItemActivity"  />
+        <activity android:name=".activities.UpdateProfilePicActivity"  ></activity>
+        <activity android:name=".activities.WelcomeActivity"  ></activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
