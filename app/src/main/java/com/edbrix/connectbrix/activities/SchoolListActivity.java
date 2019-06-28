@@ -221,10 +221,13 @@ public class SchoolListActivity extends BaseActivity {
                 @Override
                 public void afterTextChanged(Editable arg0) {
                     // TODO Auto-generated method stub
-                    String text = mInputSearch.getText().toString()
-                            .toLowerCase(Locale.getDefault());
-                    pmAcExpListAdapter.filterData(text);
-                    expandAll();
+                    if(mInputSearch.isFocused())
+                    {
+                        String text = mInputSearch.getText().toString()
+                                .toLowerCase(Locale.getDefault());
+                        pmAcExpListAdapter.filterData(text);
+                        expandAll();
+                    }
                 }
             });
 
