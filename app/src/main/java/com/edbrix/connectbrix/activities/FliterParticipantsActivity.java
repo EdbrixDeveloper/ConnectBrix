@@ -175,8 +175,10 @@ public class FliterParticipantsActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //System.out.println("Text [" + s + "]");
-
-                fliteredParticipantsAdapter.getFilter().filter(s.toString());
+                if(mInputSearch.isFocused())
+                {
+                    fliteredParticipantsAdapter.getFilter().filter(s.toString());
+                }
             }
 
             @Override

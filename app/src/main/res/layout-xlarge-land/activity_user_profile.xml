@@ -38,9 +38,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp"
+                android:layout_marginRight="11dp"
                 android:text="Teacher"
                 android:textStyle="bold"
-                android:textSize="19dp" />
+                android:textSize="22dp" />
 
         </LinearLayout>
 
@@ -59,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="Shibani Teacher"
-                android:textSize="22dp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="shibani@gmail.com"
-                android:textSize="19dp" />
+                android:textSize="22dp" />
 
             <TextView
                 android:id="@+id/textViewMobileNo"
@@ -85,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="The World Scholer Organization Of United State Of America"
-                android:textSize="19dp" />
+                android:textSize="22dp" />
 
 
         </LinearLayout>
