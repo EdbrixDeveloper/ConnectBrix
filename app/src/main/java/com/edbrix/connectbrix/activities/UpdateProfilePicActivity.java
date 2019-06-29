@@ -270,7 +270,8 @@ public class UpdateProfilePicActivity extends BaseActivity {
                                 showToast(error);
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast(response.getMessage());
+                                    //showToast(response.getMessage());
+                                    setResult(RESULT_OK);
                                     finish();
                                   /*  Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);
                                     startActivity(intent);*/

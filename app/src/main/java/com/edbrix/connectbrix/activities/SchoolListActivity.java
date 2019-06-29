@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,10 +56,12 @@ public class SchoolListActivity extends BaseActivity {
     public ExpandableListView schoolList_listView_schoolList;
     private AlertDialogManager alertDialogManager;
     private TextView txtDataFound;
+    private TextView requestMeetingListCount;
     private ImageView imgCalender;
     private ImageView imgUserProfile;
     private ImageView imgSearch;
     private LinearLayout linearLayoutCircular;
+    private FloatingActionButton requestedMeetingButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextInputLayout mInputLayoutSearch;
@@ -73,6 +76,7 @@ public class SchoolListActivity extends BaseActivity {
     boolean doubleBackToExitPressedOnce = false;
     SessionManager sessionManager;
     private MeetingListData meetingListData;
+
 
     /*private MyContinousAsyncTask myContinouslyRunningAsyncTask;*/
 
@@ -98,12 +102,14 @@ public class SchoolListActivity extends BaseActivity {
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
             linearLayoutCircular = (LinearLayout) findViewById(R.id.linearLayoutCircular);
+            requestedMeetingButton = (FloatingActionButton) findViewById(R.id.requestedMeetingButton);
 
             mInputLayoutSearch = (TextInputLayout) findViewById(R.id.input_layout_search);
             mInputSearch = (EditText) findViewById(R.id.input_search);
 
             floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
+            requestMeetingListCount = (TextView) findViewById(R.id.requestMeetingListCount);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);
             txtDataFound.setVisibility(View.GONE);
 
@@ -303,6 +309,14 @@ public class SchoolListActivity extends BaseActivity {
                 }
             });
 
+            requestedMeetingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SchoolListActivity.this, MeetingRequestListActivity.class);
+                    startActivity(intent);
+                }
+            });
+
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -413,6 +427,7 @@ public class SchoolListActivity extends BaseActivity {
 
             GsonRequest<MeetingListData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingList, jo.toString(), MeetingListData.class,
                     new Response.Listener<MeetingListData>() {
+                        @SuppressLint("RestrictedApi")
                         @Override
                         public void onResponse(@NonNull MeetingListData response) {
                             //hideBusyProgress();
@@ -439,6 +454,13 @@ public class SchoolListActivity extends BaseActivity {
                                         if (cnt < 10) {
                                             loading = false;
                                         }*/
+                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0) {
+                                            requestedMeetingButton.setVisibility(View.VISIBLE);
+                                            requestMeetingListCount.setText(meetingListData.getMeetingRequestCount().toString());
+                                        } else {
+                                            requestedMeetingButton.setVisibility(View.GONE);
+                                        }
+
 
                                         for (UserMeetingsDate userMeetingsDate :
                                                 meetingListData.getUserMeetingsDates()) {

@@ -147,8 +147,14 @@ public class MeetingRequestListActivity extends BaseActivity {
                     //final String isHost = usermeeting.getIsHost() == null ? "" : usermeeting.getIsHost().toString();
                     //final String isAvailable = usermeeting.getIsAvailable() == null ? "" : usermeeting.getIsAvailable().toString();
                     final String status = Status;
+                    String msg = "";
+                    if(status=="1"){
+                        msg = "Accept";
+                    }else{
+                        msg = "Reject";
+                    }
 
-                    alertDialogManager.Dialog("Confirmation", "Continue with reject meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    alertDialogManager.Dialog("Confirmation", "Continue with "+msg+" meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                         @Override
                         public void onPositiveClick() {
                             meetingAvilabilityStatus(meetingDbId, status);

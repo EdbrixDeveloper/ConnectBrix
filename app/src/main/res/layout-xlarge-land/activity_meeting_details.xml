@@ -196,6 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Are you avaliable?"
+                android:visibility="gone"
                 android:textSize="19dp" />
 
             <RadioGroup
@@ -203,6 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <RadioButton
