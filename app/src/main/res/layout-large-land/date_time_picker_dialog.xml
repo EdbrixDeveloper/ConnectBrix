@@ -22,7 +22,7 @@
         <CalendarView
             android:id="@+id/calendarDatePicker"
             android:layout_width="match_parent"
-            android:layout_height="230dp" />
+            android:layout_height="250dp" />
 
         <TimePicker
             android:id="@+id/timePicker"
