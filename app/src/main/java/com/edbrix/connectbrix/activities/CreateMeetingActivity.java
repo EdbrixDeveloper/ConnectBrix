@@ -57,7 +57,7 @@ public class CreateMeetingActivity extends BaseActivity {
     String tempMeetingDate;
     String comesFor;
     String isHost;
-    String IsCalenderActivity = "";
+    String IsCalenderActivity = "", isAvailable = "";
     SessionManager sessionManager;
     boolean isDateSelect = false, isTimeSelect = false;
 
@@ -74,6 +74,7 @@ public class CreateMeetingActivity extends BaseActivity {
         Intent intent = getIntent();
         comesFor = intent.getStringExtra("comesFor");
         isHost = intent.getStringExtra("IsHost");
+        isAvailable = intent.getStringExtra("isAvailable");
         IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
         if (comesFor.equals("edit")) {
             getSupportActionBar().setTitle("Edit Meeting");
@@ -236,7 +237,7 @@ public class CreateMeetingActivity extends BaseActivity {
                         }
 
                         if (str_time == null || str_time.isEmpty()) {
-                            str_time="";
+                            str_time = "";
                             int hour, minuteTemp;
                             String am_pm;
                             hour = timePicker.getCurrentHour();
@@ -340,6 +341,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", isHost);
+                                    intent.putExtra("isAvailable", isAvailable);
                                     intent.putExtra("RefreshFlag", "Y");
                                     //intent.putExtra("IsCalenderActivity", "C");
                                     intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
@@ -394,6 +396,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     Intent intent = new Intent(CreateMeetingActivity.this, MeetingDetailsActivity.class);
                                     intent.putExtra("meetingDbId", meetingDbId);
                                     intent.putExtra("IsHost", "1");
+                                    intent.putExtra("isAvailable", "0");
                                     intent.putExtra("RefreshFlag", "Y");
                                     intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
                                     startActivity(intent);

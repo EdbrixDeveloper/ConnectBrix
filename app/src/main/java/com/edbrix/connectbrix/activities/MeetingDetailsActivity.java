@@ -541,6 +541,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 intent.putExtra("meetingDateTime", mTxtMeetingDate.getText().toString() + " " + mTxtMeetingTime.getText().toString());
                 intent.putExtra("meetingAgenda", mTxtMeetingDetails.getText().toString());
                 intent.putExtra("IsHost", IsHost);
+                intent.putExtra("isAvailable", isAvailable);
                 intent.putExtra("IsCalenderActivity", IsCalenderActivity);
                 startActivity(intent);
                 //finish();25062019 by008

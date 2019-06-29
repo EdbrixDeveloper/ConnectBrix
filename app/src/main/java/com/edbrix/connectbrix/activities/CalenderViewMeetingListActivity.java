@@ -137,6 +137,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CalenderViewMeetingListActivity.this, CreateMeetingActivity.class);
                 intent.putExtra("comesFor", "new");
+                intent.putExtra("isAvailable", "0");
                 intent.putExtra("IsCalenderActivity", "Y");
                 startActivity(intent);
             }

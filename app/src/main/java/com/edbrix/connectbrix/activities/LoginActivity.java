@@ -353,7 +353,8 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
         if (meetingId.isEmpty() || meetingId == null) {
             mEdTxtMeetingId.setError("Meeting ID can not be blank");
             return false;
-        }if (meetingId.length()<9) {
+        }
+        if (meetingId.length() < 9) {
             mEdTxtMeetingId.setError("Meeting id must be more than 9 character's");
             return false;
         } else {
@@ -380,6 +381,7 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
                                 showToast(error);
                             } else {
                                 if (response.getSuccess() == 1) {
+                                    mEdTxtMeetingId.setText("");
                                     joinMeeting(meetingId);
                                 }
                             }

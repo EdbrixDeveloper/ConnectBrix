@@ -295,6 +295,7 @@ public class SchoolListActivity extends BaseActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(SchoolListActivity.this, CreateMeetingActivity.class);
                     intent.putExtra("comesFor", "new");
+                    intent.putExtra("isAvailable", "0");
                     intent.putExtra("IsCalenderActivity", "N");
                     startActivity(intent);
                 }
