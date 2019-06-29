@@ -6,134 +6,141 @@
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/loginLinearLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="220dp"
-        android:paddingRight="220dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgConnectBrix"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            app:srcCompat="@drawable/connect_brix" />
-
-        <EditText
-            android:id="@+id/edTxtEmail"
+        <LinearLayout
+            android:id="@+id/loginLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/flash_screen_background"
-            android:hint="Email"
-            android:inputType="textPersonName"
-            android:padding="13dp" />
+            android:orientation="vertical"
+            android:paddingLeft="220dp"
+            android:paddingRight="220dp">
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="60dp">
+            <ImageView
+                android:id="@+id/imgConnectBrix"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                app:srcCompat="@drawable/connect_brix" />
 
             <EditText
-                android:id="@+id/edTxtPassword"
+                android:id="@+id/edTxtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/flash_screen_background"
+                android:hint="Email"
+                android:inputType="textPersonName"
+                android:padding="13dp" />
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <EditText
+                    android:id="@+id/edTxtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/flash_screen_background"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="13dp" />
+
+                <ImageView
+                    android:id="@+id/eyeIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_visibility_off_black_24dp" />
+            </FrameLayout>
+
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/colorButtonText" />
+
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="right"
+                android:text="Forgot Password?" />
+
+            <TextView
+                android:id="@+id/textViewOr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="or"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewJoinMeeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="left"
+                android:text="Join a Meeting"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/edTxtMeetingId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/flash_screen_background"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:hint="Meeting ID"
+                android:inputType="number"
+                android:maxLength="11"
                 android:padding="13dp" />
-
-            <ImageView
-                android:id="@+id/eyeIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_visibility_off_black_24dp" />
-        </FrameLayout>
-
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textColor="@color/colorButtonText" />
-
-        <TextView
-            android:id="@+id/textViewForgotPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="right"
-            android:text="Forgot Password?" />
-
-        <TextView
-            android:id="@+id/textViewOr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:text="or"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/textViewJoinMeeting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="left"
-            android:text="Join a Meeting"
-            android:textStyle="bold" />
-
-
-        <EditText
-            android:id="@+id/edTxtMeetingId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/flash_screen_background"
-            android:hint="Meeting ID"
-            android:inputType="text"
-            android:maxLength="11"
-            android:padding="13dp" />
-
-        <Button
-            android:id="@+id/btnJoin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
-            android:text="Join"
-            android:textAllCaps="false"
-            android:textColor="@color/colorButtonText" />
-
-        <!--<LinearLayout
-            android:id="@+id/ll_join"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
 
             <Button
                 android:id="@+id/btnJoin"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="0.5"
+                android:layout_marginBottom="10dp"
                 android:background="@color/colorPrimary"
                 android:text="Join"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText" />
-        </LinearLayout>-->
 
-    </LinearLayout>
+            <!--<LinearLayout
+                android:id="@+id/ll_join"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/btnJoin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/colorPrimary"
+                    android:text="Join"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorButtonText" />
+            </LinearLayout>-->
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

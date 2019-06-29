@@ -233,7 +233,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             Date dateForEvent = sdf.parse(tempDate);
             Calendar cal = Calendar.getInstance();
             cal.setTime(dateForEvent);
-            MyEventDay myEventDay1 = new MyEventDay(cal, R.drawable.circle, "Note " + count++);
+            MyEventDay myEventDay1 = new MyEventDay(cal, R.drawable.circle_24, "Note " + count++);
             mCalendarView.setDate(myEventDay1.getCalendar());
             mEventDays.add(myEventDay1);
             mCalendarView.setEvents(mEventDays);
