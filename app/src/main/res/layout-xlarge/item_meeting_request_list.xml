@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_mainMeetingList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <LinearLayout
+            android:id="@+id/myMeetingList"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewMeetingDay"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="12"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewMeetingMonth"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:text="Mar"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1.12"
+            android:orientation="vertical"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/textViewMeetingName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="School Anual Function Meeting"
+                android:textSize="25dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewAgenda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Meeting for discuss about anual function."
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="22dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp">
+
+                <ImageView
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:src="@drawable/timer" />
+
+                <TextView
+                    android:id="@+id/textViewMeetingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="center"
+                    android:text="9:00AM"
+                    android:textSize="22dp" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_accept"
+                android:layout_width="82dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/button_meeting_request"
+                android:padding="@dimen/app_min_margin"
+                android:drawableLeft="@drawable/tick_mark"
+                android:text="Accept"
+                android:layout_margin="@dimen/app_min_margin"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_reject"
+                android:layout_width="82dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/app_min_margin"
+                android:background="@drawable/button_meeting_request"
+                android:padding="@dimen/app_min_margin"
+                android:drawableLeft="@drawable/rejected_status"
+                android:text="Rejected"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+

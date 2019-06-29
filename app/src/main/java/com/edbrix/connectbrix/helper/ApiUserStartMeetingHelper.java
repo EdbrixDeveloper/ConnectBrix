@@ -9,7 +9,9 @@ import us.zoom.sdk.MeetingService;
 import us.zoom.sdk.StartMeetingOptions;
 import us.zoom.sdk.StartMeetingParamsWithoutLogin;
 import us.zoom.sdk.ZoomSDK;
+
 import com.edbrix.connectbrix.helper.ZoomMeetingUISettingHelper;
+import com.edbrix.connectbrix.utils.SessionManager;
 
 public class ApiUserStartMeetingHelper {
     private final static String TAG = "ApiUserStart";
@@ -20,6 +22,7 @@ public class ApiUserStartMeetingHelper {
 
     private final static int STYPE = MeetingService.USER_TYPE_API_USER;
     private final static String DISPLAY_NAME = "ZoomUS SDK";
+    SessionManager sessionManager;
 
     private ApiUserStartMeetingHelper() {
         mZoomSDK = ZoomSDK.getInstance();
@@ -32,18 +35,19 @@ public class ApiUserStartMeetingHelper {
 
     /**
      * Start meeting via meeting number
-     * @param context Android context
+     *
+     * @param context   Android context
      * @param meetingNo the meeting number
      */
     public int startMeetingWithNumber(Context context, String meetingNo) {
         int ret = -1;
         MeetingService meetingService = mZoomSDK.getMeetingService();
-        if(meetingService == null) {
+        if (meetingService == null) {
             return ret;
         }
 
         StartMeetingOptions opts = ZoomMeetingUISettingHelper.getMeetingOptions();
-
+        sessionManager = new SessionManager(context);
 
         StartMeetingParamsWithoutLogin params = new StartMeetingParamsWithoutLogin();
         APIUserInfo userInfo = APIUserInfoHelper.getAPIUserInfo();
@@ -51,7 +55,7 @@ public class ApiUserStartMeetingHelper {
             params.userId = userInfo.userId;
             params.zoomToken = userInfo.userZoomToken;
             params.userType = STYPE;
-            params.displayName = DISPLAY_NAME;
+            params.displayName = sessionManager.getSessionUserFirstName() + " " + sessionManager.getSessionUserFirstLast();//DISPLAY_NAME;
             params.zoomAccessToken = userInfo.userZoomAccessToken;
             params.meetingNo = meetingNo;
             ret = meetingService.startMeetingWithParams(context, params, opts);
@@ -62,13 +66,14 @@ public class ApiUserStartMeetingHelper {
 
     /**
      * Start meeting via meeting vanity id
-     * @param context Android context
+     *
+     * @param context  Android context
      * @param vanityId the meeting vanity id
      */
     public int startMeetingWithVanityId(Context context, String vanityId) {
         int ret = -1;
         MeetingService meetingService = mZoomSDK.getMeetingService();
-        if(meetingService == null) {
+        if (meetingService == null) {
             return ret;
         }
 

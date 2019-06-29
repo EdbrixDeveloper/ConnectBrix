@@ -221,8 +221,7 @@ public class SchoolListActivity extends BaseActivity {
                 @Override
                 public void afterTextChanged(Editable arg0) {
                     // TODO Auto-generated method stub
-                    if(mInputSearch.isFocused())
-                    {
+                    if (mInputSearch.isFocused()) {
                         String text = mInputSearch.getText().toString()
                                 .toLowerCase(Locale.getDefault());
                         pmAcExpListAdapter.filterData(text);
@@ -247,6 +246,9 @@ public class SchoolListActivity extends BaseActivity {
             onChildItemClickActionListener = new SchoolExpListAdapter.OnChildItemClickActionListener() {
                 @Override
                 public void onChildItemClicked(UserMeeting usermeeting, int position) {
+
+                    /*Intent intent = new Intent(SchoolListActivity.this, MeetingRequestListActivity.class);
+                    startActivity(intent);*/
                     if (usermeeting != null) {
 
                         final String meetingDbId = usermeeting.getId() == null ? "" : usermeeting.getId().toString();

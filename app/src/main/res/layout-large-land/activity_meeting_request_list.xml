@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.SchoolListActivity">
+
+    <!--<LinearLayout
+        android:id="@+id/actionBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3.1"
+            android:text="Meeting Requests"
+            android:textColor="@color/colorButtonText"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>-->
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/actionBarLayout"
+        android:background="@color/colorDarkParimary" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewLine">
+
+        <ExpandableListView
+            android:id="@+id/schoolList_listView_schoolList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:groupIndicator="@color/colorPrimary"
+            tools:listheader="@layout/item_meeting_list_seprator"
+            tools:listitem="@layout/item_meeting_list" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/meetingListImg"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/linearLayoutText"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/meetinglist"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtDataFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/meetingListImg"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="No meeting available."
+        android:textSize="15dp"
+        android:visibility="gone" />
+    
+
+</RelativeLayout>

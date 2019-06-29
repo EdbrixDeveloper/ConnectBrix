@@ -15,6 +15,9 @@ public class MeetingListData {
     @SerializedName("Message")
     @Expose
     private String message;
+    @SerializedName("MeetingRequestCount")
+    @Expose
+    private Integer meetingRequestCount;
     @SerializedName("UserMeetingsDates")
     @Expose
     private List<UserMeetingsDate> userMeetingsDates = null;
@@ -45,6 +48,14 @@ public class MeetingListData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Integer getMeetingRequestCount() {
+        return meetingRequestCount;
+    }
+
+    public void setMeetingRequestCount(Integer meetingRequestCount) {
+        this.meetingRequestCount = meetingRequestCount;
     }
 
     public List<UserMeetingsDate> getUserMeetingsDates() {
