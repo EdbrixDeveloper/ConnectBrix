@@ -106,7 +106,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/btn_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/tick_mark"
@@ -117,7 +117,7 @@
                 android:textAllCaps="false"/>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btn_reject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="false"
