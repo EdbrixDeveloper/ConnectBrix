@@ -94,10 +94,48 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:gravity="left"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_accept"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/button_meeting_request"
+                    android:drawableLeft="@drawable/tick_mark"
+                    android:padding="@dimen/app_min_margin"
+                    android:text="Accept"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btn_reject"
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/button_meeting_request"
+                    android:drawableLeft="@drawable/rejected_status"
+                    android:padding="@dimen/app_min_margin"
+                    android:text="Reject"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -131,7 +169,7 @@
                 android:text="Rejected"
                 android:textAllCaps="false"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 </LinearLayout>
