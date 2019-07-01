@@ -320,7 +320,7 @@ public class SchoolListActivity extends BaseActivity {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+                    userMeetingsDateList.clear();// = new ArrayList<UserMeetingsDate>();
                     requestCount = 0;
                     loading = true;
                     prepareListData("0", 0);
@@ -521,12 +521,15 @@ public class SchoolListActivity extends BaseActivity {
             setImageToUserProfileIcon();
         }
 
-        if (requestCode == 1) {
+        if (requestCode == 1 && data != null) {
             //prepareListData();
             requestCount = 0;
             loading = true;
-            userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+            userMeetingsDateList.clear();// = new ArrayList<UserMeetingsDate>();
+            //schoolList_listView_schoolList.setVisibility(View.GONE);
+            //pmAcExpListAdapter.notifyDataSetChanged();
             prepareListData("0", 0);
+
         }
     }
 
@@ -545,8 +548,11 @@ public class SchoolListActivity extends BaseActivity {
             if (RefreshFlag.equals("Y")) {
                 requestCount = 0;
                 loading = true;
-                userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+                userMeetingsDateList.clear(); //= new ArrayList<UserMeetingsDate>();
+                //schoolList_listView_schoolList.setVisibility(View.GONE);
+                //pmAcExpListAdapter.notifyDataSetChanged();
                 prepareListData("0", 0);
+
             }
             //This code will be executed when the broadcast in activity B is launched
         }

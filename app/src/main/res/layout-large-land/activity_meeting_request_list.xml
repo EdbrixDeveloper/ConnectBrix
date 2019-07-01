@@ -42,7 +42,7 @@
         android:layout_below="@+id/viewLine">
 
         <ExpandableListView
-            android:id="@+id/schoolList_listView_schoolList"
+            android:id="@+id/meetingRequestList_listView_meetingRequestList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:groupIndicator="@color/colorPrimary"
