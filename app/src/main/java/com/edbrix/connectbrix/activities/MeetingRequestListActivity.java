@@ -149,12 +149,12 @@ public class MeetingRequestListActivity extends BaseActivity {
                     final String status = Status;
                     String msg = "";
                     if(status=="1"){
-                        msg = "Accept";
+                        msg = "accept";
                     }else{
-                        msg = "Reject";
+                        msg = "reject";
                     }
 
-                    alertDialogManager.Dialog("Confirmation", "Continue with "+msg+" meeting?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    alertDialogManager.Dialog("Confirmation", "Continue with "+msg+" meeting request?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                         @Override
                         public void onPositiveClick() {
                             meetingAvilabilityStatus(meetingDbId, status);

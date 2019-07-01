@@ -148,19 +148,19 @@
 
         <TextView
             android:id="@+id/requestMeetingListCount"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-40dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="-35dp"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/requestedMeetingButton"
             android:background="@drawable/bg_count"
             android:paddingBottom="2dp"
             android:paddingEnd="2dp"
-            android:paddingStart="13dp"
-            android:paddingTop="2dp"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
             android:elevation="7dp"
             android:text="0"
-            android:textColor="#000000"
+            android:textColor="@color/zm_white"
             android:textStyle="bold" />
 
     </RelativeLayout>
