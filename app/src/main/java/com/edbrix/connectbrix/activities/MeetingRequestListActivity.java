@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +67,7 @@ public class MeetingRequestListActivity extends BaseActivity {
     ArrayList<UserMeetingsDate> userMeetingsDateList;
     private int requestCount = 0;
     private boolean loading = true;
+    private boolean isAcceptedMeeting = false;
     private MeetingRequestExpListAdapter.OnButtonClickActionListener onButtonClickActionListener;
 
     @Override
@@ -148,13 +150,14 @@ public class MeetingRequestListActivity extends BaseActivity {
                     //final String isAvailable = usermeeting.getIsAvailable() == null ? "" : usermeeting.getIsAvailable().toString();
                     final String status = Status;
                     String msg = "";
-                    if(status=="1"){
+                    if (status == "1") {
                         msg = "accept";
-                    }else{
+                        isAcceptedMeeting = true;
+                    } else {
                         msg = "reject";
                     }
 
-                    alertDialogManager.Dialog("Confirmation", "Continue with "+msg+" meeting request?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    alertDialogManager.Dialog("Confirmation", "Continue with " + msg + " meeting request?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
                         @Override
                         public void onPositiveClick() {
                             meetingAvilabilityStatus(meetingDbId, status);
@@ -194,7 +197,16 @@ public class MeetingRequestListActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        if (isAcceptedMeeting == true) {
+            Intent resultIntent = new Intent();
+            // TODO Add extras or a data URI to this intent as appropriate.
+            resultIntent.putExtra("isAcceptedMeeting", "true");
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        } else {
+            finish();
+        }
+
         super.onBackPressed();
         return;
         /*if (doubleBackToExitPressedOnce) {
@@ -351,7 +363,7 @@ public class MeetingRequestListActivity extends BaseActivity {
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast("Successfully updated meeting status");
+                                    //showToast("Successfully updated meeting status");
                                     userMeetingsDateList = new ArrayList<UserMeetingsDate>();
                                     requestCount = 0;
                                     loading = true;

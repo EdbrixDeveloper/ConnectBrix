@@ -313,7 +313,8 @@ public class SchoolListActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(SchoolListActivity.this, MeetingRequestListActivity.class);
-                    startActivity(intent);
+                    //startActivity(intent);
+                    startActivityForResult(intent, 9);
                 }
             });
 
@@ -530,6 +531,13 @@ public class SchoolListActivity extends BaseActivity {
             //pmAcExpListAdapter.notifyDataSetChanged();
             prepareListData("0", 0);
 
+        }
+
+        if (requestCode == 9 && data != null) {
+            requestCount = 0;
+            loading = true;
+            userMeetingsDateList.clear();
+            prepareListData("0", 0);
         }
     }
 
