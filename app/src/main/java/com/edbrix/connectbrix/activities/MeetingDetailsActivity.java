@@ -124,7 +124,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
         }
 
-        if (isAvailable.equals("1")) {
+        /*if (isAvailable.equals("1")) {
             radioMale.setChecked(true);
             radioFemale.setChecked(false);
             mBtnMJoin.setVisibility(View.VISIBLE);
@@ -132,7 +132,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             radioMale.setChecked(false);
             radioFemale.setChecked(true);
             mBtnMJoin.setVisibility(View.GONE);
-        }
+        }*/
         mBtnMJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -424,7 +424,18 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         mTxtDataFound.setVisibility(View.GONE);
                                         mParticipantList.setVisibility(View.VISIBLE);
                                         participantArrayList = new ArrayList<>();
-                                        participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
+                                        // for host user,shows all participant user list &
+                                        // for participant user, shows only request accepted participant user list....
+                                        if (IsHost.equals("1")) {
+                                            participantArrayList = meetingDetailsData.getMeeting().getParticipantList();
+                                        } else {
+                                            participantArrayList.clear();
+                                            for (ParticipantList participantList : meetingDetailsData.getMeeting().getParticipantList()) {
+                                                if (participantList.getStatus().equals("1")) {
+                                                    participantArrayList.add(participantList);
+                                                }
+                                            }
+                                        }
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
                                         mParticipantList.setAdapter(participantsListAdapter);
                                         participantsListAdapter.notifyDataSetChanged();
