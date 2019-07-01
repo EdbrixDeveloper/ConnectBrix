@@ -154,7 +154,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btns"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_below="@+id/mainLinear" />
 
     <ImageView
@@ -164,7 +164,7 @@
         android:layout_marginTop="350dp"
         android:gravity="center"
         android:layout_below="@+id/mainLinear"
-        android:visibility="visible"
+        android:visibility="gone"
         android:src="@drawable/add_participants"/>
 
     <TextView
@@ -176,7 +176,7 @@
         android:gravity="center"
         android:text="There is no participant added in the meeting."
         android:textSize="20dp"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/btns"

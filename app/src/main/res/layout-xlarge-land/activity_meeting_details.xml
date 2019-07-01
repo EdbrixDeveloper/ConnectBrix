@@ -140,7 +140,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
                 android:textSize="14dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
