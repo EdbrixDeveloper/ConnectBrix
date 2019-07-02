@@ -76,8 +76,20 @@ public class EditProfileActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignViews();
         sessionManager = new SessionManager(this);
-        GetUserPersonalData();
         clickListner();
+        if (savedInstanceState != null) {
+            mEmail.setText("Email:"+savedInstanceState.getString("email"));
+            mFirstNameVal.setText(savedInstanceState.getString("firstName"));
+            mLastNameVal.setText(savedInstanceState.getString("lastName"));
+            mAddressVal.setText(savedInstanceState.getString("address"));
+            mCityVal.setText(savedInstanceState.getString("city"));
+            mStateVal.setText(savedInstanceState.getString("state"));
+            mZipVal.setText(savedInstanceState.getString("zip"));
+            mPhone1Val.setText(savedInstanceState.getString("phone1"));
+            mPhone2Val.setText(savedInstanceState.getString("phone2"));
+        } else {
+            GetUserPersonalData();
+        }
     }
 
     private void assignViews() {
@@ -356,5 +368,33 @@ public class EditProfileActivity extends BaseActivity {
         }
         super.onResume();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("email", mEmail.getText().toString());
+        outState.putString("firstName", mFirstNameVal.getText().toString());
+        outState.putString("lastName", mLastNameVal.getText().toString());
+        outState.putString("address", mAddressVal.getText().toString());
+        outState.putString("city", mCityVal.getText().toString());
+        outState.putString("state", mStateVal.getText().toString());
+        outState.putString("zip", mZipVal.getText().toString());
+        outState.putString("phone1", mPhone1Val.getText().toString());
+        outState.putString("phone2", mPhone2Val.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mEmail.setText("Email"+savedInstanceState.getString("email"));
+        mFirstNameVal.setText(savedInstanceState.getString("firstName"));
+        mLastNameVal.setText(savedInstanceState.getString("lastName"));
+        mAddressVal.setText(savedInstanceState.getString("address"));
+        mCityVal.setText(savedInstanceState.getString("city"));
+        mStateVal.setText(savedInstanceState.getString("state"));
+        mZipVal.setText(savedInstanceState.getString("zip"));
+        mPhone1Val.setText(savedInstanceState.getString("phone1"));
+        mPhone2Val.setText(savedInstanceState.getString("phone2"));
     }
 }
