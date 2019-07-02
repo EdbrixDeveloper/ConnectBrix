@@ -84,6 +84,7 @@ public class SchoolListActivity extends BaseActivity {
     ArrayList<UserMeetingsDate> userMeetingsDateList;
     private int requestCount = 0;
     private boolean loading = true;
+    private int refreshCnt = 0;
     private SchoolExpListAdapter.OnChildItemClickActionListener onChildItemClickActionListener;
 
     @Override
@@ -321,10 +322,14 @@ public class SchoolListActivity extends BaseActivity {
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    userMeetingsDateList.clear();// = new ArrayList<UserMeetingsDate>();
-                    requestCount = 0;
-                    loading = true;
-                    prepareListData("0", 0);
+                    if (refreshCnt < 1) {
+                        refreshCnt = 1;
+                        userMeetingsDateList.clear();// = new ArrayList<UserMeetingsDate>();
+                        requestCount = 0;
+                        loading = true;
+                        prepareListData("0", 0);
+                        //mSwipeRefreshLayout.setRefreshing(false);
+                    }
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
@@ -486,6 +491,7 @@ public class SchoolListActivity extends BaseActivity {
                                             schoolList_listView_schoolList.expandGroup(i);
                                         }
                                         pmAcExpListAdapter.notifyDataSetChanged();
+                                        refreshCnt = 0;
                                     } else {
                                         loading = false;
                                         if (userMeetingsDateList.size() < 1) {

@@ -435,6 +435,12 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                                     participantArrayList.add(participantList);
                                                 }
                                             }
+                                            mTextViewParticipantCount.setText("");
+                                            String ss = String.valueOf(participantArrayList.size());
+                                            if (participantArrayList.size() > 0) {
+                                                mTextViewParticipantCount.setText(ss);
+                                            }
+
                                         }
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
                                         mParticipantList.setAdapter(participantsListAdapter);

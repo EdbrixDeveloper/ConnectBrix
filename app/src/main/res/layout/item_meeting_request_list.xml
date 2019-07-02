@@ -97,12 +97,71 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:gravity="left"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <Button
+
+                <RelativeLayout
+                    android:id="@+id/btn_accept"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:gravity="left"
+                    android:paddingLeft="@dimen/app_min_margin"
+                    android:background="@drawable/button_meeting_request">
+
+                    <ImageView
+                        android:id="@+id/meetingRequest_imageView_accept"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:clickable="true"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/tick_mark" />
+
+                    <TextView
+                        android:id="@+id/meetingRequest_textView_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_toRightOf="@+id/meetingRequest_imageView_accept"
+                        android:paddingLeft="@dimen/app_min_margin"
+                        android:paddingTop="7dp"
+                        android:text="Accept"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/btn_reject"
+                    android:layout_width="100dp"
+                    android:background="@drawable/button_meeting_request"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="@dimen/app_normal_margin"
+                    android:gravity="left">
+
+                    <ImageView
+                        android:id="@+id/meetingRequest_imageView_reject"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:clickable="true"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/rejected_status" />
+
+                    <TextView
+                        android:id="@+id/meetingRequest_textView_reject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_toRightOf="@+id/meetingRequest_imageView_reject"
+                        android:paddingLeft="@dimen/app_min_margin"
+                        android:paddingTop="7dp"
+                        android:text="Reject"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+                <!--<Button
                     android:id="@+id/btn_accept"
                     android:layout_width="120dp"
                     android:layout_height="35dp"
@@ -112,7 +171,7 @@
                     android:layout_marginRight="3dp"
                     android:background="@drawable/button_meeting_request"
                     android:drawableLeft="@drawable/tick_mark"
-                    android:padding="@dimen/app_min_margin"
+                    android:paddingLeft="@dimen/app_min_margin"
                     android:text="Accept"
                     android:textAllCaps="false" />
 
@@ -128,13 +187,13 @@
                     android:drawableLeft="@drawable/rejected_status"
                     android:padding="@dimen/app_min_margin"
                     android:text="Reject"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false" />-->
 
             </LinearLayout>
 
 
         </LinearLayout>
-        
+
     </LinearLayout>
 </LinearLayout>
 

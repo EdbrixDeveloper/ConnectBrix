@@ -1,6 +1,7 @@
 package com.edbrix.connectbrix.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edbrix.connectbrix.R;
@@ -72,9 +75,20 @@ public class MeetingRequestExpListAdapter extends BaseExpandableListAdapter {
         TextView textViewMeetingName = (TextView) convertView.findViewById(R.id.textViewMeetingName);
         TextView textViewAgenda = (TextView) convertView.findViewById(R.id.textViewAgenda);
         TextView textViewMeetingTime = (TextView) convertView.findViewById(R.id.textViewMeetingTime);
+
         //TextView textViewPartycipentCount = (TextView) convertView.findViewById(R.id.textViewPartycipentCount);
-        Button btn_accept = (Button) convertView.findViewById(R.id.btn_accept);
-        Button btn_reject = (Button) convertView.findViewById(R.id.btn_reject);
+
+        //Button btn_accept = (Button) convertView.findViewById(R.id.btn_accept);
+        //Button btn_reject = (Button) convertView.findViewById(R.id.btn_reject);
+
+        RelativeLayout btn_accept = (RelativeLayout) convertView.findViewById(R.id.btn_accept);
+        RelativeLayout btn_reject = (RelativeLayout) convertView.findViewById(R.id.btn_reject);
+
+        ImageView meetingRequest_imageView_accept = (ImageView) convertView.findViewById(R.id.meetingRequest_imageView_accept);
+        TextView meetingRequest_textView_accept = (TextView) convertView.findViewById(R.id.meetingRequest_textView_accept);
+
+        ImageView meetingRequest_imageView_reject = (ImageView) convertView.findViewById(R.id.meetingRequest_imageView_reject);
+        TextView meetingRequest_textView_reject = (TextView) convertView.findViewById(R.id.meetingRequest_textView_reject);
 
 
         String day = "", monthString = "";
@@ -96,25 +110,39 @@ public class MeetingRequestExpListAdapter extends BaseExpandableListAdapter {
         String[] meetingTime = userMeeting.getMeetingDate().split(" ");
 
         textViewMeetingTime.setText(meetingTime[1] + " " + meetingTime[2]);
-        //textViewPartycipentCount.setText(userMeeting.getMeetingParticipantsCount());
 
-        /*if (userMeeting.getIsHost() == 0) {
-            myMeetingList.setBackground(null);
-        }*/
-
-        /*ll_mainMeetingList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonClickActionListener.onChildItemClicked(userMeeting, childPosition);
-            }
-        });*/
-
-
-        if (userMeeting.getIsAvailable().equals("2")) {
+        /*if (userMeeting.getIsAvailable().equals("2")) {
             btn_reject.setText("Rejected");
             btn_reject.setEnabled(false);
         } else {
             btn_reject.setText("Reject");
+            btn_reject.setEnabled(true);
+        }
+
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonClickActionListener.onChildItemClicked(userMeeting, childPosition, "1");
+            }
+        });
+
+        btn_reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonClickActionListener.onChildItemClicked(userMeeting, childPosition, "2");
+            }
+        });*/
+
+        if (userMeeting.getIsAvailable().equals("2")) {
+            meetingRequest_textView_reject.setText("Rejected");
+            meetingRequest_textView_reject.setTextColor(Color.parseColor("#b6b6b6"));//#b6b6b6
+            meetingRequest_imageView_reject.setImageResource(R.drawable.rejected_status_in_fade_effect);
+            //meetingRequest_imageView_reject.setBackgroundResource(R.drawable.rejected_status_in_fade_effect);
+            btn_reject.setEnabled(false);
+        } else {
+            //meetingRequest_imageView_reject.setImageResource(R.drawable.rejected_status);
+            meetingRequest_textView_reject.setText("Reject");
+            //meetingRequest_textView_reject.setTextColor(Color.parseColor("#b6b6b6"));
             btn_reject.setEnabled(true);
         }
 
