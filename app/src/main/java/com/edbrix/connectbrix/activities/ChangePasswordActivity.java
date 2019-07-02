@@ -49,6 +49,12 @@ public class ChangePasswordActivity extends BaseActivity {
         assignViews();
         sessionManager = new SessionManager(this);
         clickListner();
+
+        if (savedInstanceState != null) {
+            mEdTxtPassword.setText(savedInstanceState.getString("newPwd", ""));
+            mEdTxtConfirmPassword.setText(savedInstanceState.getString("confirmPwd", ""));
+        }
+
     }
 
     private void assignViews() {
@@ -158,5 +164,20 @@ public class ChangePasswordActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("newPwd", mEdTxtPassword.getText().toString());
+        outState.putString("confirmPwd", mEdTxtConfirmPassword.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //Model model = savedInstanceState.getParcelable("parcelable");
+        mEdTxtPassword.setText(savedInstanceState.getString("newPwd", ""));
+        mEdTxtConfirmPassword.setText(savedInstanceState.getString("confirmPwd", ""));
     }
 }
