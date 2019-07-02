@@ -93,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:text=""
+                android:textAlignment="gravity"
                 android:textSize="14dp" />
 <!--Meeting Details-->
             </LinearLayout>

@@ -322,7 +322,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         // Step 5: Setup join meeting parameters
         JoinMeetingParams params = new JoinMeetingParams();
 
-        params.displayName = "Hello World From Zoom SDK";
+        params.displayName = sessionManager.getSessionUserFirstName() + " " + sessionManager.getSessionUserFirstLast();
         params.meetingNo = meetingNo;
 
         // Step 6: Call meeting service to join meeting

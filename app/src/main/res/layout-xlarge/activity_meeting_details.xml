@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:weightSum="2">
 
-           <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1.8"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1.8"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtMeetingTitle"
@@ -36,7 +36,7 @@
                     android:text=""
                     android:textSize="26dp"
                     android:textStyle="bold" />
-<!--Meeting Title-->
+                <!--Meeting Title-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,15 +54,15 @@
                             android:layout_height="31dp"
                             android:src="@drawable/date_picker" />
 
-                         <TextView
-                        android:id="@+id/txtMeetingDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="3dp"
-                        android:text=""
-                        android:textSize="22dp" />
-<!--dd/MMM/yyyy-->
+                        <TextView
+                            android:id="@+id/txtMeetingDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:text=""
+                            android:textSize="22dp" />
+                        <!--dd/MMM/yyyy-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -77,25 +77,26 @@
                             android:src="@drawable/timer" />
 
                         <TextView
-                        android:id="@+id/txtMeetingTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="3dp"
-                        android:text=""
-                        android:textSize="22dp" />
-<!--hh:mm AM-->
+                            android:id="@+id/txtMeetingTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:text=""
+                            android:textSize="22dp" />
+                        <!--hh:mm AM-->
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                android:id="@+id/txtMeetingDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:text=""
-                android:textSize="22dp" />
-<!--Meeting Details-->
+                    android:id="@+id/txtMeetingDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:text=""
+                    android:textAlignment="gravity"
+                    android:textSize="22dp" />
+                <!--Meeting Details-->
             </LinearLayout>
 
             <LinearLayout
@@ -117,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:textSize="19dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
@@ -134,15 +135,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:visibility="gone"
                 android:layout_marginLeft="170dp"
                 android:layout_marginRight="170dp"
+                android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:text="Add Participants"
                 android:textAllCaps="false"
                 android:textColor="@color/colorButtonText"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -154,18 +155,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btns"
-        android:visibility="visible"
-        android:layout_below="@+id/mainLinear" />
+        android:layout_below="@+id/mainLinear"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_below="@+id/mainLinear"
         android:layout_marginTop="350dp"
         android:gravity="center"
-        android:layout_below="@+id/mainLinear"
-        android:visibility="gone"
-        android:src="@drawable/add_participants"/>
+        android:src="@drawable/add_participants"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txtDataFound"
@@ -198,16 +199,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Are you avaliable?"
-                android:visibility="gone"
-                android:textSize="22dp" />
+                android:textSize="22dp"
+                android:visibility="gone" />
 
             <RadioGroup
                 android:id="@+id/radioSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/radioMale"

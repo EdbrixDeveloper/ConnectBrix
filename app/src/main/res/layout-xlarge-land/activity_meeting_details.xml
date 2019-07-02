@@ -36,7 +36,7 @@
                     android:text=""
                     android:textSize="26dp"
                     android:textStyle="bold" />
-<!--Meeting Title-->
+                <!--Meeting Title-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                             android:layout_marginLeft="3dp"
                             android:text=""
                             android:textSize="19dp" />
-<!--dd/MMM/yyyy-->
+                        <!--dd/MMM/yyyy-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -82,7 +82,7 @@
                             android:layout_marginLeft="3dp"
                             android:text=""
                             android:textSize="19dp" />
-<!--hh:mm AM-->
+                        <!--hh:mm AM-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -92,8 +92,9 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
                     android:text=""
+                    android:textAlignment="gravity"
                     android:textSize="19dp" />
-<!--Meeting Details-->
+                <!--Meeting Details-->
             </LinearLayout>
 
             <LinearLayout
@@ -124,10 +125,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="370dp"
             android:layout_marginRight="370dp"
-            android:layout_marginTop="@dimen/app_normal_margin"
-            android:layout_marginBottom="10dp">
+            android:layout_marginTop="@dimen/app_normal_margin">
 
             <Button
                 android:id="@+id/btnMAddParticipants"
@@ -159,11 +160,11 @@
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_below="@+id/mainLinear"
         android:layout_marginTop="150dp"
         android:gravity="center"
-        android:layout_below="@+id/mainLinear"
-        android:visibility="gone"
-        android:src="@drawable/add_participants"/>
+        android:src="@drawable/add_participants"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txtDataFound"
@@ -196,16 +197,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Are you avaliable?"
-                android:visibility="gone"
-                android:textSize="19dp" />
+                android:textSize="19dp"
+                android:visibility="gone" />
 
             <RadioGroup
                 android:id="@+id/radioSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/radioMale"

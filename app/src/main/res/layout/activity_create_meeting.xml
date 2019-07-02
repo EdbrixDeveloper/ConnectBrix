@@ -66,6 +66,7 @@
                 android:background="@drawable/flash_screen_background"
                 android:gravity="top|left"
                 android:inputType="textMultiLine"
+                android:maxLength="100"
                 android:lines="8"
                 android:maxLines="10"
                 android:minLines="6"

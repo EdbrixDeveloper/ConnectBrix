@@ -69,6 +69,7 @@
                 android:lines="8"
                 android:gravity="top|left"
                 android:maxLines="10"
+                android:maxLength="100"
                 android:inputType="textMultiLine"
                 android:scrollbars="vertical"
                 android:padding="13dp" />

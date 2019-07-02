@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="350dp"
-    android:paddingLeft="350dp"
     android:orientation="vertical"
+    android:paddingLeft="350dp"
+    android:paddingRight="350dp"
     tools:context=".activities.CreateMeetingActivity">
 
     <ScrollView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/cMeetingTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="19dp"
-                android:text="Title*" />
+                android:text="Title*"
+                android:textSize="19dp" />
 
             <EditText
                 android:id="@+id/cMeetingTitleVal"
@@ -41,17 +40,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="19dp"
-                android:text="Meeting Date*" />
+                android:text="Meeting Date*"
+                android:textSize="19dp" />
 
             <EditText
                 android:id="@+id/cMeetingDateVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/flash_screen_background"
-                android:inputType="textPersonName"
-                android:focusable="false"
                 android:drawableRight="@drawable/date_picker"
+                android:focusable="false"
+                android:inputType="textPersonName"
                 android:padding="13dp" />
 
             <TextView
@@ -59,21 +58,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="19dp"
-                android:text="Agenda" />
+                android:text="Agenda"
+                android:textSize="19dp" />
 
             <EditText
                 android:id="@+id/cMeetingAgendaVal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/flash_screen_background"
-                android:minLines="6"
-                android:lines="8"
                 android:gravity="top|left"
-                android:maxLines="10"
                 android:inputType="textMultiLine"
-                android:scrollbars="vertical"
-                android:padding="13dp" />
+                android:lines="8"
+                android:maxLength="100"
+                android:maxLines="10"
+                android:minLines="6"
+                android:padding="13dp"
+                android:scrollbars="vertical" />
 
 
         </LinearLayout>
@@ -84,11 +84,11 @@
         android:id="@+id/btnCreateMeeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorButtonText"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:textSize="19dp"
+        android:background="@color/colorPrimary"
+        android:text="Create Meeting"
         android:textAllCaps="false"
-        android:text="Create Meeting" />
+        android:textColor="@color/colorButtonText"
+        android:textSize="19dp" />
 </RelativeLayout>

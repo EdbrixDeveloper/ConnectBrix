@@ -60,7 +60,7 @@
                             android:layout_marginLeft="3dp"
                             android:text=""
                             android:textSize="16dp" />
-<!--dd/MMM/yyyy-->
+                        <!--dd/MMM/yyyy-->
                     </LinearLayout>
 
                     <LinearLayout
@@ -81,7 +81,7 @@
                             android:layout_marginLeft="3dp"
                             android:text=""
                             android:textSize="16dp" />
-<!--hh:mm AM-->
+                        <!--hh:mm AM-->
                     </LinearLayout>
                 </LinearLayout>
 
@@ -91,8 +91,9 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
                     android:text=""
+                    android:textAlignment="gravity"
                     android:textSize="16dp" />
-<!--Meeting Details-->
+                <!--Meeting Details-->
             </LinearLayout>
 
             <LinearLayout
@@ -155,11 +156,11 @@
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_below="@+id/mainLinear"
         android:layout_marginTop="120dp"
         android:gravity="center"
-        android:layout_below="@+id/mainLinear"
-        android:visibility="gone"
-        android:src="@drawable/add_participants"/>
+        android:src="@drawable/add_participants"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txtDataFound"
@@ -192,16 +193,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Are you avaliable?"
-                android:visibility="gone"
-                android:textSize="17dp" />
+                android:textSize="17dp"
+                android:visibility="gone" />
 
             <RadioGroup
                 android:id="@+id/radioSex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RadioButton
                     android:id="@+id/radioMale"

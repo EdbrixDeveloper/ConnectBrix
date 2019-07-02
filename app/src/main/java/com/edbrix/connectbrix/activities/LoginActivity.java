@@ -546,7 +546,7 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
         // Step 5: Setup join meeting parameters
         JoinMeetingParams params = new JoinMeetingParams();
 
-        params.displayName = "Hello World From Zoom SDK";
+        params.displayName = "Anonymous user";//"Hello World From Zoom SDK"
         params.meetingNo = meetingNo;
 
         // Step 6: Call meeting service to join meeting
