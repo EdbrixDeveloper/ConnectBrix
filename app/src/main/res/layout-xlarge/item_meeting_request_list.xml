@@ -143,6 +143,8 @@
                         android:id="@+id/meetingRequest_imageView_reject"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="2dp"
                         android:clickable="true"
                         android:scaleType="fitStart"
                         android:src="@drawable/rejected_status" />

@@ -146,6 +146,8 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:clickable="true"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="2dp"
                         android:scaleType="fitStart"
                         android:src="@drawable/rejected_status" />
 
