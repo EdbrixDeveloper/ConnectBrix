@@ -145,7 +145,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                String ParticipantName = participantList.get(position).getName().isEmpty() ? participantList.get(position).getEmail() : participantList.get(position).getName();
+                String ParticipantName = participantList.get(position).getName();//.isEmpty() ? participantList.get(position).getEmail() : participantList.get(position).getName();
                 onButtonActionListener.onButtonClicked(ParticipantName, participantList.get(position).getRecordId(), position);
 
                 /*alertDialogManager.Dialog("Conformation", "Do you want to remove "+participantList.get(position).getName()+"?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {

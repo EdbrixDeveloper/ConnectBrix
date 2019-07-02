@@ -86,11 +86,12 @@ public class SchoolListActivity extends BaseActivity {
     private boolean loading = true;
     private int refreshCnt = 0;
     private SchoolExpListAdapter.OnChildItemClickActionListener onChildItemClickActionListener;
-
+    String y_str="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(SchoolListActivity.this);
+        y_str="N";
         if (!validateUser()) {
             finish();
             startActivity(new Intent(SchoolListActivity.this, LoginActivity.class));
@@ -427,10 +428,10 @@ public class SchoolListActivity extends BaseActivity {
                                             loading = false;
                                         }*/
                                         if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0) {
-                                            requestedMeetingButton.setVisibility(View.VISIBLE);
+                                            requestMeetingListCount.setVisibility(View.VISIBLE);
                                             requestMeetingListCount.setText(meetingListData.getMeetingRequestCount().toString());
                                         } else {
-                                            requestedMeetingButton.setVisibility(View.GONE);
+                                            requestMeetingListCount.setVisibility(View.GONE);
                                         }
 
 
@@ -558,6 +559,22 @@ public class SchoolListActivity extends BaseActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!y_str.equals("N")) {
+            Intent intent = getIntent();
+            y_str = intent.getStringExtra("result") == null ? "" : intent.getStringExtra("result");
+            if (y_str.equals("y")) {
+                requestCount = 0;
+                loading = true;
+                userMeetingsDateList.clear();
+                prepareListData("0", 0);
+            }
+            /*showToast("hiii");*/
+        }
+    }
 }
 
 

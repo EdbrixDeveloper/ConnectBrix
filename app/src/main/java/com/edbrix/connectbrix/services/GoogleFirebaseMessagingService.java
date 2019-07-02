@@ -118,7 +118,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent resultIntent;
             resultIntent = new Intent(getApplicationContext(), SchoolListActivity.class);
-
+            resultIntent.putExtra("result","y");
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 //Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);

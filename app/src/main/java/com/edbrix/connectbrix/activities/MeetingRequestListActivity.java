@@ -363,10 +363,7 @@ public class MeetingRequestListActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     //showToast("Successfully updated meeting status");
-                                    if(StatusFlag.equals("1"))
-                                    {
-                                        isAcceptedMeeting = true;
-                                    }
+                                    isAcceptedMeeting = true;
                                     userMeetingsDateList = new ArrayList<UserMeetingsDate>();
                                     requestCount = 0;
                                     loading = true;
