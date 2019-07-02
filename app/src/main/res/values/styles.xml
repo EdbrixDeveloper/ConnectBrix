@@ -7,10 +7,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkParimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
-
-       <!-- <item name="android:typeface">monospace</item>-->
         <item name="floatingActionButtonStyle">@style/Widget.Design.FloatingActionButton</item>
         <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
+        <!--<item name="android:fontFamily">@font/opensanlght</item>-->
     </style>
 
     <style name="MyTheme" parent="android:Widget.Spinner">
@@ -24,5 +23,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
 
 </resources>
