@@ -128,11 +128,17 @@ public class SchoolListActivity extends BaseActivity {
 
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
 
+            /*if (savedInstanceState != null) {
+
+
+            } else {*/
+
             if (requestCount < 1) {
                 if (loading) {
                     prepareListData(String.valueOf(requestCount), 0);
                 }
             }
+            /*}*/
 
             schoolList_listView_schoolList.setOnScrollListener(
                     new AbsListView.OnScrollListener() {
@@ -240,6 +246,7 @@ public class SchoolListActivity extends BaseActivity {
             //////////////// User Profile //////////////////////
 
             setImageToUserProfileIcon();
+
             linearLayoutCircular.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -278,26 +285,6 @@ public class SchoolListActivity extends BaseActivity {
                 }
             });
 
-            /*schoolList_listView_schoolList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, final int childPosition, long id) {
-                    try {
-                        if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
-
-                            final String meetingDbId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getId().toString();
-                            final String meetingId = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getMeetingId().toString();
-                            final String isHost = userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost() == null ? "" : userMeetingsDateList.get(groupPosition).getUserMeetings().get(childPosition).getIsHost().toString();
-
-                            goToEditingMeetingDetails(meetingDbId, meetingId, isHost);
-                        }
-                    } catch (Exception ex) {
-                        Log.i("SchoolList:onChildClick", ex.getMessage().toString());
-                    }
-                    return false;
-                }
-            });*/
-
-
             ///////////
             floating_action_button_fab_with_listview.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -334,6 +321,8 @@ public class SchoolListActivity extends BaseActivity {
                 }
             });
         }
+
+
     }
 
 
@@ -374,29 +363,6 @@ public class SchoolListActivity extends BaseActivity {
         searchFlag = false;
     }
 
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-           *//* case android.R.id.:
-                startActivity(new Intent(this, UserProfileActivity.class));
-                return true;*//*
-            case R.id.menuProfile:
-                startActivity(new Intent(this, UserProfileActivity.class));
-                return true;
-            case R.id.menuCalender:
-                startActivity(new Intent(this, CalenderViewMeetingListActivity.class));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.dashboard_menu, menu);
-        return true;
-
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -572,17 +538,6 @@ public class SchoolListActivity extends BaseActivity {
         }
     };
 
-    /*@Override
-    protected void onStop() {
-        unregisterReceiver(eventReceiver);
-        super.onStop();
-    }
-
-    @Override
-    protected void onResume() {
-        registerEventReceiver();
-        super.onResume();
-    }*/
 
     private boolean validateUser() {
         //sessionManager = new SessionManager(LoginActivity.this);
@@ -593,57 +548,15 @@ public class SchoolListActivity extends BaseActivity {
         }
     }
 
-    //clock
-    /*private Timer timer_1;
-    private TimerTask timerTask;
-
-
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
-        if (myContinouslyRunningAsyncTask != null) {
-            myContinouslyRunningAsyncTask.cancel(true);
-        }
-
-        if (timer_1 != null) {
-            timer_1.cancel();
-            timer_1.purge();
-        }
+    /*@Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("userMeetingsDateList",userMeetingsDateList);//<UserMeetingsDate>
     }
 
     @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        clockTask();
-    }
-
-    public class MyContinousAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            timer_1 = new Timer();
-            timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    SchoolListActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i(SchoolListActivity.class.getName(), "Calling From Timer Async Task...");
-                            prepareListData();
-                        }
-                    });
-                }
-            };
-            timer_1.scheduleAtFixedRate(timerTask, 100, 6000);//10000
-            return "execute";
-        }
-
-    }
-
-    private void clockTask() {
-        myContinouslyRunningAsyncTask = new MyContinousAsyncTask();
-        myContinouslyRunningAsyncTask.execute("execute");
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }*/
 }
 
