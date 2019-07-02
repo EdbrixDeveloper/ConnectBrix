@@ -150,9 +150,8 @@ public class MeetingRequestListActivity extends BaseActivity {
                     //final String isAvailable = usermeeting.getIsAvailable() == null ? "" : usermeeting.getIsAvailable().toString();
                     final String status = Status;
                     String msg = "";
-                    if (status == "1") {
+                    if (status.equals("1")) {
                         msg = "accept";
-                        isAcceptedMeeting = true;
                     } else {
                         msg = "reject";
                     }
@@ -206,9 +205,9 @@ public class MeetingRequestListActivity extends BaseActivity {
         } else {
             finish();
         }
-
+/*
         super.onBackPressed();
-        return;
+        return;*/
         /*if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
             return;
@@ -364,6 +363,10 @@ public class MeetingRequestListActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     //showToast("Successfully updated meeting status");
+                                    if(StatusFlag.equals("1"))
+                                    {
+                                        isAcceptedMeeting = true;
+                                    }
                                     userMeetingsDateList = new ArrayList<UserMeetingsDate>();
                                     requestCount = 0;
                                     loading = true;
