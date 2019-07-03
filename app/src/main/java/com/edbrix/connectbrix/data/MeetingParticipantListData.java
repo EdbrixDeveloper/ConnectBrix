@@ -3,9 +3,10 @@ package com.edbrix.connectbrix.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MeetingParticipantListData {
+public class MeetingParticipantListData implements Serializable {
 
     @SerializedName("Success")
     @Expose

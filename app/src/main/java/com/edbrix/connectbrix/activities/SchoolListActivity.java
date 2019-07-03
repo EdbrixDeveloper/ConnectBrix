@@ -135,6 +135,9 @@ public class SchoolListActivity extends BaseActivity {
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
 
             if (savedInstanceState != null) {
+                if (!savedInstanceState.getString("mInputSearch").isEmpty()) {
+                    mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
+                }
                 userMeetingsDateList = (ArrayList<UserMeetingsDate>) savedInstanceState.getSerializable("userMeetingsDateList");
                 requestCount = savedInstanceState.getInt("requestCount");
                 loading = savedInstanceState.getBoolean("loading");
@@ -606,6 +609,7 @@ public class SchoolListActivity extends BaseActivity {
         outState.putBoolean("loading", loading);//<UserMeetingsDate>
         outState.putInt("currentVisibleItemInListView", currentVisibleItemInListView);//<UserMeetingsDate>
         outState.putString("y_str", y_str);//<UserMeetingsDate>
+        outState.putString("mInputSearch", mInputSearch.getText().toString());
     }
 
     @Override

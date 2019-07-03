@@ -49,6 +49,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -94,16 +95,122 @@ public class FliterParticipantsActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignViews();
         sessionManager = new SessionManager(FliterParticipantsActivity.this);
-        Intent intent = getIntent();
-        MeetingDbId = intent.getStringExtra("meetingDbId");
-        IsHost = intent.getStringExtra("IsHost");
 
-        prepareCampusList();
+
+        /*prepareCampusList();
         initCombo();
         addParticipantsListData = new AddParticipantsListData();
         addParticipantList = new AddParticipantList();
         arrayAddParticipantList = new ArrayList<AddParticipantList>();
-        meetingParticipantListData = new MeetingParticipantListData();
+        meetingParticipantListData = new MeetingParticipantListData();*/
+
+        if (savedInstanceState == null) {
+            prepareCampusList();
+            initCombo();
+            addParticipantsListData = new AddParticipantsListData();
+            addParticipantList = new AddParticipantList();
+            arrayAddParticipantList = new ArrayList<AddParticipantList>();
+            meetingParticipantListData = new MeetingParticipantListData();
+            Intent intent = getIntent();
+            MeetingDbId = intent.getStringExtra("meetingDbId");
+            IsHost = intent.getStringExtra("IsHost");
+
+        } else {
+
+            MeetingDbId = savedInstanceState.getString("MeetingDbId");
+            IsHost = savedInstanceState.getString("MeetingDbId");
+
+            StudentArray = (ArrayList<String>) savedInstanceState.getSerializable("StudentArray");
+            CampusArray = (ArrayList<String>) savedInstanceState.getSerializable("CampusArray");
+
+            initCombo();
+
+            Gson gson = new Gson();
+            String strMeetingOrganizationListData = savedInstanceState.getString("strMeetingOrganizationListData");
+            if (!strMeetingOrganizationListData.isEmpty()) {
+                meetingOrganizationListData = gson.fromJson(strMeetingOrganizationListData, MeetingOrganizationListData.class);
+            }
+            String strMeetingStudentListData = savedInstanceState.getString("strMeetingStudentListData");
+            if (!strMeetingStudentListData.isEmpty()) {
+                meetingStudentListData = gson.fromJson(strMeetingStudentListData, MeetingStudentListData.class);
+            }
+
+            String strAddParticipantsListData = savedInstanceState.getString("strAddParticipantsListData");
+            if (!strAddParticipantsListData.isEmpty()) {
+                addParticipantsListData = gson.fromJson(strAddParticipantsListData, AddParticipantsListData.class);
+            }
+
+            String strAddParticipantList = savedInstanceState.getString("strAddParticipantList");
+            if (!strAddParticipantList.isEmpty()) {
+                addParticipantList = gson.fromJson(strAddParticipantList, AddParticipantList.class);
+            }
+
+            String strMeetingParticipantListData = savedInstanceState.getString("strMeetingParticipantListData");
+            if (!strMeetingParticipantListData.isEmpty()) {
+                meetingParticipantListData = gson.fromJson(strMeetingParticipantListData, MeetingParticipantListData.class);
+            }
+
+            arrayAddParticipantList = (ArrayList<AddParticipantList>) savedInstanceState.getSerializable("arrayAddParticipantList");
+
+            mTxtComboCampus.setText(savedInstanceState.getString("mTxtComboCampus"));
+            mTxtComboStudent.setText(savedInstanceState.getString("mTxtComboStudent"));
+            mTxtComboType.setText(savedInstanceState.getString("mTxtComboType"));
+            mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
+
+            CampusId = savedInstanceState.getInt("CampusId");
+            StudentId = savedInstanceState.getInt("StudentId");
+
+            ///////
+
+            str_typeOfParticipant = mTxtComboType.getText().toString();
+            boolean processdFlag = false;
+            if (str_typeOfParticipant.equals("Teachers")) {
+                str_UserType = "T";
+                processdFlag = true;
+            } else if (str_typeOfParticipant.equals("Students")) {
+                str_UserType = "S";
+                processdFlag = true;
+            } else if (str_typeOfParticipant.equals("System User")) {
+                str_UserType = "A";
+                processdFlag = true;
+            } else if (str_typeOfParticipant.equals("Group")) {
+                str_UserType = "G";
+                processdFlag = true;
+            } else if (str_typeOfParticipant.equals("Other")) {
+                str_UserType = "O";
+                processdFlag = false;
+                ll_contacts.setVisibility(View.VISIBLE);
+                mChipsView.setFocusable(true);
+            }
+
+            if (str_typeOfParticipant.equals("Parents")) {
+                str_UserType = "P";
+                mTxtComboStudent.setVisibility(View.VISIBLE);
+            } else {
+                mTxtComboStudent.setVisibility(View.GONE);
+            }
+            ///////
+
+
+            if (meetingParticipantListData.getMeetingParticipantList() != null && meetingParticipantListData.getMeetingParticipantList().size() > 0 && !str_UserType.equals("O")) {
+                mSelectParticipantList.setVisibility(View.VISIBLE);
+                fliteredParticipantsAdapter = new FliteredParticipantsAdapter(FliterParticipantsActivity.this, meetingParticipantListData.getMeetingParticipantList(), onButtonActionListener);
+                mSelectParticipantList.setAdapter(fliteredParticipantsAdapter);
+
+            } else {
+                mSelectParticipantList.setVisibility(View.GONE);
+            }
+
+            if (processdFlag == true) {
+                mInputSearch.setVisibility(View.VISIBLE);
+                if (!mInputSearch.getText().toString().isEmpty()) {
+                    //mInputSearch.setText("");
+                    fliteredParticipantsAdapter.getFilter().filter(mInputSearch.getText().toString());
+                }
+            }
+
+        }
+
 
         onButtonActionListener = new FliteredParticipantsAdapter.OnButtonActionListener() {
             @Override
@@ -175,8 +282,7 @@ public class FliterParticipantsActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //System.out.println("Text [" + s + "]");
-                if(mInputSearch.isFocused())
-                {
+                if (mInputSearch.isFocused()) {
                     fliteredParticipantsAdapter.getFilter().filter(s.toString());
                 }
             }
@@ -284,6 +390,7 @@ public class FliterParticipantsActivity extends BaseActivity {
 
                             if (str_typeOfParticipant.equals("Parents")) {
                                 str_UserType = "P";
+                                meetingParticipantListData = new MeetingParticipantListData();//04072019
                                 prepareStudentListForParents();
                                 mTxtComboStudent.setVisibility(View.VISIBLE);
                             } else {
@@ -779,4 +886,146 @@ public class FliterParticipantsActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("MeetingDbId", MeetingDbId);
+        outState.putString("MeetingDbId", IsHost);
+
+        outState.putSerializable("StudentArray", StudentArray);
+        outState.putSerializable("CampusArray", CampusArray);
+
+        Gson gson = new Gson();
+        String strMeetingOrganizationListData = gson.toJson(meetingOrganizationListData);
+        String strMeetingStudentListData = gson.toJson(meetingStudentListData);
+
+        String strAddParticipantsListData = gson.toJson(addParticipantsListData);
+        String strAddParticipantList = gson.toJson(addParticipantList);
+        String strMeetingParticipantListData = gson.toJson(meetingParticipantListData);
+
+        outState.putString("strMeetingOrganizationListData", strMeetingOrganizationListData);
+        outState.putString("strMeetingStudentListData", strMeetingStudentListData);
+
+        outState.putString("strAddParticipantsListData", strAddParticipantsListData);
+        outState.putString("strAddParticipantList", strAddParticipantList);
+        outState.putString("strMeetingParticipantListData", strMeetingParticipantListData);
+        outState.putSerializable("arrayAddParticipantList", arrayAddParticipantList);
+
+
+        outState.putString("mTxtComboCampus", mTxtComboCampus.getText().toString());
+        outState.putString("mTxtComboStudent", mTxtComboStudent.getText().toString());
+        outState.putString("mTxtComboType", mTxtComboType.getText().toString());
+        outState.putString("mInputSearch", mInputSearch.getText().toString());
+
+        outState.putInt("CampusId", CampusId);
+        outState.putInt("StudentId", StudentId);
+
+
+        /*ArrayList<String> ChipString = new ArrayList<>();
+        if (mTxtComboType.getText().toString().equals("Other")) {
+            for (int p = 0; p < mChipsView.getChips().size(); p++) {
+                ChipString.add(mChipsView.getChips().get(p).getContact().getEmailAddress().toString());
+            }
+        }
+        outState.putSerializable("ChipString", ChipString);*/
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        MeetingDbId = savedInstanceState.getString("MeetingDbId");
+        IsHost = savedInstanceState.getString("MeetingDbId");
+
+        StudentArray = (ArrayList<String>) savedInstanceState.getSerializable("StudentArray");
+        CampusArray = (ArrayList<String>) savedInstanceState.getSerializable("CampusArray");
+
+
+        Gson gson = new Gson();
+        String strMeetingOrganizationListData = savedInstanceState.getString("strMeetingOrganizationListData");
+        if (!strMeetingOrganizationListData.isEmpty()) {
+            meetingOrganizationListData = gson.fromJson(strMeetingOrganizationListData, MeetingOrganizationListData.class);
+        }
+        String strMeetingStudentListData = savedInstanceState.getString("strMeetingStudentListData");
+        if (!strMeetingStudentListData.isEmpty()) {
+            meetingStudentListData = gson.fromJson(strMeetingStudentListData, MeetingStudentListData.class);
+        }
+
+        String strAddParticipantsListData = savedInstanceState.getString("strAddParticipantsListData");
+        if (!strAddParticipantsListData.isEmpty()) {
+            addParticipantsListData = gson.fromJson(strAddParticipantsListData, AddParticipantsListData.class);
+        }
+
+        String strAddParticipantList = savedInstanceState.getString("strAddParticipantList");
+        if (!strAddParticipantList.isEmpty()) {
+            addParticipantList = gson.fromJson(strAddParticipantList, AddParticipantList.class);
+        }
+
+        String strMeetingParticipantListData = savedInstanceState.getString("strMeetingParticipantListData");
+        if (!strMeetingParticipantListData.isEmpty()) {
+            meetingParticipantListData = gson.fromJson(strMeetingParticipantListData, MeetingParticipantListData.class);
+        }
+
+        arrayAddParticipantList = (ArrayList<AddParticipantList>) savedInstanceState.getSerializable("arrayAddParticipantList");
+
+        mTxtComboCampus.setText(savedInstanceState.getString("mTxtComboCampus"));
+        mTxtComboStudent.setText(savedInstanceState.getString("mTxtComboStudent"));
+        mTxtComboType.setText(savedInstanceState.getString("mTxtComboType"));
+        mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
+
+        CampusId = savedInstanceState.getInt("CampusId");
+        StudentId = savedInstanceState.getInt("StudentId");
+
+        ///////
+
+        str_typeOfParticipant = mTxtComboType.getText().toString();
+        boolean processdFlag = false;
+        if (str_typeOfParticipant.equals("Teachers")) {
+            str_UserType = "T";
+            processdFlag = true;
+        } else if (str_typeOfParticipant.equals("Students")) {
+            str_UserType = "S";
+            processdFlag = true;
+        } else if (str_typeOfParticipant.equals("System User")) {
+            str_UserType = "A";
+            processdFlag = true;
+        } else if (str_typeOfParticipant.equals("Group")) {
+            str_UserType = "G";
+            processdFlag = true;
+        } else if (str_typeOfParticipant.equals("Other")) {
+            str_UserType = "O";
+            processdFlag = false;
+            ll_contacts.setVisibility(View.VISIBLE);
+            mChipsView.setFocusable(true);
+        }
+
+        if (str_typeOfParticipant.equals("Parents")) {
+            str_UserType = "P";
+            mTxtComboStudent.setVisibility(View.VISIBLE);
+        } else {
+            mTxtComboStudent.setVisibility(View.GONE);
+        }
+        ///////
+
+        if (meetingParticipantListData.getMeetingParticipantList() != null && meetingParticipantListData.getMeetingParticipantList().size() > 0 && !str_UserType.equals("O")) {
+            mSelectParticipantList.setVisibility(View.VISIBLE);
+            fliteredParticipantsAdapter = new FliteredParticipantsAdapter(FliterParticipantsActivity.this, meetingParticipantListData.getMeetingParticipantList(), onButtonActionListener);
+            mSelectParticipantList.setAdapter(fliteredParticipantsAdapter);
+
+        } else {
+            mSelectParticipantList.setVisibility(View.GONE);
+        }
+
+        if (processdFlag == true) {
+            mInputSearch.setVisibility(View.VISIBLE);
+            if (!mInputSearch.getText().toString().isEmpty()) {
+                //mInputSearch.setText("");
+                fliteredParticipantsAdapter.getFilter().filter(mInputSearch.getText().toString());
+            }
+        }
+
+    }
 }
