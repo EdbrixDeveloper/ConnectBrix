@@ -117,11 +117,48 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         invalidateOptionsMenu();
         fieldsVisibilityBasedOnUser();
-        prepareListData();
 
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
         if (savedInstanceState == null) {
+            prepareListData();
             zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
+        } else {
+            participantArrayList = (ArrayList<ParticipantList>) savedInstanceState.getSerializable("participantArrayList");
+
+            meetingDbId = savedInstanceState.getString("meetingDbId");
+            isAvailable = savedInstanceState.getString("isAvailable");
+            IsHost = savedInstanceState.getString("IsHost");
+            RefreshFlag = savedInstanceState.getString("RefreshFlag");
+            IsCalenderActivity = savedInstanceState.getString("IsCalenderActivity");
+
+            msgName = savedInstanceState.getString("msgName");
+            mbPendingStartMeeting = savedInstanceState.getBoolean("mbPendingStartMeeting");
+            MeetingId = savedInstanceState.getString("MeetingId");
+            CheckedFlag = savedInstanceState.getInt("MeetingId");
+
+
+            mTxtMeetingTitle.setText(savedInstanceState.getString("mTxtMeetingTitle"));
+            mTxtMeetingDate.setText(savedInstanceState.getString(" mTxtMeetingDate"));
+            mTxtMeetingTime.setText(savedInstanceState.getString("mTxtMeetingTime"));
+            mTxtMeetingDetails.setText(savedInstanceState.getString("mTxtMeetingDetails"));
+            mTextViewParticipantCount.setText(savedInstanceState.getString("mTextViewParticipantCount"));
+
+            if (participantArrayList != null && participantArrayList.size() > 0) {
+                if (Integer.parseInt(mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString()) > 0 && isAvailable.equals("1")) {
+                    mBtnMJoin.setVisibility(View.VISIBLE);
+                }
+                mMeetingListImg.setVisibility(View.GONE);
+                mTxtDataFound.setVisibility(View.GONE);
+                mParticipantList.setVisibility(View.VISIBLE);
+                participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
+                mParticipantList.setAdapter(participantsListAdapter);
+                participantsListAdapter.notifyDataSetChanged();
+
+            } else {
+                mMeetingListImg.setVisibility(View.VISIBLE);
+                mTxtDataFound.setVisibility(View.VISIBLE);
+                mParticipantList.setVisibility(View.GONE);
+            }
         }
 
         /*if (isAvailable.equals("1")) {
@@ -836,34 +873,73 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("participantArrayList", participantArrayList);
+
+        outState.putString("meetingDbId", meetingDbId);
+        outState.putString("isAvailable", isAvailable);
+        outState.putString("IsHost", IsHost);
+        outState.putString("RefreshFlag", RefreshFlag);
+        outState.putString("IsCalenderActivity", IsCalenderActivity);
+
+        outState.putString("msgName", msgName);
+        outState.putBoolean("mbPendingStartMeeting", mbPendingStartMeeting);
+        outState.putString("MeetingId", MeetingId);
+        outState.putInt("MeetingId", CheckedFlag);
+
+
+        outState.putString("mTxtMeetingTitle", mTxtMeetingTitle.getText().toString());
+        outState.putString(" mTxtMeetingDate", mTxtMeetingDate.getText().toString());
+        outState.putString("mTxtMeetingTime", mTxtMeetingTime.getText().toString());
+        outState.putString("mTxtMeetingDetails", mTxtMeetingDetails.getText().toString());
+        outState.putString("mTextViewParticipantCount", mTextViewParticipantCount.getText().toString());
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        participantArrayList = (ArrayList<ParticipantList>) savedInstanceState.getSerializable("participantArrayList");
+
+        meetingDbId = savedInstanceState.getString("meetingDbId");
+        isAvailable = savedInstanceState.getString("isAvailable");
+        IsHost = savedInstanceState.getString("IsHost");
+        RefreshFlag = savedInstanceState.getString("RefreshFlag");
+        IsCalenderActivity = savedInstanceState.getString("IsCalenderActivity");
+
+        msgName = savedInstanceState.getString("msgName");
+        mbPendingStartMeeting = savedInstanceState.getBoolean("mbPendingStartMeeting");
+        MeetingId = savedInstanceState.getString("MeetingId");
+        CheckedFlag = savedInstanceState.getInt("MeetingId");
+
+
+        mTxtMeetingTitle.setText(savedInstanceState.getString("mTxtMeetingTitle"));
+        mTxtMeetingDate.setText(savedInstanceState.getString(" mTxtMeetingDate"));
+        mTxtMeetingTime.setText(savedInstanceState.getString("mTxtMeetingTime"));
+        mTxtMeetingDetails.setText(savedInstanceState.getString("mTxtMeetingDetails"));
+        mTextViewParticipantCount.setText(savedInstanceState.getString("mTextViewParticipantCount"));
+
+        if (participantArrayList != null && participantArrayList.size() > 0) {
+            if (Integer.parseInt(mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString()) > 0 && isAvailable.equals("1")) {
+                mBtnMJoin.setVisibility(View.VISIBLE);
+            }
+            mMeetingListImg.setVisibility(View.GONE);
+            mTxtDataFound.setVisibility(View.GONE);
+            mParticipantList.setVisibility(View.VISIBLE);
+            participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
+            mParticipantList.setAdapter(participantsListAdapter);
+            participantsListAdapter.notifyDataSetChanged();
+
+        } else {
+            mMeetingListImg.setVisibility(View.VISIBLE);
+            mTxtDataFound.setVisibility(View.VISIBLE);
+            mParticipantList.setVisibility(View.GONE);
+        }
+
+    }
+
 }
-
-//raw code
-
-/*setResult(SchoolListActivity.REFRESH_DATA);
-                finish();*/
-///////
-
-/*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
-            mIntent.putExtra("RefreshFlag", "Y");
-            startActivity(mIntent);
-            finish();*/
-            /*Intent resultIntent = new Intent();
-            // TODO Add extras or a data URI to this intent as appropriate.
-            resultIntent.putExtra("RefreshFlag", "Y");
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();*/
-
-////////
-
-
-/*Intent mIntent = new Intent(MeetingDetailsActivity.this, SchoolListActivity.class);
-                finishAffinity();
-                startActivity(mIntent);
-                super.onBackPressed();*/
-
-///////
-
-/*Intent mIntent = new Intent(mContext, SchoolListActivity.class);
-            finishAffinity();
-            startActivity(mIntent);*/
