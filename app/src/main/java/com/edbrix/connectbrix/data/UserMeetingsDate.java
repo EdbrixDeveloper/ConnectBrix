@@ -3,10 +3,11 @@ package com.edbrix.connectbrix.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMeetingsDate {
+public class UserMeetingsDate implements Serializable {
     @SerializedName("date")
     @Expose
     private String date;

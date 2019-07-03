@@ -86,12 +86,14 @@ public class SchoolListActivity extends BaseActivity {
     private boolean loading = true;
     private int refreshCnt = 0;
     private SchoolExpListAdapter.OnChildItemClickActionListener onChildItemClickActionListener;
-    String y_str="";
+    String y_str = "";
+    private int currentVisibleItemInListView = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(SchoolListActivity.this);
-        y_str="N";
+        y_str = "N";
         if (!validateUser()) {
             finish();
             startActivity(new Intent(SchoolListActivity.this, LoginActivity.class));
@@ -129,17 +131,34 @@ public class SchoolListActivity extends BaseActivity {
 
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
 
-            /*if (savedInstanceState != null) {
+            if (savedInstanceState != null) {
+                userMeetingsDateList = (ArrayList<UserMeetingsDate>) savedInstanceState.getSerializable("userMeetingsDateList");
+                requestCount = savedInstanceState.getInt("requestCount");
+                loading = savedInstanceState.getBoolean("loading");
+                currentVisibleItemInListView = savedInstanceState.getInt("currentVisibleItemInListView");
+                y_str = savedInstanceState.getString("y_str");
 
+                if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
+                    txtDataFound.setVisibility(View.GONE);
+                    schoolList_listView_schoolList.setVisibility(View.VISIBLE);
+                    pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList, onChildItemClickActionListener);//meetingListData
+                    schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
+                    schoolList_listView_schoolList.setSelectionFromTop(currentVisibleItemInListView, 0);
+                    for (int i = 0; i < userMeetingsDateList.size(); i++) {//meetingListData.getUserMeetingsDates().size()
+                        schoolList_listView_schoolList.expandGroup(i);
+                    }
+                } else {
+                    schoolList_listView_schoolList.setVisibility(View.GONE);
+                    txtDataFound.setVisibility(View.VISIBLE);
+                }
 
-            } else {*/
-
-            if (requestCount < 1) {
-                if (loading) {
-                    prepareListData(String.valueOf(requestCount), 0);
+            } else {
+                if (requestCount < 1) {
+                    if (loading) {
+                        prepareListData(String.valueOf(requestCount), 0);
+                    }
                 }
             }
-            /*}*/
 
             schoolList_listView_schoolList.setOnScrollListener(
                     new AbsListView.OnScrollListener() {
@@ -397,7 +416,7 @@ public class SchoolListActivity extends BaseActivity {
 
 
             Log.i(SchoolListActivity.class.getName(), Constants.getMeetingList + "\n\n" + jo.toString());
-
+            currentVisibleItemInListView = currentFirstVisibleItem;
             GsonRequest<MeetingListData> getAssignAvailabilityLearnersListRequest = new GsonRequest<>(Request.Method.POST, Constants.getMeetingList, jo.toString(), MeetingListData.class,
                     new Response.Listener<MeetingListData>() {
                         @SuppressLint("RestrictedApi")
@@ -549,21 +568,10 @@ public class SchoolListActivity extends BaseActivity {
         }
     }
 
-    /*@Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("userMeetingsDateList",userMeetingsDateList);//<UserMeetingsDate>
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
-        if(!y_str.equals("N")) {
+        if (!y_str.equals("N")) {
             Intent intent = getIntent();
             y_str = intent.getStringExtra("result") == null ? "" : intent.getStringExtra("result");
             if (y_str.equals("y")) {
@@ -575,6 +583,43 @@ public class SchoolListActivity extends BaseActivity {
             /*showToast("hiii");*/
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("userMeetingsDateList", userMeetingsDateList);//<UserMeetingsDate>
+        outState.putInt("requestCount", requestCount);//<UserMeetingsDate>
+        outState.putBoolean("loading", loading);//<UserMeetingsDate>
+        outState.putInt("currentVisibleItemInListView", currentVisibleItemInListView);//<UserMeetingsDate>
+        outState.putString("y_str", y_str);//<UserMeetingsDate>
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        userMeetingsDateList = (ArrayList<UserMeetingsDate>) savedInstanceState.getSerializable("userMeetingsDateList");
+        requestCount = savedInstanceState.getInt("requestCount");
+        loading = savedInstanceState.getBoolean("loading");
+        currentVisibleItemInListView = savedInstanceState.getInt("currentVisibleItemInListView");
+        y_str = savedInstanceState.getString("y_str");
+
+        if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
+            txtDataFound.setVisibility(View.GONE);
+            schoolList_listView_schoolList.setVisibility(View.VISIBLE);
+            pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList, onChildItemClickActionListener);//meetingListData
+            schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
+            schoolList_listView_schoolList.setSelectionFromTop(currentVisibleItemInListView, 0);
+            for (int i = 0; i < userMeetingsDateList.size(); i++) {//meetingListData.getUserMeetingsDates().size()
+                schoolList_listView_schoolList.expandGroup(i);
+            }
+        } else {
+            schoolList_listView_schoolList.setVisibility(View.GONE);
+            txtDataFound.setVisibility(View.VISIBLE);
+        }
+
+    }
+
 }
 
 
