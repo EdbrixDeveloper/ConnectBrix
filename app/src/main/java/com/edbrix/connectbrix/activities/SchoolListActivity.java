@@ -89,6 +89,8 @@ public class SchoolListActivity extends BaseActivity {
     String y_str = "";
     private int currentVisibleItemInListView = 0;
     Intent intent;
+    boolean isHitOnActivityResult = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -447,14 +449,14 @@ public class SchoolListActivity extends BaseActivity {
                                         if (cnt < 10) {
                                             loading = false;
                                         }*/
-                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0 ) {
+                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0) {
                                             requestMeetingListCount.setVisibility(View.VISIBLE);
                                             requestMeetingListCount.setText(meetingListData.getMeetingRequestCount().toString());
                                         } else {
                                             requestMeetingListCount.setVisibility(View.GONE);
                                         }
 
-                                        if (Integer.parseInt(meetingListData.getMeetingRequestCountAll().toString()) > 0 ) {
+                                        if (Integer.parseInt(meetingListData.getMeetingRequestCountAll().toString()) > 0) {
                                             requestedMeetingButton.setVisibility(View.VISIBLE);
                                         } else {
                                             requestedMeetingButton.setVisibility(View.GONE);
@@ -528,6 +530,7 @@ public class SchoolListActivity extends BaseActivity {
             //schoolList_listView_schoolList.setVisibility(View.GONE);
             //pmAcExpListAdapter.notifyDataSetChanged();
             prepareListData("0", 0);
+            isHitOnActivityResult = true;
 
         }
 
@@ -536,6 +539,7 @@ public class SchoolListActivity extends BaseActivity {
             loading = true;
             userMeetingsDateList.clear();
             prepareListData("0", 0);
+            isHitOnActivityResult = true;
         }
     }
 
@@ -558,6 +562,7 @@ public class SchoolListActivity extends BaseActivity {
                 //schoolList_listView_schoolList.setVisibility(View.GONE);
                 //pmAcExpListAdapter.notifyDataSetChanged();
                 prepareListData("0", 0);
+                isHitOnActivityResult = true;
 
             }
             //This code will be executed when the broadcast in activity B is launched
@@ -579,12 +584,15 @@ public class SchoolListActivity extends BaseActivity {
         super.onResume();
         if (!y_str.equals("N")) {
 
-            y_str = intent.getStringExtra("result") == null ? "" : intent.getStringExtra("result");
-            if (y_str.equals("y")) {
-                requestCount = 0;
-                loading = true;
-                userMeetingsDateList.clear();
-                prepareListData("0", 0);
+            if (isHitOnActivityResult != true) {
+                y_str = intent.getStringExtra("result") == null ? "" : intent.getStringExtra("result");
+                if (y_str.equals("y")) {
+                    requestCount = 0;
+                    loading = true;
+                    userMeetingsDateList.clear();
+                    prepareListData("0", 0);
+                    intent.removeExtra("result");
+                }
             }
             /*showToast("hiii");*/
         }
