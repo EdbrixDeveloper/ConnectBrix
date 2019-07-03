@@ -299,6 +299,12 @@ public class CreateMeetingActivity extends BaseActivity {
 
             }
         });
+
+        if (savedInstanceState != null) {
+            mCMeetingTitleVal.setText(savedInstanceState.getString("title"));
+            mCMeetingDateVal.setText(savedInstanceState.getString("date"));
+            mCMeetingAgendaVal.setText(savedInstanceState.getString("agenda"));
+        }
     }
 
 
@@ -460,4 +466,19 @@ public class CreateMeetingActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("title",mCMeetingTitleVal.getText().toString());
+        outState.putString("date",mCMeetingDateVal.getText().toString());
+        outState.putString("agenda",mCMeetingAgendaVal.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCMeetingTitleVal.setText(savedInstanceState.getString("title"));
+        mCMeetingDateVal.setText(savedInstanceState.getString("date"));
+        mCMeetingAgendaVal.setText(savedInstanceState.getString("agenda"));
+    }
 }

@@ -55,7 +55,7 @@ public class NotificationUtils {
 
 
         // notification icon
-        final int icon = R.drawable.connect_brix_flash_small;
+        final int icon = R.drawable.connectbrix_notification_icon;
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent resultPendingIntent =
@@ -105,7 +105,7 @@ public class NotificationUtils {
                 .setSound(alarmSound)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.connect_brix_flash)
+                .setSmallIcon(R.drawable.connectbrix_notification_icon)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
                 .build();
@@ -127,7 +127,7 @@ public class NotificationUtils {
                 .setSound(alarmSound)
                 .setStyle(bigPictureStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.connect_brix_flash)
+                .setSmallIcon(R.drawable.connectbrix_notification_icon)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                 .setContentText(message)
                 .build();

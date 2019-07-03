@@ -115,6 +115,12 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
                 Settings.Secure.ANDROID_ID);
         Log.e(BaseActivity.class.getName(), Constants.androidDeviceid);
 
+        if (savedInstanceState != null) {
+            mEdTxtEmail.setText(savedInstanceState.getString("email"));
+            mEdTxtPassword.setText(savedInstanceState.getString("password"));
+            mEdTxtMeetingId.setText(savedInstanceState.getString("meetingId"));
+        }
+
     }
 
     private void init() {
@@ -580,4 +586,19 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("email", mEdTxtEmail.getText().toString());
+        outState.putString("password", mEdTxtPassword.getText().toString());
+        outState.putString("meetingId", mEdTxtMeetingId.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mEdTxtEmail.setText(savedInstanceState.getString("email"));
+        mEdTxtPassword.setText(savedInstanceState.getString("password"));
+        mEdTxtMeetingId.setText(savedInstanceState.getString("meetingId"));
+    }
 }
