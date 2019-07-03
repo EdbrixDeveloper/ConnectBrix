@@ -61,6 +61,10 @@ public class ForgotPasswordActivity extends BaseActivity {
         checkEmailIsValidate();
         clickListner();
 
+        if (savedInstanceState != null) {
+            mEdTxtEmail.setText(savedInstanceState.getString("email"));
+        }
+
     }
 
     private void clickListner() {
@@ -113,7 +117,7 @@ public class ForgotPasswordActivity extends BaseActivity {
                                     intent.putExtra("organizationList", userOrganizationListData);
                                     intent.putExtra("email", mEdTxtEmail.getText().toString());
                                     intent.putExtra("comesFrom", "forgotPasswordActivity");
-                                    startActivityForResult(intent,RESULT_FORGOT_PASSWORD);
+                                    startActivityForResult(intent, RESULT_FORGOT_PASSWORD);
 
                                 }
                             }
@@ -217,8 +221,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         }
     }
 
-    private void checkEmailValidation()
-    {
+    private void checkEmailValidation() {
         String email = mEdTxtEmail.getText().toString();
         if (!email.equals("")) {
             if (email.matches(emailPattern)) {
@@ -231,5 +234,17 @@ public class ForgotPasswordActivity extends BaseActivity {
             }
 
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("email",mEdTxtEmail.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mEdTxtEmail.setText(savedInstanceState.getString("email"));
     }
 }
