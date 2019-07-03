@@ -88,12 +88,13 @@ public class SchoolListActivity extends BaseActivity {
     private SchoolExpListAdapter.OnChildItemClickActionListener onChildItemClickActionListener;
     String y_str = "";
     private int currentVisibleItemInListView = 0;
-
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(SchoolListActivity.this);
         y_str = "N";
+        intent = getIntent();
         if (!validateUser()) {
             finish();
             startActivity(new Intent(SchoolListActivity.this, LoginActivity.class));
@@ -446,13 +447,18 @@ public class SchoolListActivity extends BaseActivity {
                                         if (cnt < 10) {
                                             loading = false;
                                         }*/
-                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0) {
+                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0 ) {
                                             requestMeetingListCount.setVisibility(View.VISIBLE);
                                             requestMeetingListCount.setText(meetingListData.getMeetingRequestCount().toString());
                                         } else {
                                             requestMeetingListCount.setVisibility(View.GONE);
                                         }
 
+                                        if (Integer.parseInt(meetingListData.getMeetingRequestCountAll().toString()) > 0 ) {
+                                            requestedMeetingButton.setVisibility(View.VISIBLE);
+                                        } else {
+                                            requestedMeetingButton.setVisibility(View.GONE);
+                                        }
 
                                         for (UserMeetingsDate userMeetingsDate :
                                                 meetingListData.getUserMeetingsDates()) {
@@ -572,7 +578,7 @@ public class SchoolListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (!y_str.equals("N")) {
-            Intent intent = getIntent();
+
             y_str = intent.getStringExtra("result") == null ? "" : intent.getStringExtra("result");
             if (y_str.equals("y")) {
                 requestCount = 0;
@@ -620,6 +626,11 @@ public class SchoolListActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        y_str = "S";
+    }
 }
 
 

@@ -31,6 +31,8 @@ import com.edbrix.connectbrix.volley.SettingsMy;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class SelectStateActivity extends BaseActivity {
 
     private static final String TAG = SelectStateActivity.class.getName();
@@ -59,15 +61,16 @@ public class SelectStateActivity extends BaseActivity {
 
         Intent intent = getIntent();
         CountryId = intent.getStringExtra("CountryId");
-        getStateList(CountryId);
+
 
         mInputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //System.out.println("Text [" + s + "]");
-
-                selectStateAdapter.getFilter().filter(s.toString());
+                if (mInputSearch.isFocused()) {
+                    selectStateAdapter.getFilter().filter(s.toString());
+                }
             }
 
             @Override
@@ -90,6 +93,18 @@ public class SelectStateActivity extends BaseActivity {
             }
 
         };
+
+        if (savedInstanceState != null) {
+            stateListData.setStateList((ArrayList<StateList>) savedInstanceState.getSerializable("stateList"));
+            if (stateListData != null) {
+                mSelectStateList.setVisibility(View.VISIBLE);
+                selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener);
+                mSelectStateList.setAdapter(selectStateAdapter);
+            }
+            mInputSearch.setText(savedInstanceState.getString("searchState"));
+        } else {
+            getStateList(CountryId);
+        }
 
 
     }
@@ -204,31 +219,25 @@ public class SelectStateActivity extends BaseActivity {
         finish();
         super.onBackPressed();
     }
-}
 
-/*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("stateList", stateListData.getStateList());
+        outState.putString("searchState",mInputSearch.getText().toString());
+    }
 
-
-http://services.edbrix.net/common/getstatelistbycountry
-
-{
- "APIKEY":"QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEx",
-"SECRETKEY":"MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1MQ==",
-"CountryId": 228
-}
-
-{
-    ""Success"": 1,
-    ""Code"": ""S0006"",
-    ""Message"": ""Success"",
-    ""StateList"": [
-         {
-            ""Id"": ""1"",
-            ""Title"": ""Alabama""
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        stateListData.setStateList((ArrayList<StateList>) savedInstanceState.getSerializable("stateList"));
+        if (stateListData != null) {
+            mSelectStateList.setVisibility(View.VISIBLE);
+            selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener);
+            mSelectStateList.setAdapter(selectStateAdapter);
         }
-    ]
+        mInputSearch.setText(savedInstanceState.getString("searchState"));
+    }
 }
 
 
-
- */

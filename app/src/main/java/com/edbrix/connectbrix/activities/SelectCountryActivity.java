@@ -59,15 +59,16 @@ public class SelectCountryActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         countryListData = new CountryListData();
         assignViews();
-        getCountryList();
+
 
         mInputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //System.out.println("Text [" + s + "]");
-
-                selectCountryAdapter.getFilter().filter(s.toString());
+                if (mInputSearch.isFocused()) {
+                    selectCountryAdapter.getFilter().filter(s.toString());
+                }
             }
 
             @Override
@@ -109,7 +110,18 @@ public class SelectCountryActivity extends BaseActivity {
 
         };
 
-
+        if (savedInstanceState != null) {
+            countryListData.setCountryList((ArrayList<CountryList>) savedInstanceState.getSerializable("countryList"));
+            if (countryListData != null)
+            {
+                mSelectCountryList.setVisibility(View.VISIBLE);
+                selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener);
+                mSelectCountryList.setAdapter(selectCountryAdapter);
+            }
+            mInputSearch.setText(savedInstanceState.getString("searchCountry"));
+        } else {
+            getCountryList();
+        }
     }
 
     private void assignViews() {
@@ -148,19 +160,6 @@ public class SelectCountryActivity extends BaseActivity {
                                     } else {
                                         mSelectCountryList.setVisibility(View.GONE);
                                     }
-
-
-                                    /*for (int i = 0; i < response.getUserOrganizationList().size(); i++) {
-                                        userOrganizationListData = new ArrayList<>();
-                                        userOrganizationListData.add(response.getUserOrganizationList().get(i));
-                                    }
-
-                                    Intent intent = new Intent(SelectCountryActivity.this, OrgnizationListActivity.class);
-                                    intent.putExtra("organizationList", userOrganizationListData);
-                                    intent.putExtra("email", mEdTxtEmail.getText().toString());
-                                    intent.putExtra("comesFrom", "forgotPasswordActivity");
-                                    startActivityForResult(intent,RESULT_FORGOT_PASSWORD);*/
-
                                 }
                             }
 
@@ -196,52 +195,24 @@ public class SelectCountryActivity extends BaseActivity {
 
     }
 
-}
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("countryList", countryListData.getCountryList());
+        outState.putString("searchCountry",mInputSearch.getText().toString());
+    }
 
-/*
-
-http://services.edbrix.net/common/getcountrylist
-{
-     "APIKEY":"QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEx",
-     "SECRETKEY":"MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1MQ=="
-}
-
-
-{
-    ""Success"": 1,
-    ""Code"": ""S0006"",
-    ""Message"": ""Success"",
-    ""CountryList"": [
-         {
-            ""Id"": ""1"",
-             ""Title"": ""Afghanistan""
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        countryListData.setCountryList((ArrayList<CountryList>) savedInstanceState.getSerializable("countryList"));
+        if (countryListData != null)
+        {
+            mSelectCountryList.setVisibility(View.VISIBLE);
+            selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener);
+            mSelectCountryList.setAdapter(selectCountryAdapter);
         }
-    ]
+        mInputSearch.setText(savedInstanceState.getString("searchCountry"));
+    }
 }
 
-///////
-
-
-http://services.edbrix.net/common/getstatelistbycountry
-
-{
- "APIKEY":"QVBAMTIjMllIRC1TREFTNUQtNUFTRksyMjEx",
-"SECRETKEY":"MjQ1QDEyIzJZSEQtODVEQTJTM0RFQTg1Mz1JRTVCNEE1MQ==",
-"CountryId": 228
-}
-
-{
-    ""Success"": 1,
-    ""Code"": ""S0006"",
-    ""Message"": ""Success"",
-    ""StateList"": [
-         {
-            ""Id"": ""1"",
-            ""Title"": ""Alabama""
-        }
-    ]
-}
-
-
-
- */

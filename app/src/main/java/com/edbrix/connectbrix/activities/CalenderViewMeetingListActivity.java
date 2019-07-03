@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -44,6 +45,7 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,38 +87,58 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         registerEventReceiver();
         meetingListData = new GetMeetingsByMonthYearResposeData();
         userMeetingListResponseData = new ArrayList<>();
-
-        try {
-            finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
-            Date date = new Date();
-            mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
-            SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date tempDate = null;
-            Date getMonthYear = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
-
-            String getMonthYear_str_date = tempSimpleDateFormat.format(getMonthYear);
-            String[] temp_date_str = getMonthYear_str_date.split("-");
-            prepareMeetingByMonthYear(temp_date_str[0], temp_date_str[1]);
-
-
-            tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
-            dateForGetEvents = tempSimpleDateFormat.format(tempDate);
-            prepareMeetingListByDate(dateForGetEvents);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        /*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        prepareMeetingListByDate(formatter.format(date));*/
+        userMeetingByDateParentData = new UserMeetingByDateParentData();
+        finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
 
         clickListner();
-        // addEventToCalendar();
 
         if (savedInstanceState != null) {
-            userMeetingListResponseData = (ArrayList<UserMeetingListResponseData>) savedInstanceState.getSerializable("userMeetingListResponseData");
-            mTxtSelectedDate.setText(savedInstanceState.getString("selectedDate"));
-        }
+            meetingListData.setMeetingDates((ArrayList<String>) savedInstanceState.getSerializable("meetingDates"));
+            if (meetingListData.getMeetingDates() != null && meetingListData.getMeetingDates().size() > 0) {
 
+                for (int i = 0; i < meetingListData.getMeetingDates().size(); i++) {
+                    addEventToCalendar(meetingListData.getMeetingDates().get(i));
+                }
+            }
+            mTxtSelectedDate.setText(savedInstanceState.getString("selectedDate"));
+
+            userMeetingByDateParentData.setMeetings((List<UserMeetingListResponseData>) savedInstanceState.getSerializable("meetingList"));
+            if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
+                txtDataFound.setVisibility(View.GONE);
+                meetingListImg.setVisibility(View.GONE);
+                mMeetingListWithCalender.setVisibility(View.VISIBLE);
+                userMeetingListResponseData = new ArrayList<>();
+
+                userMeetingListResponseData.addAll(userMeetingByDateParentData.getMeetings());
+                schoolListWithCalendarAdapter = new SchoolListWithCalendarAdapter(CalenderViewMeetingListActivity.this, userMeetingListResponseData);
+                mMeetingListWithCalender.setAdapter(schoolListWithCalendarAdapter);
+            } else {
+                mMeetingListWithCalender.setVisibility(View.GONE);
+                txtDataFound.setVisibility(View.VISIBLE);
+                meetingListImg.setVisibility(View.VISIBLE);
+            }
+        } else {
+
+            try {
+
+                Date date = new Date();
+                mTxtSelectedDate.setText(finalSimpleDateFormat.format(date));
+                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date tempDate = null;
+                Date getMonthYear = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+
+                String getMonthYear_str_date = tempSimpleDateFormat.format(getMonthYear);
+                String[] temp_date_str = getMonthYear_str_date.split("-");
+                prepareMeetingByMonthYear(temp_date_str[0], temp_date_str[1]);
+
+
+                tempDate = finalSimpleDateFormat.parse(mTxtSelectedDate.getText().toString());
+                dateForGetEvents = tempSimpleDateFormat.format(tempDate);
+                prepareMeetingListByDate(dateForGetEvents);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void clickListner() {
@@ -173,31 +195,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             }
         });
 
-       /* mCalendarView.setOnForwardPageChangeListener(new OnCalendarPageChangeListener() {
-            @Override
-            public void onChange() {
-                Calendar calendar = mCalendarView.getFirstSelectedDate();
-                Date date = calendar.getTime();
-                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String forwardPageDate = tempSimpleDateFormat.format(date);
-                Log.e(TAG, forwardPageDate);
-                String[] splitString = forwardPageDate.split("-");
-                prepareMeetingByMonthYear(splitString[0], splitString[1]);
-            }
-        });
-
-        mCalendarView.setOnPreviousPageChangeListener(new OnCalendarPageChangeListener() {
-            @Override
-            public void onChange() {
-                Calendar calendar = mCalendarView.getCurrentPageDate();
-                Date date = calendar.getTime();
-                SimpleDateFormat tempSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String forwardPageDate = tempSimpleDateFormat.format(date);
-                Log.e(TAG, forwardPageDate);
-                String[] splitString = forwardPageDate.split("-");
-                prepareMeetingByMonthYear(splitString[0], splitString[1]);
-            }
-        });*/
 
         mCalendarView.setOnForwardButtonClickListener(new OnNavigationButtonClickListener() {
             @Override
@@ -493,14 +490,38 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("userMeetingsDateList", userMeetingListResponseData);
-        outState.putString("selectedDate",mTxtSelectedDate.getText().toString());
+        outState.putSerializable("meetingDates", meetingListData.getMeetingDates());
+        outState.putSerializable("meetingList", userMeetingListResponseData);
+        outState.putString("selectedDate", mTxtSelectedDate.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        userMeetingListResponseData = (ArrayList<UserMeetingListResponseData>) savedInstanceState.getSerializable("userMeetingListResponseData");
+        meetingListData.setMeetingDates((ArrayList<String>) savedInstanceState.getSerializable("meetingDates"));
+        if (meetingListData.getMeetingDates() != null && meetingListData.getMeetingDates().size() > 0) {
+
+            for (int i = 0; i < meetingListData.getMeetingDates().size(); i++) {
+                addEventToCalendar(meetingListData.getMeetingDates().get(i));
+            }
+        }
         mTxtSelectedDate.setText(savedInstanceState.getString("selectedDate"));
+
+        userMeetingByDateParentData.setMeetings((List<UserMeetingListResponseData>) savedInstanceState.getSerializable("meetingList"));
+        if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
+            txtDataFound.setVisibility(View.GONE);
+            meetingListImg.setVisibility(View.GONE);
+            mMeetingListWithCalender.setVisibility(View.VISIBLE);
+            userMeetingListResponseData = new ArrayList<>();
+
+            userMeetingListResponseData.addAll(userMeetingByDateParentData.getMeetings());
+            schoolListWithCalendarAdapter = new SchoolListWithCalendarAdapter(CalenderViewMeetingListActivity.this, userMeetingListResponseData);
+            mMeetingListWithCalender.setAdapter(schoolListWithCalendarAdapter);
+        } else {
+            mMeetingListWithCalender.setVisibility(View.GONE);
+            txtDataFound.setVisibility(View.VISIBLE);
+            meetingListImg.setVisibility(View.VISIBLE);
+        }
     }
+
 }
