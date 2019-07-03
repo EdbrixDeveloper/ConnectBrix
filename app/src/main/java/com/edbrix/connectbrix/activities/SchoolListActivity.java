@@ -91,6 +91,10 @@ public class SchoolListActivity extends BaseActivity {
     Intent intent;
     boolean isHitOnActivityResult = false;
 
+    private int MeetingRequestCount = 0;
+    private int MeetingRequestCountAll = 0;
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +117,9 @@ public class SchoolListActivity extends BaseActivity {
 
             mInputLayoutSearch = (TextInputLayout) findViewById(R.id.input_layout_search);
             mInputSearch = (EditText) findViewById(R.id.input_search);
+
+            MeetingRequestCount = 0;
+            MeetingRequestCountAll = 0;
 
             floating_action_button_fab_with_listview = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
@@ -146,6 +153,21 @@ public class SchoolListActivity extends BaseActivity {
                 loading = savedInstanceState.getBoolean("loading");
                 currentVisibleItemInListView = savedInstanceState.getInt("currentVisibleItemInListView");
                 y_str = savedInstanceState.getString("y_str");
+
+                MeetingRequestCount = savedInstanceState.getInt("MeetingRequestCount", MeetingRequestCount);//<UserMeetingsDate>
+                MeetingRequestCountAll=savedInstanceState.getInt("MeetingRequestCountAll", MeetingRequestCountAll);
+                if (MeetingRequestCount > 0) {
+                    requestMeetingListCount.setVisibility(View.VISIBLE);
+                    requestMeetingListCount.setText(String.valueOf(MeetingRequestCount));
+                } else {
+                    requestMeetingListCount.setVisibility(View.GONE);
+                }
+
+                if (MeetingRequestCountAll > 0) {
+                    requestedMeetingButton.setVisibility(View.VISIBLE);
+                } else {
+                    requestedMeetingButton.setVisibility(View.GONE);
+                }
 
                 if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
                     txtDataFound.setVisibility(View.GONE);
@@ -455,14 +477,16 @@ public class SchoolListActivity extends BaseActivity {
                                         if (cnt < 10) {
                                             loading = false;
                                         }*/
-                                        if (Integer.parseInt(meetingListData.getMeetingRequestCount().toString()) > 0) {
+                                        MeetingRequestCount = Integer.parseInt(meetingListData.getMeetingRequestCount().toString());
+                                        MeetingRequestCountAll=Integer.parseInt(meetingListData.getMeetingRequestCountAll().toString());
+                                        if (MeetingRequestCount > 0) {
                                             requestMeetingListCount.setVisibility(View.VISIBLE);
-                                            requestMeetingListCount.setText(meetingListData.getMeetingRequestCount().toString());
+                                            requestMeetingListCount.setText(String.valueOf(MeetingRequestCount));
                                         } else {
                                             requestMeetingListCount.setVisibility(View.GONE);
                                         }
 
-                                        if (Integer.parseInt(meetingListData.getMeetingRequestCountAll().toString()) > 0) {
+                                        if (MeetingRequestCountAll > 0) {
                                             requestedMeetingButton.setVisibility(View.VISIBLE);
                                         } else {
                                             requestedMeetingButton.setVisibility(View.GONE);
@@ -613,8 +637,13 @@ public class SchoolListActivity extends BaseActivity {
         outState.putInt("currentVisibleItemInListView", currentVisibleItemInListView);//<UserMeetingsDate>
         outState.putString("y_str", y_str);//<UserMeetingsDate>
         outState.putString("mInputSearch", mInputSearch.getText().toString());
+
+        outState.putInt("MeetingRequestCount", MeetingRequestCount);//<UserMeetingsDate>
+        outState.putInt("MeetingRequestCountAll", MeetingRequestCountAll);
+
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -624,6 +653,21 @@ public class SchoolListActivity extends BaseActivity {
         loading = savedInstanceState.getBoolean("loading");
         currentVisibleItemInListView = savedInstanceState.getInt("currentVisibleItemInListView");
         y_str = savedInstanceState.getString("y_str");
+
+        MeetingRequestCount = savedInstanceState.getInt("MeetingRequestCount", MeetingRequestCount);//<UserMeetingsDate>
+        MeetingRequestCountAll=savedInstanceState.getInt("MeetingRequestCountAll", MeetingRequestCountAll);
+        if (MeetingRequestCount > 0) {
+            requestMeetingListCount.setVisibility(View.VISIBLE);
+            requestMeetingListCount.setText(String.valueOf(MeetingRequestCount));
+        } else {
+            requestMeetingListCount.setVisibility(View.GONE);
+        }
+
+        if (MeetingRequestCountAll > 0) {
+            requestedMeetingButton.setVisibility(View.VISIBLE);
+        } else {
+            requestedMeetingButton.setVisibility(View.GONE);
+        }
 
         if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
             txtDataFound.setVisibility(View.GONE);
