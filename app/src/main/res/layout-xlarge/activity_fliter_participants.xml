@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:weightSum="10">
 
                 <TextView
@@ -85,11 +85,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Email ID:"
-                    android:layout_weight="9"/>
+                    android:layout_weight="8.58"/>
 
                 <com.doodle.android.chips.ChipsView
                     android:id="@+id/cv_contacts"
-                    android:layout_weight="1"
+                    android:layout_weight="1.42"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="ifContentScrolls"

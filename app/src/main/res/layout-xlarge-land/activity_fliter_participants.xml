@@ -77,21 +77,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:weightSum="10">
 
                 <TextView
                     android:id="@+id/txtChipView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="9"
+                    android:layout_weight="8.65"
                     android:text="Email ID:" />
 
                 <com.doodle.android.chips.ChipsView
                     android:id="@+id/cv_contacts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.35"
                     android:overScrollMode="ifContentScrolls"
                     app:cv_max_height="120dp"
                     app:cv_vertical_spacing="2dp" />
