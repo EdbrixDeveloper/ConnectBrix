@@ -136,7 +136,10 @@ public class SchoolListActivity extends BaseActivity {
 
             if (savedInstanceState != null) {
                 if (!savedInstanceState.getString("mInputSearch").isEmpty()) {
-                    mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
+                    //mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
+                    searchFlag = true;
+                    mInputLayoutSearch.setVisibility(View.VISIBLE);
+                    mInputSearch.setText("");
                 }
                 userMeetingsDateList = (ArrayList<UserMeetingsDate>) savedInstanceState.getSerializable("userMeetingsDateList");
                 requestCount = savedInstanceState.getInt("requestCount");
