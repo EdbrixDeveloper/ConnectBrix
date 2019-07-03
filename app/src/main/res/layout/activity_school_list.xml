@@ -161,6 +161,7 @@
             android:paddingStart="12dp"
             android:paddingTop="6dp"
             android:elevation="7dp"
+            android:visibility="gone"
             android:text="0"
             android:textColor="@color/zm_white"
             android:textStyle="bold" />
