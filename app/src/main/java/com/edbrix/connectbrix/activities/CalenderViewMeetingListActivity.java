@@ -112,6 +112,11 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         clickListner();
         // addEventToCalendar();
 
+        if (savedInstanceState != null) {
+            userMeetingListResponseData = (ArrayList<UserMeetingListResponseData>) savedInstanceState.getSerializable("userMeetingListResponseData");
+            mTxtSelectedDate.setText(savedInstanceState.getString("selectedDate"));
+        }
+
     }
 
     private void clickListner() {
@@ -472,6 +477,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         }
     }
 
+
     /*@Override
     protected void onStop() {
         unregisterReceiver(eventReceiver1);
@@ -483,4 +489,18 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         registerEventReceiver();
         super.onResume();
     }*/
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("userMeetingsDateList", userMeetingListResponseData);
+        outState.putString("selectedDate",mTxtSelectedDate.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        userMeetingListResponseData = (ArrayList<UserMeetingListResponseData>) savedInstanceState.getSerializable("userMeetingListResponseData");
+        mTxtSelectedDate.setText(savedInstanceState.getString("selectedDate"));
+    }
 }
