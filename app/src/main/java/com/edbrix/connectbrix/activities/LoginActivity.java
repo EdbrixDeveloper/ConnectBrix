@@ -454,13 +454,15 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
     private void checkPermission() {
         if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CAMERA) +
                 ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) +
-                ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) /*+
-                ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) +
+                ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) +
+                ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.GET_ACCOUNTS)+
+                ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_NETWORK_STATE)
+                /*ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) +
                 ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)*/
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(LoginActivity.this,
-                    new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,/* Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,*/},
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.GET_ACCOUNTS,Manifest.permission.ACCESS_NETWORK_STATE,/* Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,*/},
                     CHECK_PERMISSIONS);
         } else {
             //Toast.makeText(LoginActivity.this,"Already Granted",Toast.LENGTH_LONG).show();
@@ -476,10 +478,12 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
                     boolean CAMERA = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean READ_EXTERNAL_STORAGE = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean WRITE_EXTERNAL_STORAGE = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean GET_ACCOUNTS = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    boolean ACCESS_NETWORK_STATE = grantResults[4] == PackageManager.PERMISSION_GRANTED;
                     /*boolean ACCESS_FINE_LOCATION = grantResults[3] == PackageManager.PERMISSION_GRANTED;
                     boolean ACCESS_COARSE_LOCATION = grantResults[4] == PackageManager.PERMISSION_GRANTED;*/
 
-                    if (CAMERA && READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE /*&& ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION*/) {
+                    if (CAMERA && READ_EXTERNAL_STORAGE && WRITE_EXTERNAL_STORAGE && GET_ACCOUNTS && ACCESS_NETWORK_STATE/*&& ACCESS_FINE_LOCATION && ACCESS_COARSE_LOCATION*/) {
                         //Toast.makeText(LoginActivity.this,"all permission granted",Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(LoginActivity.this, "some permission not granted", Toast.LENGTH_LONG).show();

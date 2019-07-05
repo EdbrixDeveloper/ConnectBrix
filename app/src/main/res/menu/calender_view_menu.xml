@@ -4,7 +4,13 @@
 
     <item
         android:id="@+id/menuCalender"
-        android:icon="@drawable/ic_list_black_24dp"
+        android:icon="@drawable/ic_list_menu"
+        app:showAsAction="always"
+        android:title="calender" />
+
+    <item
+        android:id="@+id/menuGoogle"
+        android:icon="@drawable/googleplus"
         app:showAsAction="always"
         android:title="calender" />
 </menu>

@@ -60,6 +60,7 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgCalender;
     private ImageView imgUserProfile;
     private ImageView imgSearch;
+    private ImageView googlePlusMenu;
     private LinearLayout linearLayoutCircular;
     private FloatingActionButton requestedMeetingButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -112,6 +113,7 @@ public class SchoolListActivity extends BaseActivity {
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
+            googlePlusMenu = (ImageView) findViewById(R.id.googlePlusMenu);
             linearLayoutCircular = (LinearLayout) findViewById(R.id.linearLayoutCircular);
             requestedMeetingButton = (FloatingActionButton) findViewById(R.id.requestedMeetingButton);
 
@@ -371,6 +373,8 @@ public class SchoolListActivity extends BaseActivity {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
+
+
         }
 
 
@@ -690,6 +694,13 @@ public class SchoolListActivity extends BaseActivity {
         super.onPause();
         y_str = "S";
     }
+
+    //call user deails web service to get user time zone for used it when sync meetings to google calendar.
+
+
+
+    //------------------------------------- Sync Meetings With Google Calendar-----------------------------------//
+
 }
 
 

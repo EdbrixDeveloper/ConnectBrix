@@ -58,6 +58,10 @@ public class User {
     @SerializedName("CountryId")
     @Expose
     private String countryId;
+    @SerializedName("UserTimezone")
+    @Expose
+    private String userTimezone;
+
     //////
 
     private final static long serialVersionUID = -5626855158322304629L;
@@ -199,4 +203,15 @@ public class User {
         this.countryId = countryId;
     }
 
+    public String getUserTimezone() {
+        return userTimezone;
+    }
+
+    public void setUserTimezone(String userTimezone) {
+        this.userTimezone = userTimezone;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }
