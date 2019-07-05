@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".activities.SchoolListActivity">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/actionBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,13 +61,111 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/actionBarLayout"
-        android:background="@color/colorDarkParimary"/>
+        android:background="@color/colorDarkParimary"/>-->
+    <LinearLayout
+        android:id="@+id/actionBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.4"
+            android:text="Connect Brix"
+            android:textColor="@color/colorButtonText"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <!--<ImageView
+            android:id="@+id/search"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/search" />-->
+
+        <ImageView
+            android:id="@+id/calender"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/calendar2" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCircular"
+            android:layout_width="34dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgUserProfile"
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/usersp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<View
+        android:id="@+id/viewLine1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/actionBarLayout"
+        android:background="@color/colorDarkParimary" />-->
+
+    <LinearLayout
+        android:id="@+id/actionBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGrey"
+        android:layout_below="@+id/actionBarLayout"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Upcoming Meetings"
+            android:textColor="@color/colorButtonText"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/googlePlusMenu"
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.5"
+            android:src="@drawable/googleplus" />
+
+    </LinearLayout>
+    <!--<View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/actionBarLayout2"
+        android:background="@color/colorDarkParimary" />-->
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewLine"
+        android:layout_below="@+id/actionBarLayout2"
         android:layout_marginTop="5dp"
         android:visibility="gone">
 

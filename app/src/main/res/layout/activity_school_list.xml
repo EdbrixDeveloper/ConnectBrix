@@ -34,7 +34,7 @@
             android:src="@drawable/search" />-->
 
         <ImageView
-            android:id="@+id/googlePlus"
+            android:id="@+id/calender"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_weight="0.3"
