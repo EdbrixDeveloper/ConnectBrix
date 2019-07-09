@@ -319,8 +319,9 @@ public class CreateMeetingActivity extends BaseActivity {
         try {
             showBusyProgress();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            /*jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jsonObject.put("UserId", sessionManager.getSessionUserId());
             jsonObject.put("MeetingId", meetingDbId);
             jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
@@ -380,8 +381,9 @@ public class CreateMeetingActivity extends BaseActivity {
 
             showBusyProgress();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+           /* jsonObject.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jsonObject.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jsonObject.put("UserId", sessionManager.getSessionUserId());
             jsonObject.put("Title", mCMeetingTitleVal.getText().toString().trim());
             jsonObject.put("Agenda", mCMeetingAgendaVal.getText().toString().trim());

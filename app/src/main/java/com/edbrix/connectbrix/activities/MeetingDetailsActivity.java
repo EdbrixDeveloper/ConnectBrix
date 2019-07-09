@@ -64,6 +64,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private static final String TAG = MeetingDetailsActivity.class.getName();
     private LinearLayout mMainLinear;
     private TextView mTxtMeetingTitle;
+    private TextView txtMeetingId;
     private TextView mTxtMeetingDate;
     private TextView mTxtMeetingTime;
     private TextView mTxtMeetingDetails;
@@ -71,6 +72,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private TextView mTextViewParticipantCount;
     private Button btnMAddParticipants;
     private Button mBtnMJoin;
+    private LinearLayout btns;
     private ListView mParticipantList;
     private ImageView mMeetingListImg;
     private TextView mTxtDataFound;
@@ -146,6 +148,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             if (participantArrayList != null && participantArrayList.size() > 0) {
                 if (Integer.parseInt(mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString()) > 0 && isAvailable.equals("1")) {
                     mBtnMJoin.setVisibility(View.VISIBLE);
+                    btns.setVisibility(View.VISIBLE);
                 }
                 mMeetingListImg.setVisibility(View.GONE);
                 mTxtDataFound.setVisibility(View.GONE);
@@ -217,6 +220,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 if (CheckedFlag == 0 || CheckedFlag == 2) {
                     CheckedFlag = 1;
                     mBtnMJoin.setVisibility(View.VISIBLE);
+                    btns.setVisibility(View.VISIBLE);
                     meetingAvilabilityStatus("1");
                     //showToast("Radio Male");
                 }
@@ -229,6 +233,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 if (CheckedFlag == 0 || CheckedFlag == 1) {
                     CheckedFlag = 2;
                     mBtnMJoin.setVisibility(View.GONE);
+                    btns.setVisibility(View.GONE);
                     meetingAvilabilityStatus("2");
                     //showToast("Radio Female");
                 }
@@ -388,6 +393,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         // mBtns = (FrameLayout) findViewById(R.id.btns);
         btnMAddParticipants = (Button) findViewById(R.id.btnMAddParticipants);
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);
+        btns = (LinearLayout)findViewById(R.id.btns);
         mParticipantList = (ListView) findViewById(R.id.participantList);
 
         mMeetingListImg = (ImageView) findViewById(R.id.meetingListImg);
@@ -397,6 +403,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
         radioSex = (RadioGroup) findViewById(R.id.radioSex);
         mTextViewParticipantCount = (TextView) findViewById(R.id.textViewParticipantCount);
+        txtMeetingId = (TextView) findViewById(R.id.txtMeetingID);
     }
 
 
@@ -405,8 +412,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+            jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingId", meetingDbId);
 
             Log.i(MeetingDetailsActivity.class.getName(), Constants.getMeetingDetails + "\n\n" + jo.toString());
@@ -427,6 +434,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     if (Constants.HOST_ID != null) {
                                         executeBackgroundTaskForUserInfo();
                                     }
+                                    String meetingID = meetingDetailsData.getMeeting().getMeetingId() == null || meetingDetailsData.getMeeting().getMeetingId().isEmpty() ? "Meeting Id: "+"" : "Meeting Id: "+meetingDetailsData.getMeeting().getMeetingId();
+                                    txtMeetingId.setText(meetingID);
                                     mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
 
                                     if (meetingDetailsData.getMeeting().getStartDateTime() == null || meetingDetailsData.getMeeting().getStartDateTime().isEmpty()) {
@@ -450,12 +459,17 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         }
 
                                     }
+                                    if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0 && isAvailable.equals("1")) {
+                                        mBtnMJoin.setVisibility(View.VISIBLE);
+                                        btns.setVisibility(View.VISIBLE);
+                                    }else {
+                                        mBtnMJoin.setVisibility(View.GONE);
+                                        btns.setVisibility(View.GONE);
+                                    }
                                     mTxtMeetingDetails.setText(meetingDetailsData.getMeeting().getAgenda() == null || meetingDetailsData.getMeeting().getAgenda().isEmpty() ? "" : meetingDetailsData.getMeeting().getAgenda());
                                     if (meetingDetailsData.getMeeting().getParticipantList() != null && meetingDetailsData.getMeeting().getParticipantList().size() > 0) {
                                         mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
-                                        if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0 && isAvailable.equals("1")) {
-                                            mBtnMJoin.setVisibility(View.VISIBLE);
-                                        }
+
                                         MeetingId = meetingDetailsData.getMeeting().getMeetingId();
                                         mMeetingListImg.setVisibility(View.GONE);
                                         mTxtDataFound.setVisibility(View.GONE);
@@ -487,6 +501,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         mMeetingListImg.setVisibility(View.VISIBLE);
                                         mTxtDataFound.setVisibility(View.VISIBLE);
                                         mParticipantList.setVisibility(View.GONE);
+                                        mTextViewParticipantCount.setText("0");
                                         /*mTextViewParticipantCount.setText(meetingDetailsData.getMeeting().getParticipantCount());
                                         participantArrayList = new ArrayList<>();
                                         participantsListAdapter = new ParticipantsListAdapter(MeetingDetailsActivity.this, participantArrayList, sessionManager.getSessionUserType(), meetingDbId, IsHost, onButtonActionListener);
@@ -628,8 +643,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+            jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingId", meetingDbId);
             //jo.put("UserId", sessionManager.getSessionUserId());
 
@@ -772,8 +787,10 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            /*jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+            jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingId", meetingDbId);
             jo.put("RecordId", RecordId);
 
@@ -926,6 +943,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         if (participantArrayList != null && participantArrayList.size() > 0) {
             if (Integer.parseInt(mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString()) > 0 && isAvailable.equals("1")) {
                 mBtnMJoin.setVisibility(View.VISIBLE);
+                btns.setVisibility(View.VISIBLE);
             }
             mMeetingListImg.setVisibility(View.GONE);
             mTxtDataFound.setVisibility(View.GONE);

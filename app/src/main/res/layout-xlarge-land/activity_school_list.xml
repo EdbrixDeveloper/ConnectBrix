@@ -126,7 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/actionBarLayout"
-        android:background="@color/lightGrey"
+        android:background="@color/colorGrey"
         android:gravity="center_vertical"
         android:padding="10dp"
         android:weightSum="3">
@@ -134,7 +134,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="2.3"
             android:text="Upcoming Meetings"
             android:textColor="@color/colorButtonText"
             android:textSize="18dp"
@@ -144,14 +144,14 @@
             android:id="@+id/search"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.4"
             android:src="@drawable/search" />
 
         <ImageView
             android:id="@+id/googlePlusMenu"
             android:layout_width="25dp"
             android:layout_height="28dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:src="@drawable/googleplus" />
 
     </LinearLayout>
@@ -204,7 +204,7 @@
         android:id="@+id/meetingListImg"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_below="@+id/linearLayoutText"
+        android:layout_below="@+id/actionBarLayout2"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:src="@drawable/meetinglist"

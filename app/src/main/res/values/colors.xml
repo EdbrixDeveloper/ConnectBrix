@@ -10,9 +10,8 @@
     <color name="colorJoin">#3BB9FF</color>
     <color name="startColor">#7FD447</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorGrey">#A9A9A9</color>
+    <color name="colorGrey">#888888</color>
     <color name="lightGrey">#bdbdbd</color>
-
 
 
     <!--For app tour-->

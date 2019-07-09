@@ -44,6 +44,7 @@ import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.SchoolListWithCalendarAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
+import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.GetMeetingsByMonthYearResposeData;
 import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.MyEventDay;
@@ -90,6 +91,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
     private static final String TAG = CalenderViewMeetingListActivity.class.getName();
     private LinearLayout mLinearLayoutCal;
+    private AlertDialogManager alertDialogManager;
     private CalendarView mCalendarView;
     private ListView mMeetingListWithCalender;
     private TextView mTxtSelectedDate;
@@ -127,6 +129,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         getSupportActionBar().setTitle("Meetings");
 
         sessionManager = new SessionManager(this);
+        alertDialogManager = new AlertDialogManager(CalenderViewMeetingListActivity.this);
         assignViews();
         registerEventReceiver();
         GetUserPersonalData();
@@ -318,12 +321,16 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 //onBackPressed();
                 return true;
             case R.id.menuGoogle:
-                if (checkPermission() == true) {
 
-                    mCredential = GoogleAccountCredential.usingOAuth2(
-                            CalenderViewMeetingListActivity.this, Arrays.asList(SCOPES))
-                            .setBackOff(new ExponentialBackOff());
-                    getResultsFromApi();
+                alertDialogManager.Dialog("Confirmation", "Continue with Sync to Google Calendar?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                    @Override
+                    public void onPositiveClick() {
+                        if (checkPermission() == true) {
+
+                            mCredential = GoogleAccountCredential.usingOAuth2(
+                                    CalenderViewMeetingListActivity.this, Arrays.asList(SCOPES))
+                                    .setBackOff(new ExponentialBackOff());
+                            getResultsFromApi();
 
                             if(userMeetingListResponseData.size()>0) {
                                 for(int j=0;j<userMeetingListResponseData.size();j++){
@@ -347,7 +354,14 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                 showToast("Meetings sync to google calendar successfully.");
                             }
 
-                }
+                        }
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+                    }
+                }).show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -367,8 +381,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
             showBusyProgress();
             JSONObject jo = new JSONObject();
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingDate", dateForGetEvents);
 
@@ -423,8 +436,9 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         try {
             JSONObject jo = new JSONObject();
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            /*jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("Year", year);
             jo.put("Month", month);

@@ -96,6 +96,7 @@ public class SchoolListActivity extends BaseActivity {
     public ExpandableListView schoolList_listView_schoolList;
     private AlertDialogManager alertDialogManager;
     private TextView txtDataFound;
+    private ImageView meetingListImg;
     private TextView requestMeetingListCount;
     private ImageView imgCalender;
     private ImageView imgUserProfile;
@@ -180,8 +181,9 @@ public class SchoolListActivity extends BaseActivity {
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
             requestMeetingListCount = (TextView) findViewById(R.id.requestMeetingListCount);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);
+            meetingListImg = (ImageView)findViewById(R.id.meetingListImg);
             txtDataFound.setVisibility(View.GONE);
-
+            meetingListImg.setVisibility(View.GONE);
             meetingListData = new MeetingListData();
             alertDialogManager = new AlertDialogManager(SchoolListActivity.this);
 
@@ -226,6 +228,7 @@ public class SchoolListActivity extends BaseActivity {
 
                 if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
                     txtDataFound.setVisibility(View.GONE);
+                    meetingListImg.setVisibility(View.GONE);
                     schoolList_listView_schoolList.setVisibility(View.VISIBLE);
                     pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList, onChildItemClickActionListener);//meetingListData
                     schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
@@ -236,6 +239,7 @@ public class SchoolListActivity extends BaseActivity {
                 } else {
                     schoolList_listView_schoolList.setVisibility(View.GONE);
                     txtDataFound.setVisibility(View.VISIBLE);
+                    meetingListImg.setVisibility(View.VISIBLE);
                 }
 
             } else {
@@ -430,40 +434,52 @@ public class SchoolListActivity extends BaseActivity {
             googlePlusMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (checkPermission() == true) {
-                        mCredential = GoogleAccountCredential.usingOAuth2(
-                                getApplicationContext(), Arrays.asList(SCOPES))
-                                .setBackOff(new ExponentialBackOff());
-                        getResultsFromApi();
 
-                        if(userMeetingsDateList.size()>0)
-                        {
-                            for(int i=0;i<userMeetingsDateList.size();i++){
-                                if(userMeetingsDateList.get(i).getUserMeetings().size()>0) {
-                                    for(int j=0;j<userMeetingsDateList.get(i).getUserMeetings().size();j++){
-                                        String userDate = userMeetingsDateList.get(i).getUserMeetings().get(j).getMeetingDate();
-                                        SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
-                                        DateTime start = null;
-                                        DateTime end = null;
-                                        try {
-                                            Date dateOfMeeting  = convertDateTime.parse(userDate);
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                                            String tempDate = simpleDateFormat.format(dateOfMeeting);
-                                            Date dateTime = simpleDateFormat.parse(tempDate);
-                                            start = new DateTime(dateTime);
-                                            end = new DateTime(dateTime);
-                                            Log.d("Date",dateOfMeeting.toString());
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
+                    alertDialogManager.Dialog("Confirmation", "Continue with Sync to Google Calendar?", "ok", "cancel", new AlertDialogManager.onTwoButtonClickListner() {
+                        @Override
+                        public void onPositiveClick() {
+
+                            if (checkPermission() == true) {
+                                mCredential = GoogleAccountCredential.usingOAuth2(
+                                        getApplicationContext(), Arrays.asList(SCOPES))
+                                        .setBackOff(new ExponentialBackOff());
+                                getResultsFromApi();
+
+                                if(userMeetingsDateList.size()>0)
+                                {
+                                    for(int i=0;i<userMeetingsDateList.size();i++){
+                                        if(userMeetingsDateList.get(i).getUserMeetings().size()>0) {
+                                            for(int j=0;j<userMeetingsDateList.get(i).getUserMeetings().size();j++){
+                                                String userDate = userMeetingsDateList.get(i).getUserMeetings().get(j).getMeetingDate();
+                                                SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                                                DateTime start = null;
+                                                DateTime end = null;
+                                                try {
+                                                    Date dateOfMeeting  = convertDateTime.parse(userDate);
+                                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                                                    String tempDate = simpleDateFormat.format(dateOfMeeting);
+                                                    Date dateTime = simpleDateFormat.parse(tempDate);
+                                                    start = new DateTime(dateTime);
+                                                    end = new DateTime(dateTime);
+                                                    Log.d("Date",dateOfMeeting.toString());
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                createEventAsync(userMeetingsDateList.get(i).getUserMeetings().get(j).getTitle(), "", userMeetingsDateList.get(i).getUserMeetings().get(j).getAgenda(), start, end, null);
+                                            }
                                         }
-                                        createEventAsync(userMeetingsDateList.get(i).getUserMeetings().get(j).getTitle(), "", userMeetingsDateList.get(i).getUserMeetings().get(j).getAgenda(), start, end, null);
                                     }
+                                    showToast("Meetings sync to google calendar successfully.");
                                 }
+                                //createEventAsync(eventTitle.getText().toString(), eventLocation.getText().toString(), buffer.toString(), start, end, eventAttendeeEmail );
                             }
-                            showToast("Meetings sync to google calendar successfully.");
                         }
-                        //createEventAsync(eventTitle.getText().toString(), eventLocation.getText().toString(), buffer.toString(), start, end, eventAttendeeEmail );
-                    }
+
+                        @Override
+                        public void onNegativeClick() {
+                        }
+                    }).show();
+
                 }
             });
 
@@ -537,8 +553,7 @@ public class SchoolListActivity extends BaseActivity {
             JSONObject jo = new JSONObject();
 
             jo.put("UserId", sessionManager.getSessionUserId());
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jo.put("Page", page);
 
 
@@ -573,6 +588,7 @@ public class SchoolListActivity extends BaseActivity {
 
                                     if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
+                                        meetingListImg.setVisibility(View.GONE);
                                         schoolList_listView_schoolList.setVisibility(View.VISIBLE);
 
                                         /*if (meetingListData.getUserMeetingsDates().size() < 10) {
@@ -618,6 +634,7 @@ public class SchoolListActivity extends BaseActivity {
                                         if (userMeetingsDateList.size() < 1) {
                                             schoolList_listView_schoolList.setVisibility(View.GONE);
                                             txtDataFound.setVisibility(View.VISIBLE);
+                                            meetingListImg.setVisibility(View.VISIBLE);
                                         }
                                     }
                                 }
@@ -801,6 +818,7 @@ public class SchoolListActivity extends BaseActivity {
 
         if (userMeetingsDateList != null && userMeetingsDateList.size() > 0) {
             txtDataFound.setVisibility(View.GONE);
+            meetingListImg.setVisibility(View.GONE);
             schoolList_listView_schoolList.setVisibility(View.VISIBLE);
             pmAcExpListAdapter = new SchoolExpListAdapter(SchoolListActivity.this, userMeetingsDateList, onChildItemClickActionListener);//meetingListData
             schoolList_listView_schoolList.setAdapter(pmAcExpListAdapter);
@@ -811,6 +829,7 @@ public class SchoolListActivity extends BaseActivity {
         } else {
             schoolList_listView_schoolList.setVisibility(View.GONE);
             txtDataFound.setVisibility(View.VISIBLE);
+            meetingListImg.setVisibility(View.VISIBLE);
         }
 
     }

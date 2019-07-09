@@ -123,19 +123,21 @@
         android:id="@+id/actionBarLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightGrey"
+        android:background="@color/colorGrey"
         android:layout_below="@+id/actionBarLayout"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:weightSum="3">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="2.2"
             android:text="Upcoming Meetings"
             android:textColor="@color/colorButtonText"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textStyle="bold" />
 
         <ImageView
@@ -149,7 +151,7 @@
             android:id="@+id/googlePlusMenu"
             android:layout_width="25dp"
             android:layout_height="28dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:src="@drawable/googleplus" />
 
     </LinearLayout>
@@ -199,7 +201,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
         android:layout_centerInParent="true"
-        android:layout_below="@+id/linearLayoutText"
+        android:layout_below="@+id/actionBarLayout2"
         android:visibility="gone"
         android:src="@drawable/meetinglist"/>
 

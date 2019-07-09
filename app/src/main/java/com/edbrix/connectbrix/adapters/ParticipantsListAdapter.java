@@ -179,8 +179,10 @@ public class ParticipantsListAdapter extends BaseAdapter {
             dialogManager.showBusyProgress();
             JSONObject jo = new JSONObject();
 
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            /*jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+            jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingId", meetingDbId);
             jo.put("RecordId", RecordId);
 

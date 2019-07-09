@@ -262,8 +262,7 @@ public class MeetingRequestListActivity extends BaseActivity {
             JSONObject jo = new JSONObject();
 
             jo.put("UserId", sessionManager.getSessionUserId());
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jo.put("Page", page);
 
 
@@ -345,8 +344,9 @@ public class MeetingRequestListActivity extends BaseActivity {
             showBusyProgress();
             JSONObject jo = new JSONObject();
 
-            jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
-            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());
+            /*jo.put("APIKEY", sessionManager.getPrefsOrganizationApiKey());
+            jo.put("SECRETKEY", sessionManager.getPrefsOrganizationSecretKey());*/
+            jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
             jo.put("UserId", sessionManager.getSessionUserId());
             jo.put("MeetingId", meetingDbId);
             jo.put("Available", StatusFlag);
