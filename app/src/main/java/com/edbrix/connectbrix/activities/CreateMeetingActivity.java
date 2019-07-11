@@ -132,6 +132,14 @@ public class CreateMeetingActivity extends BaseActivity {
 
                         int hour = Integer.valueOf(time.substring(0, time.indexOf(":")));
                         int min = Integer.valueOf(time.substring(time.indexOf(":") + 1, time.length()));
+                        //for set am/pm in time picker
+                        if (amPm.toLowerCase().equals("pm")) {
+                            hour += 12;
+                        } else {
+                            if (hour > 11) {
+                                hour -= 12;
+                            }
+                        }
                         if (Build.VERSION.SDK_INT >= 23) {
                             timePicker.setHour(hour);
                             timePicker.setMinute(min);
@@ -196,7 +204,36 @@ public class CreateMeetingActivity extends BaseActivity {
                 timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                     @Override
                     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                        String am_pm = "";
+
+                        Calendar datetime = Calendar.getInstance();
+                        datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        datetime.set(Calendar.MINUTE, minute);
+
+                        if (datetime.get(Calendar.AM_PM) == Calendar.AM)
+                            am_pm = "AM";
+                        else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
+                            am_pm = "PM";
+
+                        String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ? "12" : datetime.get(Calendar.HOUR) + "";
+
+                        //((Button)getActivity().findViewById(R.id.btnEventStartTime)).setText( strHrsToShow+":"+datetime.get(Calendar.MINUTE)+" "+am_pm );
+
+                        str_time = "";
+                        String min = "";
+                        if (Integer.valueOf(strHrsToShow) < 10) {
+                            strHrsToShow = "0" + strHrsToShow;
+                        }
+
+                        if (datetime.get(Calendar.MINUTE) < 10) {
+                            min = "0" + datetime.get(Calendar.MINUTE);
+                        } else {
+                            min = String.valueOf(datetime.get(Calendar.MINUTE));
+                        }
+                        str_time += strHrsToShow + ":" + min + " " + am_pm;
+                        str_temp_time += strHrsToShow + ":" + min + " " + am_pm;
                         isTimeSelect = true;
+                        /*isTimeSelect = true;
                         int hour, minuteTemp;
                         String am_pm;
                         str_time = "";
@@ -220,7 +257,7 @@ public class CreateMeetingActivity extends BaseActivity {
                         } else {
                             str_time += " " + hour + ":" + minuteTemp + " " + am_pm;
                             str_temp_time += " " + hour + ":" + minuteTemp;
-                        }
+                        }*/
 
                     }
                 });
@@ -471,9 +508,9 @@ public class CreateMeetingActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title",mCMeetingTitleVal.getText().toString());
-        outState.putString("date",mCMeetingDateVal.getText().toString());
-        outState.putString("agenda",mCMeetingAgendaVal.getText().toString());
+        outState.putString("title", mCMeetingTitleVal.getText().toString());
+        outState.putString("date", mCMeetingDateVal.getText().toString());
+        outState.putString("agenda", mCMeetingAgendaVal.getText().toString());
     }
 
     @Override
