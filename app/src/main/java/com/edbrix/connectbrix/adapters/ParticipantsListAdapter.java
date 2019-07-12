@@ -94,7 +94,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
             holder.organizationName = (TextView) view.findViewById(R.id.txtorganizationName);
             holder.txtIsAvaliable = (TextView) view.findViewById(R.id.txtIsAvaliable);
             holder.remove = (ImageView) view.findViewById(R.id.imgRemove);
-            holder.status = (ImageView) view.findViewById(R.id.imgStatus);
+            /*holder.status = (ImageView) view.findViewById(R.id.imgStatus);*/
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -104,7 +104,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
 
         if ((UserType.equals("T") || UserType.equals("A")) && IsHost.equals("1")) {
             holder.remove.setVisibility(View.VISIBLE);
-            holder.status.setVisibility(View.VISIBLE);
+           /* holder.status.setVisibility(View.VISIBLE);*/
             holder.txtIsAvaliable.setVisibility(View.VISIBLE);
         }
 
@@ -118,19 +118,26 @@ public class ParticipantsListAdapter extends BaseAdapter {
         }
 
         holder.organizationName.setText(participantList.get(position).getOrgName());
-        if (participantList.get(position).getStatus().equals("0")) {
-            holder.txtIsAvaliable.setText("Waiting for accept your invitation");
-            holder.txtIsAvaliable.setTextColor(Color.parseColor("#bdbdbd"));
-            holder.status.setImageResource(R.drawable.waiting);
-        } else if (participantList.get(position).getStatus().equals("1")) {
-            holder.txtIsAvaliable.setText("Accepted");
-            holder.txtIsAvaliable.setTextColor(Color.parseColor("#47a54b"));
-            holder.status.setImageResource(R.drawable.tick_mark);
-        } else if (participantList.get(position).getStatus().equals("2")) {
-            holder.txtIsAvaliable.setText("Rejected");
-            holder.txtIsAvaliable.setTextColor(Color.parseColor("#d1395c"));
-            holder.status.setImageResource(R.drawable.rejected_status);
+        if(!participantList.get(position).getName().toString().toLowerCase().equals("anonymous user"))
+        {
+            holder.txtIsAvaliable.setVisibility(View.VISIBLE);
+            if (participantList.get(position).getStatus().equals("0")) {
+                holder.txtIsAvaliable.setText("Waiting for accept your invitation");
+                holder.txtIsAvaliable.setTextColor(Color.parseColor("#bdbdbd"));
+                /*holder.status.setImageResource(R.drawable.waiting);*/
+            } else if (participantList.get(position).getStatus().equals("1")) {
+                holder.txtIsAvaliable.setText("Accepted");
+                holder.txtIsAvaliable.setTextColor(Color.parseColor("#47a54b"));
+                /* holder.status.setImageResource(R.drawable.tick_mark);*/
+            } else if (participantList.get(position).getStatus().equals("2")) {
+                holder.txtIsAvaliable.setText("Rejected");
+                holder.txtIsAvaliable.setTextColor(Color.parseColor("#d1395c"));
+                /* holder.status.setImageResource(R.drawable.rejected_status);*/
+            }
+        }else {
+            holder.txtIsAvaliable.setVisibility(View.GONE);
         }
+
         if (participantList.get(position).getImageUrl() != null && !participantList.get(position).getImageUrl().isEmpty()) {
             Glide.with(participantListActivity).load(participantList.get(position).getImageUrl())
                     //.apply(RequestOptions.bitmapTransform(new FitCenter()))

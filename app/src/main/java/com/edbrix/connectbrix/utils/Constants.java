@@ -53,6 +53,6 @@ public class Constants {
     public final static String updateMeeting = BASE_URL.concat("connectbrix/updatemeeting");
     public final static String getAvailableMeetingDates = BASE_URL.concat("connectbrix/getavailablemeetingdates");
     public final static String savedevicetoken = BASE_URL.concat("connectbrix/savedevicetoken");
-    public final static String updatedevicetoken = BASE_URL.concat("");
+    public final static String getthreemonthsmeeting = BASE_URL.concat("connectbrix/getthreemonthsmeeting");
 
 }

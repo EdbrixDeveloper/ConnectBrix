@@ -68,6 +68,9 @@ public class SessionManager {
 
     private static final String PREFS_SESSION_User_Customer = "Customer";
 
+    //google account
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+
     private SharedPreferences sharedPrefs;
 
     public SessionManager(Context context) {
@@ -272,6 +275,11 @@ public class SessionManager {
 
     public String getPrefsOrganizationSecretKey(){
         return this.sharedPrefs.getString(PREFS_SESSION_ORGANISION_SECRET_KEY, "");
+    }
+
+    public String getGoogleAccount()
+    {
+        return this.sharedPrefs.getString(PREF_ACCOUNT_NAME, "");
     }
 
 
@@ -723,6 +731,16 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void updateGoogleAccount(String googleAccount){
+        Editor editor = this.sharedPrefs.edit();
+        if ((googleAccount != null) && (googleAccount.length() > 0)) {
+            editor.putString(PREF_ACCOUNT_NAME, googleAccount);
+        } else {
+            editor.remove(PREF_ACCOUNT_NAME);
+        }
+        editor.commit();
+    }
+
 
 
 
@@ -854,6 +872,7 @@ public class SessionManager {
         this.updateSchoolLoginUrl(null);
         this.updateOrganizationApiKey(null);
         this.updateOrganizationSecretKey(null);
+        this.updateGoogleAccount(null);
 
     }
 }

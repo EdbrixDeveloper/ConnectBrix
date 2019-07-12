@@ -49,12 +49,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:weightSum="2">
-                <ImageView
+               <!-- <ImageView
                    android:id="@+id/imgStatus"
                    android:layout_width="32dp"
                    android:layout_height="32dp"
                     android:visibility="gone"
-                   android:src="@drawable/waiting" />
+                   android:src="@drawable/waiting" />-->
 
                 <TextView
                     android:id="@+id/txtIsAvaliable"

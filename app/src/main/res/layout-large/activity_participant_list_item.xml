@@ -50,18 +50,18 @@
                 android:gravity="center_vertical"
                 android:weightSum="2">
 
-                <ImageView
+               <!-- <ImageView
                     android:id="@+id/imgStatus"
                     android:layout_width="20dp"
                     android:layout_height="18dp"
                     android:src="@drawable/waiting"
                     android:visibility="gone" />
-
+-->
                 <TextView
                     android:id="@+id/txtIsAvaliable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="0dp"
                     android:text="Status"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12dp"

@@ -119,12 +119,26 @@
         android:layout_marginTop="5dp"
         android:visibility="gone">
 
-        <EditText
-            android:id="@+id/input_search"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Search" />
+            android:layout_height="match_parent">
 
+            <EditText
+                android:id="@+id/input_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search" />
+
+            <ImageView
+                android:id="@+id/cancelSearch"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/cancelsearch" />
+
+        </FrameLayout>
     </android.support.design.widget.TextInputLayout>
     <!--android:layout_below="@+id/linearLayout_Status"-->
 
@@ -193,7 +207,7 @@
             android:layout_margin="15dp"
             android:elevation="5dp"
             android:src="@drawable/meetingbutton"
-            app:backgroundTint="#47a54b"
+            app:backgroundTint="#35d5a4"
             app:borderWidth="0dp"
             app:fabSize="normal" />
 
@@ -229,6 +243,7 @@
         android:layout_marginRight="16dp"
         android:clickable="true"
         android:src="@drawable/ic_action_name"
-        app:elevation="4dp" />
+        app:elevation="4dp"
+        app:backgroundTint="#35d5a4"/>
 
 </RelativeLayout>

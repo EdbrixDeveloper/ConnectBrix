@@ -226,7 +226,7 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
         localBroadcastManager.sendBroadcast(intent);
     }
 
-    private void doNewToken(String prvToken, final String newToken, final SessionManager sessionManager) {
+    /*private void doNewToken(String prvToken, final String newToken, final SessionManager sessionManager) {
 
         if (!prvToken.equals(newToken)) {
             try {
@@ -278,5 +278,5 @@ public class GoogleFirebaseMessagingService extends FirebaseMessagingService {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }
