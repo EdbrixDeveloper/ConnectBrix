@@ -28,9 +28,10 @@ import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
 import com.edbrix.connectbrix.volley.SettingsMy;
-import com.vikktorn.picker.State;
+/*import com.vikktorn.picker.State;*/
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,15 @@ public class EditProfileActivity extends BaseActivity {
     private EditText mPhone1Val;
     private TextView mPhone2;
     private EditText mPhone2Val;
+    private TextView timeZone;
+    private TextView timeZoneVal;
     private Button mBtnUpdateProfile;
 
     SessionManager sessionManager;
-    public static int countryID, stateID;
+    public static int countryID, stateID, timeZoneID;
     // arrays of state object
-    public static List<State> stateObject;
+    //public static List<State> stateObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +82,13 @@ public class EditProfileActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         clickListner();
         if (savedInstanceState != null) {
-            mEmail.setText("Email:"+savedInstanceState.getString("email"));
+            mEmail.setText("Email:" + savedInstanceState.getString("email"));
             mFirstNameVal.setText(savedInstanceState.getString("firstName"));
             mLastNameVal.setText(savedInstanceState.getString("lastName"));
             mAddressVal.setText(savedInstanceState.getString("address"));
             mCityVal.setText(savedInstanceState.getString("city"));
             mStateVal.setText(savedInstanceState.getString("state"));
+            timeZoneVal.setText(savedInstanceState.getString("timezone"));
             mZipVal.setText(savedInstanceState.getString("zip"));
             mPhone1Val.setText(savedInstanceState.getString("phone1"));
             mPhone2Val.setText(savedInstanceState.getString("phone2"));
@@ -113,8 +118,10 @@ public class EditProfileActivity extends BaseActivity {
         mPhone2 = (TextView) findViewById(R.id.phone2);
         mPhone2Val = (EditText) findViewById(R.id.phone2Val);
         mBtnUpdateProfile = (Button) findViewById(R.id.btnUpdateProfile);
+        timeZone = (TextView) findViewById(R.id.timeZone);
+        timeZoneVal = (TextView) findViewById(R.id.timeZoneVal);
         // initiate state object, parser, and arrays
-        stateObject = new ArrayList<>();
+        //stateObject = new ArrayList<>();
     }
 
     private void clickListner() {
@@ -131,6 +138,15 @@ public class EditProfileActivity extends BaseActivity {
                     startActivity(intent);
                 }
                 //countryPicker.showDialog(getSupportFragmentManager());
+            }
+        });
+
+        timeZoneVal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, SelectTimeZoneActivity.class);
+                /* intent.putExtra("CountryId", String.valueOf(countryID));*/
+                startActivity(intent);
             }
         });
 
@@ -177,11 +193,13 @@ public class EditProfileActivity extends BaseActivity {
                                     mAddressVal.setText(response.getUser().getAddress() == null || response.getUser().getAddress().isEmpty() ? "" : response.getUser().getAddress().toString());
                                     mCityVal.setText(response.getUser().getCity() == null || response.getUser().getCity().isEmpty() ? "" : response.getUser().getCity().toString());
                                     mStateVal.setText(response.getUser().getState() == null || response.getUser().getState().isEmpty() ? "" : response.getUser().getState().toString());
+                                    timeZoneVal.setText(response.getUser().getUserTimezone() == null || response.getUser().getUserTimezone().isEmpty() ? "" : response.getUser().getUserTimezone().toString());
                                     mZipVal.setText(response.getUser().getZip() == null || response.getUser().getZip().isEmpty() ? "" : response.getUser().getZip().toString());
                                     mPhone1Val.setText(response.getUser().getMobileNumber() == null || response.getUser().getMobileNumber().isEmpty() ? "" : response.getUser().getMobileNumber().toString());
                                     mPhone2Val.setText(response.getUser().getMobileNumber2() == null || response.getUser().getMobileNumber2().isEmpty() ? "" : response.getUser().getMobileNumber2().toString());
                                     countryID = Integer.parseInt(response.getUser().getCountryId() == null || response.getUser().getCountryId().isEmpty() ? "0" : response.getUser().getCountryId().toString());
                                     stateID = Integer.parseInt(response.getUser().getStateId() == null || response.getUser().getStateId().isEmpty() ? "0" : response.getUser().getStateId().toString());
+                                    timeZoneID = Integer.parseInt(response.getUser().getTimezoneId() == null || response.getUser().getTimezoneId().isEmpty() ? "0" : response.getUser().getTimezoneId().toString());
                                     Constants.StateId = Integer.parseInt(response.getUser().getStateId() == null || response.getUser().getStateId().isEmpty() ? "0" : response.getUser().getStateId().toString());
                                     Constants.CountryId = Integer.parseInt(response.getUser().getCountryId() == null || response.getUser().getCountryId().isEmpty() ? "0" : response.getUser().getCountryId().toString());
                                     Constants.StateName = response.getUser().getState() == null || response.getUser().getState().isEmpty() ? "" : response.getUser().getState().toString();
@@ -226,6 +244,7 @@ public class EditProfileActivity extends BaseActivity {
             jsonObject.put("Address", mAddressVal.getText().toString());
             jsonObject.put("City", mCityVal.getText().toString());
             jsonObject.put("Zip", mZipVal.getText().toString());
+            jsonObject.put("TimezoneId", timeZoneID);
             jsonObject.put("StateId", stateID);
             jsonObject.put("CountryId", countryID);
 
@@ -365,6 +384,11 @@ public class EditProfileActivity extends BaseActivity {
             countryID = Constants.CountryId;
             stateID = Constants.StateId;
             mStateVal.setText(Constants.StateName);
+
+        }
+        if (Constants.TimeZonId > 0) {
+            timeZoneID = Constants.TimeZonId;
+            timeZoneVal.setText(Constants.TimeZone);
         }
         super.onResume();
 
@@ -379,6 +403,7 @@ public class EditProfileActivity extends BaseActivity {
         outState.putString("address", mAddressVal.getText().toString());
         outState.putString("city", mCityVal.getText().toString());
         outState.putString("state", mStateVal.getText().toString());
+        outState.putString("timezone", timeZoneVal.getText().toString());
         outState.putString("zip", mZipVal.getText().toString());
         outState.putString("phone1", mPhone1Val.getText().toString());
         outState.putString("phone2", mPhone2Val.getText().toString());
@@ -387,12 +412,13 @@ public class EditProfileActivity extends BaseActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mEmail.setText("Email"+savedInstanceState.getString("email"));
+        mEmail.setText("Email" + savedInstanceState.getString("email"));
         mFirstNameVal.setText(savedInstanceState.getString("firstName"));
         mLastNameVal.setText(savedInstanceState.getString("lastName"));
         mAddressVal.setText(savedInstanceState.getString("address"));
         mCityVal.setText(savedInstanceState.getString("city"));
         mStateVal.setText(savedInstanceState.getString("state"));
+        timeZoneVal.setText(savedInstanceState.getString("timezone"));
         mZipVal.setText(savedInstanceState.getString("zip"));
         mPhone1Val.setText(savedInstanceState.getString("phone1"));
         mPhone2Val.setText(savedInstanceState.getString("phone2"));

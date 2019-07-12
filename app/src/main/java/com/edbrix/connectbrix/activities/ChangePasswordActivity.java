@@ -2,13 +2,16 @@ package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -35,7 +38,11 @@ public class ChangePasswordActivity extends BaseActivity {
     private EditText mEdTxtPassword;
     private TextView mTextViewConfirmPassword;
     private EditText mEdTxtConfirmPassword;
+    private ImageView mEyeIconPassword;
+    private ImageView mEyeIconConfirmPassword;
     private Button mBtnChangePassSubmit;
+    private boolean isPasswordVisible;
+    private boolean isConfirmPasswordVisible;
 
     SessionManager sessionManager;
 
@@ -62,6 +69,8 @@ public class ChangePasswordActivity extends BaseActivity {
         mTextViewConfirmPassword = (TextView) findViewById(R.id.textViewConfirmPassword);
         mEdTxtConfirmPassword = (EditText) findViewById(R.id.edTxtConfirmPassword);
         mBtnChangePassSubmit = (Button) findViewById(R.id.btnChangePassSubmit);
+        mEyeIconPassword = (ImageView)findViewById(R.id.eyeIconPassword);
+        mEyeIconConfirmPassword = (ImageView)findViewById(R.id.eyeIconConfirmPassword);
     }
 
     private void clickListner() {
@@ -76,6 +85,22 @@ public class ChangePasswordActivity extends BaseActivity {
                         showToast("New Password and Confirm Password are not matched");
                     }
                 }
+            }
+        });
+
+        mEyeIconPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPasswordVisible(isPasswordVisible,mEyeIconPassword,mEdTxtPassword);
+                isPasswordVisible = !isPasswordVisible;
+            }
+        });
+
+        mEyeIconConfirmPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPasswordVisible(isConfirmPasswordVisible,mEyeIconPassword,mEdTxtPassword);
+                isConfirmPasswordVisible = !isConfirmPasswordVisible;
             }
         });
 
@@ -178,5 +203,15 @@ public class ChangePasswordActivity extends BaseActivity {
         //Model model = savedInstanceState.getParcelable("parcelable");
         mEdTxtPassword.setText(savedInstanceState.getString("newPwd", ""));
         mEdTxtConfirmPassword.setText(savedInstanceState.getString("confirmPwd", ""));
+    }
+
+    private void setPasswordVisible(boolean isVisible,ImageView imageView,EditText editText) {
+        if (isVisible) {
+            imageView.setImageDrawable(ContextCompat.getDrawable(ChangePasswordActivity.this, R.drawable.ic_visibility_off_black_24dp));
+            editText.setTransformationMethod(new PasswordTransformationMethod());
+        } else {
+            imageView.setImageDrawable(ContextCompat.getDrawable(ChangePasswordActivity.this, R.drawable.ic_visibility_black_24dp));
+            editText.setTransformationMethod(null);
+        }
     }
 }

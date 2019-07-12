@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackgroundColor"
     android:orientation="vertical"
     android:paddingLeft="150dp"
     android:paddingRight="150dp"
@@ -86,9 +87,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_bg_style"
         android:text="Create Meeting"
         android:textAllCaps="false"
-        android:textColor="@color/colorButtonText"
+        android:textColor="@color/buttonTextColor"
         android:textSize="19dp" />
 </RelativeLayout>

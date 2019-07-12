@@ -146,10 +146,10 @@
                 android:layout_marginLeft="170dp"
                 android:layout_marginRight="170dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_bg_style"
                 android:text="Add Participants"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText"
+                android:textColor="@color/buttonTextColor"
                 android:textSize="19dp"
                 android:visibility="gone" />
 
@@ -241,10 +241,10 @@
                 android:layout_marginLeft="170dp"
                 android:layout_marginRight="170dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_bg_style"
                 android:text="Join Now"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText"
+                android:textColor="@color/buttonTextColor"
                 android:textSize="19dp" />
         </LinearLayout>
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/appBackgroundColor"
     tools:context=".activities.SchoolListActivity">
 
     <LinearLayout
@@ -15,12 +16,12 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.4"
+            android:layout_weight="3.1"
             android:text="Connect Brix"
             android:textColor="@color/colorButtonText"
             android:textSize="20dp"
@@ -39,6 +40,14 @@
             android:layout_height="24dp"
             android:layout_weight="0.3"
             android:src="@drawable/calendar2" />
+
+        <ImageView
+            android:id="@+id/googlePlusMenu"
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/googleplus" />
+
 
         <LinearLayout
             android:id="@+id/linearLayoutCircular"
@@ -74,14 +83,14 @@
         android:paddingLeft="10dp"
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1.7"
             android:text="Upcoming Meetings"
-            android:textColor="@color/colorButtonText"
+            android:textColor="@color/colorBlack"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -89,15 +98,10 @@
             android:id="@+id/search"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:src="@drawable/search" />
 
-        <ImageView
-            android:id="@+id/googlePlusMenu"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.3"
-            android:src="@drawable/googleplus" />
+
 
     </LinearLayout>
     <!--<View
@@ -135,6 +139,7 @@
             android:id="@+id/schoolList_listView_schoolList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/appBackgroundColor"
             android:groupIndicator="@color/colorPrimary"
             tools:listheader="@layout/item_meeting_list_seprator"
             tools:listitem="@layout/item_meeting_list" />

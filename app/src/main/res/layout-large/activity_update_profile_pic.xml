@@ -40,9 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_bg_style"
         android:text="Update Profile Picture"
         android:textAllCaps="false"
-        android:textColor="@color/colorButtonText" />
+        android:textColor="@color/buttonTextColor" />
 
 </RelativeLayout>

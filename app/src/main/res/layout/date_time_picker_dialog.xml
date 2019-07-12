@@ -42,20 +42,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:background="@drawable/button_background"
+                android:background="@drawable/button_bg_style"
                 android:text="Set"
                 android:textAllCaps="false"
-                android:textColor="@color/zm_white" />
+                android:textColor="@color/buttonTextColor" />
 
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:background="@drawable/cancel_button_background"
+                android:background="@drawable/button_cancel_bg"
                 android:textAllCaps="false"
                 android:text="Cancel"
-                android:textColor="@color/zm_white" />
+                android:textColor="@color/lightGrey" />
         </LinearLayout>
 
 

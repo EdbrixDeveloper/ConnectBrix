@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutCal"
         android:gravity="center"
-        android:background="@color/colorBackground"
+        android:background="@color/colorGrey"
         android:orientation="vertical">
 
         <TextView

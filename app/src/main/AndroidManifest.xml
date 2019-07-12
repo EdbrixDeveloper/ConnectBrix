@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -29,12 +28,12 @@
         <activity
             android:name=".activities.SchoolListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".activities.MeetingRequestListActivity" />
         <activity android:name=".activities.MeetingDetailsActivity" />
         <activity android:name=".activities.FlashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -52,8 +51,8 @@
         <activity android:name=".activities.SelectParticipantsActivity" />
         <activity android:name=".activities.FliterParticipantsActivity" />
         <activity android:name=".activities.SelectParticipantsListItemActivity" />
-        <activity android:name=".activities.UpdateProfilePicActivity"></activity>
-        <activity android:name=".activities.WelcomeActivity"></activity>
+        <activity android:name=".activities.UpdateProfilePicActivity" />
+        <activity android:name=".activities.WelcomeActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -84,7 +83,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!--Set custom default icon. This is used when no icon is set for incoming notification messages.
+        <!--
+        Set custom default icon. This is used when no icon is set for incoming notification messages.
         See README(https://goo.gl/l4GJaQ) for more.
         -->
         <meta-data
@@ -97,9 +97,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorBlack" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activities.SelectTimeZoneActivity" />
+        <activity android:name=".activities.TimeZoneListItemActivity"></activity>
     </application>
+
 </manifest>

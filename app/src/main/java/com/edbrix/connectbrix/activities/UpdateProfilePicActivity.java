@@ -102,6 +102,32 @@ public class UpdateProfilePicActivity extends BaseActivity {
         mSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Dexter.withActivity(UpdateProfilePicActivity.this)
+                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .withListener(new MultiplePermissionsListener() {
+                            @Override
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                if (report.areAllPermissionsGranted()) {
+                                    showImagePickerOptions();
+                                }
+
+                                if (report.isAnyPermissionPermanentlyDenied()) {
+                                    showSettingsDialog();
+                                }
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();*/
+            }
+        });
+
+        mImgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
                 Dexter.withActivity(UpdateProfilePicActivity.this)
                         .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
@@ -121,8 +147,10 @@ public class UpdateProfilePicActivity extends BaseActivity {
                                 token.continuePermissionRequest();
                             }
                         }).check();
+
             }
         });
+
 
         mBtnUpdateProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +158,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
                 if (!base64StringUserProfile.isEmpty()) {
                     updateProfilePicture();
                 } else {
-                    showToast("Please select image first");
+                    showToast("Please select image first.");
                 }
 
             }

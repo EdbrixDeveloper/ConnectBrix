@@ -13,7 +13,9 @@ public class Constants {
     public static String HOST_ID = null;
     public static int StateId = -1;
     public static int CountryId = -1;
+    public  static int TimeZonId = -1;
     public static String StateName = "";
+    public static String TimeZone = "";
 
     private final static String BASE_URL = "http://services.edbrix.net/";
 
@@ -26,6 +28,7 @@ public class Constants {
 
     public final static String getCountryList = BASE_URL.concat("common/getcountrylist");
     public final static String getStateList = BASE_URL.concat("common/getstatelistbycountry");
+    public final static String getTimeZoneList = BASE_URL.concat("common/gettimezonelist");
 
 
     public final static String getUserPersonalData = BASE_URL.concat("auth/getuserdetails");

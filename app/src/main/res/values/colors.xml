@@ -2,15 +2,18 @@
 <resources>
     <color name="colorDarkParimary">#388e3c</color>
     <color name="colorPrimary">#47a54b</color>
+    <color name="buttonTextColor">#74bc44</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorButton">#FC730A</color>
+    <color name="colorFloatingButton">#35d5a4</color>
     <color name="colorButtonText">#FFFFFF</color>
     <color name="colorBackground">#EEEBEA</color>
     <color name="colorJoin">#3BB9FF</color>
+    <color name="appBackgroundColor">#f3f6f9</color>
     <color name="startColor">#7FD447</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorGrey">#888888</color>
+    <color name="colorGrey">#f3f3f3</color>
     <color name="lightGrey">#bdbdbd</color>
 
 

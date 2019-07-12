@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/appBackgroundColor"
     tools:context=".activities.CreateMeetingActivity">
 
     <ScrollView
@@ -84,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_bg_style"
         android:text="Create Meeting"
         android:textAllCaps="false"
-        android:textColor="@color/colorButtonText" />
+        android:textColor="@color/buttonTextColor" />
 </RelativeLayout>

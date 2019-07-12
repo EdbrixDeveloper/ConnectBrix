@@ -53,7 +53,7 @@
                 android:id="@+id/linearLayoutText"
                 android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:background="@color/colorBackground"
+                android:background="@color/colorGrey"
                 android:gravity="center"
                 android:orientation="vertical">
 

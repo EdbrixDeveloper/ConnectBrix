@@ -43,9 +43,9 @@
         android:layout_marginBottom="15dp"
         android:layout_marginRight="357dp"
         android:layout_marginLeft="357dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button_bg_style"
         android:text="Update Profile Picture"
         android:textAllCaps="false"
-        android:textColor="@color/colorButtonText" />
+        android:textColor="@color/buttonTextColor" />
 
 </RelativeLayout>

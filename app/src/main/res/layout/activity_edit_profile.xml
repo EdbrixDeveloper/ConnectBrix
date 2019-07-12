@@ -143,6 +143,22 @@
                 android:textAlignment="textStart" />
 
             <TextView
+                android:id="@+id/timeZone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Time Zone"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/timeZoneVal"
+                style="@style/MyTheme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Select"
+                android:textAlignment="textStart" />
+
+            <TextView
                 android:id="@+id/zip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -196,10 +212,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_bg_style"
                 android:text="Update Profile"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText" />
+                android:textColor="@color/buttonTextColor" />
         </LinearLayout>
 
     </ScrollView>

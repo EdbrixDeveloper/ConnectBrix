@@ -124,10 +124,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_cancel_bg"
                 android:text="Add To List"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText"
+                android:textColor="@color/buttonTextColor"
                 android:textSize="14dp" />
 
         </LinearLayout>

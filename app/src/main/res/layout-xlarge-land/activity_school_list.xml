@@ -72,12 +72,12 @@
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="4">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.4"
+            android:layout_weight="3.1"
             android:text="Connect Brix"
             android:textColor="@color/colorButtonText"
             android:textSize="20dp"
@@ -96,6 +96,13 @@
             android:layout_height="24dp"
             android:layout_weight="0.3"
             android:src="@drawable/calendar2" />
+
+        <ImageView
+            android:id="@+id/googlePlusMenu"
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/googleplus" />
 
         <LinearLayout
             android:id="@+id/linearLayoutCircular"
@@ -129,12 +136,12 @@
         android:background="@color/colorGrey"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.3"
+            android:layout_weight="1.8"
             android:text="Upcoming Meetings"
             android:textColor="@color/colorButtonText"
             android:textSize="18dp"
@@ -144,15 +151,10 @@
             android:id="@+id/search"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.2"
             android:src="@drawable/search" />
 
-        <ImageView
-            android:id="@+id/googlePlusMenu"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.3"
-            android:src="@drawable/googleplus" />
+
 
     </LinearLayout>
     <!--<View

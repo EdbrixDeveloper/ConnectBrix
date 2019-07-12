@@ -66,10 +66,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_bg_style"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText" />
+                android:textSize="16dp"
+                android:textColor="@color/buttonTextColor" />
 
             <TextView
                 android:id="@+id/textViewForgotPassword"
@@ -137,10 +138,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button_bg_style"
                 android:text="Join"
+                android:textSize="16dp"
                 android:textAllCaps="false"
-                android:textColor="@color/colorButtonText" />
+                android:textColor="@color/buttonTextColor" />
 
             <!--<LinearLayout
                 android:id="@+id/ll_join"

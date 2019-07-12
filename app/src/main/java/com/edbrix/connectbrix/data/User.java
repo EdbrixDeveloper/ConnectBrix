@@ -61,6 +61,11 @@ public class User {
     @SerializedName("UserTimezone")
     @Expose
     private String userTimezone;
+    @SerializedName("TimezoneId")
+    @Expose
+    private String timezoneId;
+
+
 
     //////
 
@@ -213,5 +218,13 @@ public class User {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getTimezoneId() {
+        return timezoneId;
+    }
+
+    public void setTimezoneId(String timezoneId) {
+        this.timezoneId = timezoneId;
     }
 }
