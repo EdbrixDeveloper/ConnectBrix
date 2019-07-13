@@ -143,7 +143,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
                     //.apply(RequestOptions.bitmapTransform(new FitCenter()))
                     .into(holder.partcipantImage);
         } else {
-            holder.partcipantImage.setImageResource(R.drawable.usersp);
+            holder.partcipantImage.setImageResource(R.drawable.user2);
         }
 
         //holder.txtIsAvaliable.setText(participantList.get(position).getOrgName());
