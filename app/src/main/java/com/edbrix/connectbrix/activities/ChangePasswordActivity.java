@@ -82,7 +82,7 @@ public class ChangePasswordActivity extends BaseActivity {
                     if (mEdTxtPassword.getText().toString().trim().equals(mEdTxtConfirmPassword.getText().toString().trim())) {
                         ChangePassword(mEdTxtPassword.getText().toString().trim(), mEdTxtConfirmPassword.getText().toString().trim());
                     } else {
-                        showToast("New Password and Confirm Password are not matched");
+                        showToast("New Password and Confirm Password must be match.");
                     }
                 }
             }

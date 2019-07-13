@@ -15,6 +15,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGrey">#f3f3f3</color>
     <color name="lightGrey">#bdbdbd</color>
+    <color name="appBackground">#f3f6f9</color>
 
 
     <!--For app tour-->

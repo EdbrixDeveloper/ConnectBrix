@@ -434,7 +434,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     if (Constants.HOST_ID != null) {
                                         executeBackgroundTaskForUserInfo();
                                     }
-                                    String meetingID = meetingDetailsData.getMeeting().getMeetingId() == null || meetingDetailsData.getMeeting().getMeetingId().isEmpty() ? "Meeting Id: "+"" : "Meeting Id: "+meetingDetailsData.getMeeting().getMeetingId();
+                                    String meetingID = meetingDetailsData.getMeeting().getMeetingId() == null || meetingDetailsData.getMeeting().getMeetingId().isEmpty() ? "Meeting ID: "+"" : "Meeting ID: "+meetingDetailsData.getMeeting().getMeetingId();
                                     txtMeetingId.setText(meetingID);
                                     mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
 

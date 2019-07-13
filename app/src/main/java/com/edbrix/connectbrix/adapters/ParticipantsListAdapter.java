@@ -122,7 +122,7 @@ public class ParticipantsListAdapter extends BaseAdapter {
         {
             holder.txtIsAvaliable.setVisibility(View.VISIBLE);
             if (participantList.get(position).getStatus().equals("0")) {
-                holder.txtIsAvaliable.setText("Waiting for accept your invitation");
+                holder.txtIsAvaliable.setText("Waiting for accept your invitation.");
                 holder.txtIsAvaliable.setTextColor(Color.parseColor("#bdbdbd"));
                 /*holder.status.setImageResource(R.drawable.waiting);*/
             } else if (participantList.get(position).getStatus().equals("1")) {
