@@ -121,6 +121,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     final public int CHECK_PERMISSIONS = 123;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     String userTimeZon = "";
+    MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -370,6 +371,12 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.calender_view_menu, menu);
+        menuItem = menu.findItem(R.id.menuGoogle);
+        if(userMeetingListResponseData.size()>0 || !userMeetingListResponseData.isEmpty()){
+            menuItem.setVisible(true);
+        }else{
+            menuItem.setVisible(false);
+        }
         return true;
 
     }
@@ -399,6 +406,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                     if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
                                         meetingListImg.setVisibility(View.GONE);
+                                        menuItem.setVisible(true);
                                         mMeetingListWithCalender.setVisibility(View.VISIBLE);
                                         userMeetingListResponseData = new ArrayList<>();
 
@@ -409,6 +417,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                         mMeetingListWithCalender.setVisibility(View.GONE);
                                         txtDataFound.setVisibility(View.VISIBLE);
                                         meetingListImg.setVisibility(View.VISIBLE);
+                                        menuItem.setVisible(false);
                                     }
                                 }
                             }

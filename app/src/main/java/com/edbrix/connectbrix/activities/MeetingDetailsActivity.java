@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -76,6 +77,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private ListView mParticipantList;
     private ImageView mMeetingListImg;
     private TextView mTxtDataFound;
+    private SwipeRefreshLayout swipeToRefreshInMeetingDetails;
 
     RadioButton radioMale;
     RadioButton radioFemale;
@@ -257,6 +259,14 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             }
 
         };
+
+        swipeToRefreshInMeetingDetails.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                prepareListData();
+                swipeToRefreshInMeetingDetails.setRefreshing(false);
+            }
+        });
     }
 
     private void startMeeting() {
@@ -404,12 +414,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         radioSex = (RadioGroup) findViewById(R.id.radioSex);
         mTextViewParticipantCount = (TextView) findViewById(R.id.textViewParticipantCount);
         txtMeetingId = (TextView) findViewById(R.id.txtMeetingID);
+        swipeToRefreshInMeetingDetails = (SwipeRefreshLayout)findViewById(R.id.swipeToRefreshInMeetingDetails);
     }
 
 
     private void prepareListData() {
         try {
-            showBusyProgress();
+            //showBusyProgress();
             JSONObject jo = new JSONObject();
 
             jo.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
@@ -422,7 +433,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                     new Response.Listener<MeetingDetailsData>() {
                         @Override
                         public void onResponse(@NonNull MeetingDetailsData response) {
-                            hideBusyProgress();
+                            //hideBusyProgress();
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
                             } else {
@@ -515,7 +526,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    hideBusyProgress();
+                    //hideBusyProgress();
 
                 }
             });
@@ -524,7 +535,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             Application.getInstance().addToRequestQueue(getAssignAvailabilityLearnersListRequest, "MeetingDetails");
 
         } catch (JSONException e) {
-            hideBusyProgress();
+            //hideBusyProgress();
             showToast("Something went wrong. Please try again later.");
         }
 
@@ -718,6 +729,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         // Check that it is the SecondActivity with an OK result
         if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+                /*btns.setVisibility(View.VISIBLE);
+                mBtnMJoin.setVisibility(View.VISIBLE);*/
 
                 meetingDbId = data.getStringExtra("meetingDbId");
                 /* MeetingId = data.getStringExtra("MeetingId");*/
@@ -726,6 +739,8 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 invalidateOptionsMenu();
                 fieldsVisibilityBasedOnUser();
                 prepareListData();
+
+
 
             }
         }

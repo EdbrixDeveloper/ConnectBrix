@@ -157,6 +157,12 @@
 
     </LinearLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefreshInMeetingDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainLinear">
+
 
     <ListView
         android:id="@+id/participantList"
@@ -165,6 +171,7 @@
         android:layout_above="@+id/btns"
         android:layout_below="@+id/mainLinear"
         android:visibility="visible" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ImageView
         android:id="@+id/meetingListImg"

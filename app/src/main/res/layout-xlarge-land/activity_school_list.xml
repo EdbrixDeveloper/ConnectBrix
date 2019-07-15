@@ -77,10 +77,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3.1"
+            android:layout_weight="3.5"
             android:text="Connect Brix"
             android:textColor="@color/colorButtonText"
-            android:textSize="20dp"
+            android:textSize="22dp"
             android:textStyle="bold" />
 
         <!--<ImageView
@@ -92,24 +92,24 @@
 
         <ImageView
             android:id="@+id/calender"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_weight="0.3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.2"
             android:src="@drawable/calendar2" />
 
         <ImageView
             android:id="@+id/googlePlusMenu"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
             android:src="@drawable/googleplus" />
 
         <LinearLayout
             android:id="@+id/linearLayoutCircular"
-            android:layout_width="34dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:gravity="center">
+            android:layout_weight="0.2"
+            android:gravity="right">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgUserProfile"
@@ -135,23 +135,25 @@
         android:layout_below="@+id/actionBarLayout"
         android:background="@color/colorGrey"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:weightSum="2">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
+            android:layout_weight="1.9"
             android:text="Upcoming Meetings"
-            android:textColor="@color/colorButtonText"
-            android:textSize="18dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="19dp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/search"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_weight="0.2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.1"
             android:src="@drawable/search" />
 
 
@@ -263,7 +265,7 @@
             android:layout_margin="15dp"
             android:elevation="5dp"
             android:src="@drawable/meetingbutton"
-            app:backgroundTint="#47a54b"
+            app:backgroundTint="#35d5a4"
             app:borderWidth="0dp"
             app:fabSize="normal" />
 
@@ -298,6 +300,7 @@
         android:clickable="true"
         android:src="@drawable/ic_action_name"
         android:visibility="gone"
+        app:backgroundTint="#35d5a4"
         app:elevation="4dp" />
 
 </RelativeLayout>
