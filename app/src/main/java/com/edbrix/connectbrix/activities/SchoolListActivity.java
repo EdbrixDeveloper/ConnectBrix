@@ -46,6 +46,8 @@ import com.edbrix.connectbrix.adapters.SchoolExpListAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.commons.EndlessScrollListener;
+import com.edbrix.connectbrix.data.GetThreeMonthsMeetingListData;
+import com.edbrix.connectbrix.data.GetThreeMonthsMeetingParentData;
 import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.UserData;
 import com.edbrix.connectbrix.data.UserMeeting;
@@ -86,6 +88,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -101,6 +104,7 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView imgCalender;
     private ImageView imgUserProfile;
     private ImageView imgSearch;
+    private ImageView cancelSearch;
     private ImageView googlePlusMenu;
     private LinearLayout linearLayoutCircular;
     private FloatingActionButton requestedMeetingButton;
@@ -148,6 +152,8 @@ public class SchoolListActivity extends BaseActivity {
     final public int CHECK_PERMISSIONS = 123;
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
+    List<GetThreeMonthsMeetingListData> getThreeMonthsMeetingListData;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +173,7 @@ public class SchoolListActivity extends BaseActivity {
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
+            cancelSearch = (ImageView)findViewById(R.id.cancelSearch);
             googlePlusMenu = (ImageView) findViewById(R.id.googlePlusMenu);
             linearLayoutCircular = (LinearLayout) findViewById(R.id.linearLayoutCircular);
             requestedMeetingButton = (FloatingActionButton) findViewById(R.id.requestedMeetingButton);
@@ -194,9 +201,10 @@ public class SchoolListActivity extends BaseActivity {
             }
             registerEventReceiver();
             //prepareListData();
-
+            getThreeMonthsMeeting();
 
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
+            getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
 
             if (savedInstanceState != null) {
                 if (!savedInstanceState.getString("mInputSearch").isEmpty()) {
@@ -311,17 +319,23 @@ public class SchoolListActivity extends BaseActivity {
             imgSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (searchFlag == true) {
-                        searchFlag = false;
-                        mInputLayoutSearch.setVisibility(View.GONE);
-                        mInputSearch.setText("");
-                    } else {
-                        searchFlag = true;
+                   /* if (searchFlag == true) {
+                        searchFlag = false;*/
+
+                  /*  } else {
+                        searchFlag = true;*/
                         mInputLayoutSearch.setVisibility(View.VISIBLE);
                         mInputSearch.setText("");
-                    }
+                    /*}*/
 
 
+                }
+            });
+            cancelSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mInputLayoutSearch.setVisibility(View.GONE);
+                    mInputSearch.setText("");
                 }
             });
 
@@ -447,9 +461,12 @@ public class SchoolListActivity extends BaseActivity {
 
                                 if(userMeetingsDateList.size()>0)
                                 {
+
                                     for(int i=0;i<userMeetingsDateList.size();i++){
+
                                         if(userMeetingsDateList.get(i).getUserMeetings().size()>0) {
                                             for(int j=0;j<userMeetingsDateList.get(i).getUserMeetings().size();j++){
+                                                showBusyProgress();
                                                 String userDate = userMeetingsDateList.get(i).getUserMeetings().get(j).getMeetingDate();
                                                 SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
                                                 DateTime start = null;
@@ -466,10 +483,12 @@ public class SchoolListActivity extends BaseActivity {
                                                     e.printStackTrace();
                                                 }
                                                 createEventAsync(userMeetingsDateList.get(i).getUserMeetings().get(j).getTitle(), "", userMeetingsDateList.get(i).getUserMeetings().get(j).getAgenda(), start, end, null);
+
                                             }
                                         }
                                     }
-                                    showToast("Meetings sync to google calendar successfully.");
+
+
                                 }
                                 //createEventAsync(eventTitle.getText().toString(), eventLocation.getText().toString(), buffer.toString(), start, end, eventAttendeeEmail );
                             }
@@ -1076,7 +1095,7 @@ public class SchoolListActivity extends BaseActivity {
 
     public void createEventAsync(final String summary, final String location, final String des, final DateTime startDate, final DateTime endDate, final EventAttendee[]
             eventAttendees) {
-
+        //hideBusyProgress();
         new AsyncTask<Void, Void, String>() {
             private com.google.api.services.calendar.Calendar mService = null;
             private Exception mLastError = null;
@@ -1103,6 +1122,8 @@ public class SchoolListActivity extends BaseActivity {
     }
 
     void insertEvent(String summary, String location, String des, DateTime startDate, DateTime endDate, EventAttendee[] eventAttendees) throws IOException {
+        hideBusyProgress();
+        showToast("Meetings sync to google calendar successfully.");
         Event event = new Event()
                 .setSummary(summary)
                 .setLocation(location)
@@ -1145,6 +1166,48 @@ public class SchoolListActivity extends BaseActivity {
             }
         }
 
+    }
+
+
+    private void getThreeMonthsMeeting() {
+        try {
+            /*showBusyProgress();*/
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("UserId", sessionManager.getSessionUserId());
+            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+
+            GsonRequest<GetThreeMonthsMeetingParentData> getThreeMonthsMeetingParentDataGsonRequest = new GsonRequest<>(Request.Method.POST, Constants.getthreemonthsmeeting, jsonObject.toString(), GetThreeMonthsMeetingParentData.class,
+                    new Response.Listener<GetThreeMonthsMeetingParentData>() {
+                        @Override
+                        public void onResponse(@NonNull GetThreeMonthsMeetingParentData response) {
+                           /* hideBusyProgress();*/
+                            if (response.getError() != null) {
+                                String error = response.getError().getErrorMessage();
+                                showToast(error);
+                            } else {
+
+                                if (response.getSuccess() == 1) {
+
+                                    getThreeMonthsMeetingListData.addAll(response.getMeetings());
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            getThreeMonthsMeetingParentDataGsonRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getThreeMonthsMeetingParentDataGsonRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getThreeMonthsMeetingParentDataGsonRequest, "getThreeMonthsMeetingParentDataGsonRequest");
+
+        } catch (Exception e) {
+            /*hideBusyProgress();*/
+            Log.e("Exception", e.getMessage());
+        }
     }
 }
 

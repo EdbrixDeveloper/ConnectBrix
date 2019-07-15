@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/flash_screen_background"
-                android:drawableRight="@drawable/date_picker"
+                android:drawableRight="@drawable/date_picker1"
                 android:focusable="false"
                 android:inputType="textPersonName"
                 android:padding="13dp" />
