@@ -1,9 +1,12 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.adapters.UserOptionsListAdapter;
@@ -32,6 +36,13 @@ import com.edbrix.connectbrix.volley.SettingsMy;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -58,6 +69,10 @@ public class UserProfileActivity extends BaseActivity {
     private AlertDialogManager alertDialogManager;
     SessionManager sessionManager;
 
+    Bitmap bm = null;
+    InputStream is = null;
+    BufferedInputStream bis = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +91,7 @@ public class UserProfileActivity extends BaseActivity {
         userOptionsImages.add(R.drawable.apptour);
 
         sessionManager = new SessionManager(this);
+
 
         setUserDetails();
 
@@ -106,13 +122,30 @@ public class UserProfileActivity extends BaseActivity {
             mTextViewType.setText("Other");
         }
 
-        int randomNumber = generateRandomIntIntRange(0001, 9999);
-        String imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
+        Log.d("prefrance",sessionManager.getIsProfilePicUpdated());
+
+        String imageUrl = sessionManager.getSessionProfileImageUrl();
+        /*if (sessionManager.getIsProfilePicUpdated().equals("1")) {
+            int randomNumber = generateRandomIntIntRange(0001, 9999);
+            imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
+        } else {
+            imageUrl = sessionManager.getSessionProfileImageUrl();
+        }*/
+        /*int randomNumber = generateRandomIntIntRange(0001, 9999);*/
+        /* String imageUrl = sessionManager.getSessionProfileImageUrl() *//*+ "?id=" + randomNumber*//*;*/
+
 
         if (imageUrl.isEmpty() || imageUrl == null) {
+            Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
+                    .into(mImgProfile);
+            mImgProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
+
+        } else if (sessionManager.getIsProfilePicUpdated().equals("1")) {
             GetUserPersonalData();
         } else {
+
             Glide.with(this).load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     //.apply(RequestOptions.circleCropTransform())//.apply(RequestOptions.bitmapTransform(new FitCenter()))
                     .into(mImgProfile);
         }
@@ -128,18 +161,18 @@ public class UserProfileActivity extends BaseActivity {
 
                 if (position == 0) {
                     intent = new Intent(UserProfileActivity.this, EditProfileActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                     /*finish();*/
                 } else if (position == 1) {
                     intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
                     startActivity(intent);
-                  /*  finish();*/
+                    /*  finish();*/
                 } else if (position == 2) {
                     PrefManager prefManager = new PrefManager(getApplicationContext());
                     prefManager.setFirstTimeLaunch(true);
                     intent = new Intent(UserProfileActivity.this, WelcomeActivity.class);
                     startActivity(intent);
-                  /*  finish();*/
+                    /*  finish();*/
                 }
             }
         });
@@ -236,7 +269,9 @@ public class UserProfileActivity extends BaseActivity {
                             } else {
 
                                 if (response.getSuccess() == 1) {
-                                    sessionManager.updateSessionProfileImageUrl(response.getUser().getImageUrl());
+                                    int randomNumber = generateRandomIntIntRange(0001, 9999);
+                                    sessionManager.updateSessionProfileImageUrl(response.getUser().getImageUrl() + "?id=" + randomNumber);
+                                    sessionManager.updateIsProfilePicUpdated("0");
                                     setUserDetails();
                                 }
                             }
@@ -271,6 +306,8 @@ public class UserProfileActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         invalidateOptionsMenu();
         if (requestCode == RESULT_UPDATE_PROFILE_PIC && resultCode == RESULT_OK) {
+            setUserDetails();
+        }else if (requestCode == 1 && resultCode == RESULT_OK) {
             setUserDetails();
         }
     }

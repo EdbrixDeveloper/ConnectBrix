@@ -163,6 +163,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                 mMeetingListImg.setVisibility(View.VISIBLE);
                 mTxtDataFound.setVisibility(View.VISIBLE);
                 mParticipantList.setVisibility(View.GONE);
+                btns.setVisibility(View.GONE);
             }
         }
 
@@ -265,6 +266,24 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             public void onRefresh() {
                 prepareListData();
                 swipeToRefreshInMeetingDetails.setRefreshing(false);
+            }
+        });
+
+        mMeetingListImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String Count = mTextViewParticipantCount.getText().toString().isEmpty() ? "0" : mTextViewParticipantCount.getText().toString();
+                if (Integer.parseInt(Count) < 20) {
+                    Intent intent = new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class);
+                    intent.putExtra("meetingDbId", meetingDbId);
+                    intent.putExtra("IsHost", IsHost);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                    //startActivity(new Intent(MeetingDetailsActivity.this, FliterParticipantsActivity.class));
+                } else {
+                    showToast("The participants in the meeting have exceeded the limit, if you want to add participants remove previous one.");
+                }
+
             }
         });
     }
@@ -470,7 +489,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                         }
 
                                     }
-                                    if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0 && isAvailable.equals("1")) {
+                                    if (Integer.parseInt(meetingDetailsData.getMeeting().getParticipantCount()) > 0 /*&& isAvailable.equals("1")*/) {
                                         mBtnMJoin.setVisibility(View.VISIBLE);
                                         btns.setVisibility(View.VISIBLE);
                                     }else {
@@ -971,6 +990,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
             mMeetingListImg.setVisibility(View.VISIBLE);
             mTxtDataFound.setVisibility(View.VISIBLE);
             mParticipantList.setVisibility(View.GONE);
+            btns.setVisibility(View.GONE);
         }
 
     }

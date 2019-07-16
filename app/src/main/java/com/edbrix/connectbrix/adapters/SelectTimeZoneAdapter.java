@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -26,17 +27,19 @@ public class SelectTimeZoneAdapter extends BaseAdapter implements Filterable {
     private List<TimeZoneListData> filteredData = null;
     private OnTextViewActionListener onTextViewActionListener;
     private ItemFilter mFilter = new ItemFilter();
+    String timeZoneID;
 
     public interface OnTextViewActionListener {
         public void onTextViewClicked(TimeZoneListData datum, int position);
     }
 
-    public SelectTimeZoneAdapter(Context context, List<TimeZoneListData> timeZoneListData, OnTextViewActionListener onTextViewActionListener){
+    public SelectTimeZoneAdapter(Context context, List<TimeZoneListData> timeZoneListData, OnTextViewActionListener onTextViewActionListener, String timeZoneID) {
 
         this.context = context;
         this.timeZoneListData = timeZoneListData;
         this.filteredData = timeZoneListData;
         this.onTextViewActionListener = onTextViewActionListener;
+        this.timeZoneID = timeZoneID;
     }
 
     @Override
@@ -59,8 +62,19 @@ public class SelectTimeZoneAdapter extends BaseAdapter implements Filterable {
 
         final TimeZoneListData datum = filteredData.get(position);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_time_zone_list_item, parent, false);
-        TextView timeZone = (TextView)view.findViewById(R.id.txtTimeZone);
+        TextView timeZone = (TextView) view.findViewById(R.id.txtTimeZone);
+        CheckBox chkSelectedTimeZone = (CheckBox) view.findViewById(R.id.chkSelectedTimeZone);
         timeZone.setText(filteredData.get(position).getTitle());
+
+        if (filteredData.get(position).getTitle().equals(timeZoneID)) {
+            chkSelectedTimeZone.setVisibility(View.VISIBLE);
+            chkSelectedTimeZone.setChecked(true);
+
+        } else {
+            chkSelectedTimeZone.setVisibility(View.GONE);
+            chkSelectedTimeZone.setChecked(false);
+        }
+
 
         timeZone.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -105,6 +105,7 @@
             android:layout_marginRight="16dp"
             android:clickable="true"
             android:src="@drawable/ic_action_name"
+            app:backgroundTint="#35d5a4"
             app:elevation="4dp" />
 
     </RelativeLayout>

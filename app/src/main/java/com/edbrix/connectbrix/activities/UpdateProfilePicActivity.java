@@ -80,6 +80,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
         Glide.with(this).load(url)
                 .into(mImgProfile);
         mImgProfile.setColorFilter(ContextCompat.getColor(this, android.R.color.transparent));
+
     }
 
     private void loadProfileDefault() {
@@ -91,7 +92,8 @@ public class UpdateProfilePicActivity extends BaseActivity {
             mImgProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
             int randomNumber = generateRandomIntIntRange(0001,9999);
-            String imageUrl = sessionManager.getSessionProfileImageUrl()+"?id="+randomNumber;
+            String imageUrl = sessionManager.getSessionProfileImageUrl()/*+"?id="+randomNumber*/;
+            Log.d("Update imageUrl",imageUrl);
             Glide.with(this).load(imageUrl)
                     .into(mImgProfile);
         }
@@ -102,7 +104,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
         mSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Dexter.withActivity(UpdateProfilePicActivity.this)
+                Dexter.withActivity(UpdateProfilePicActivity.this)
                         .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
                             @Override
@@ -120,7 +122,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
                             }
-                        }).check();*/
+                        }).check();
             }
         });
 
@@ -222,7 +224,8 @@ public class UpdateProfilePicActivity extends BaseActivity {
                     byte[] bitmapDataArray = stream.toByteArray();
                     base64StringUserProfile = Base64.encodeToString(bitmapDataArray, Base64.DEFAULT);
                     // loading profile image from local cache
-                    loadProfile(uri.toString());
+                    /*loadProfile(uri.toString());*/
+                    mImgProfile.setImageURI(uri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -299,6 +302,7 @@ public class UpdateProfilePicActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     //showToast(response.getMessage());
+                                    sessionManager.updateIsProfilePicUpdated("1");
                                     setResult(RESULT_OK);
                                     finish();
                                   /*  Intent intent = new Intent(UpdateProfilePicActivity.this,UserProfileActivity.class);

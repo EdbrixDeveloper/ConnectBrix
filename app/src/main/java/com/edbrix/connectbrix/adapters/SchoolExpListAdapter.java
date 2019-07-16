@@ -23,6 +23,7 @@ import java.util.Date;
 public class SchoolExpListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
+    UserMeetingsDate userMeetingsDate;
     // child data in format of header title, child title
 
     //private MeetingListData meetingListData;
@@ -138,8 +139,9 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        UserMeetingsDate userMeetingsDate = (UserMeetingsDate) getGroup(groupPosition);
+
         if (convertView == null) {
+            userMeetingsDate = (UserMeetingsDate) getGroup(groupPosition);
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.item_meeting_list_seprator, null);
             convertView.setClickable(false);

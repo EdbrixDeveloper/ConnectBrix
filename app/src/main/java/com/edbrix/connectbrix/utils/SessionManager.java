@@ -71,6 +71,8 @@ public class SessionManager {
     //google account
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
+    private static final String PREF_IS_PROFIL_PIC_UPDATE = "isProfilePicUpdate";
+
     private SharedPreferences sharedPrefs;
 
     public SessionManager(Context context) {
@@ -280,6 +282,11 @@ public class SessionManager {
     public String getGoogleAccount()
     {
         return this.sharedPrefs.getString(PREF_ACCOUNT_NAME, "");
+    }
+
+    public String getIsProfilePicUpdated()
+    {
+        return this.sharedPrefs.getString(PREF_IS_PROFIL_PIC_UPDATE, "");
     }
 
 
@@ -741,7 +748,15 @@ public class SessionManager {
         editor.commit();
     }
 
-
+    public void updateIsProfilePicUpdated(String isProfilePicUpdateStatus){
+        Editor editor = this.sharedPrefs.edit();
+        if ((isProfilePicUpdateStatus != null) && (isProfilePicUpdateStatus.length() > 0)) {
+            editor.putString(PREF_IS_PROFIL_PIC_UPDATE, isProfilePicUpdateStatus);
+        } else {
+            editor.remove(PREF_IS_PROFIL_PIC_UPDATE);
+        }
+        editor.commit();
+    }
 
 
 

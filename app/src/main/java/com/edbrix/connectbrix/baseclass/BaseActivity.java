@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.baseclass;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.commons.DialogManager;
@@ -24,11 +26,13 @@ import com.edbrix.connectbrix.commons.GlobalMethods;
 import com.edbrix.connectbrix.commons.ToastMessage;
 import com.edbrix.connectbrix.utils.NotificationUtils;
 import com.edbrix.connectbrix.utils.SessionManager;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.services.calendar.CalendarScopes;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Random;
 
-
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -47,6 +51,16 @@ public class BaseActivity extends AppCompatActivity {
     public static String checkInBatteryData = "0";
 
     public static boolean isDuplicateQRcode = false;
+
+    //google sync
+    GoogleAccountCredential mCredential;
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
+    static final int REQUEST_ACCOUNT_PICKER = 1000;
+    static final int REQUEST_AUTHORIZATION = 1001;
+    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
+    final public int CHECK_PERMISSIONS = 123;
+    private static final String PREF_ACCOUNT_NAME = "accountName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,4 +206,6 @@ public class BaseActivity extends AppCompatActivity {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
     }
+
+
 }

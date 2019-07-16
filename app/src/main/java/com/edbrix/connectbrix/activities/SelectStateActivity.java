@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -47,6 +46,7 @@ public class SelectStateActivity extends BaseActivity {
     private SelectStateAdapter.OnTextViewActionListener onTextViewActionListener;
 
     String CountryId = "";
+    String stateName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class SelectStateActivity extends BaseActivity {
 
         Intent intent = getIntent();
         CountryId = intent.getStringExtra("CountryId");
-
+        stateName = intent.getStringExtra("StateName");
 
         mInputSearch.addTextChangedListener(new TextWatcher() {
 
@@ -98,7 +98,7 @@ public class SelectStateActivity extends BaseActivity {
             stateListData.setStateList((ArrayList<StateList>) savedInstanceState.getSerializable("stateList"));
             if (stateListData != null) {
                 mSelectStateList.setVisibility(View.VISIBLE);
-                selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener);
+                selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener, stateName);
                 mSelectStateList.setAdapter(selectStateAdapter);
             }
             mInputSearch.setText(savedInstanceState.getString("searchState"));
@@ -140,7 +140,7 @@ public class SelectStateActivity extends BaseActivity {
                                     if (stateListData.getStateList() != null && stateListData.getStateList().size() > 0) {
                                         //txtDataFound.setVisibility(View.GONE);
                                         mSelectStateList.setVisibility(View.VISIBLE);
-                                        selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener);
+                                        selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener,stateName);
                                         mSelectStateList.setAdapter(selectStateAdapter);
 
                                     } else {
@@ -189,7 +189,7 @@ public class SelectStateActivity extends BaseActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.select_state_menu, menu);
         MenuItem shareItem = menu.findItem(R.id.menuCountry);
-        shareItem.setTitle("Country");
+        shareItem.setTitle("Change Country");
         //menu.findItem(R.id.menuCountry).setTitle(Html.fromHtml("<font color='#fffff'>Country</font>"));
 
         return true;
@@ -205,6 +205,7 @@ public class SelectStateActivity extends BaseActivity {
                 return true;
             case R.id.menuCountry:
                 Intent intent = new Intent(this, SelectCountryActivity.class);
+                intent.putExtra("CountryId",CountryId);
                 startActivity(intent);
                 finish();
                 return true;
@@ -233,7 +234,7 @@ public class SelectStateActivity extends BaseActivity {
         stateListData.setStateList((ArrayList<StateList>) savedInstanceState.getSerializable("stateList"));
         if (stateListData != null) {
             mSelectStateList.setVisibility(View.VISIBLE);
-            selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener);
+            selectStateAdapter = new SelectStateAdapter(SelectStateActivity.this, stateListData.getStateList(), onTextViewActionListener, stateName);
             mSelectStateList.setAdapter(selectStateAdapter);
         }
         mInputSearch.setText(savedInstanceState.getString("searchState"));

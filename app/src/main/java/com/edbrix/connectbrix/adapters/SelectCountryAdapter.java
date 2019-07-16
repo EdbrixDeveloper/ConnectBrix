@@ -6,20 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.data.CountryList;
-import com.edbrix.connectbrix.data.MeetingParticipantList;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelectCountryAdapter extends BaseAdapter implements Filterable {
 
@@ -30,17 +25,19 @@ public class SelectCountryAdapter extends BaseAdapter implements Filterable {
     private OnTextViewActionListener onTextViewActionListener;
     //private OnButtonActionListener onButtonActionListener;
     private ItemFilter mFilter = new ItemFilter();
+    String countryId = "";
 
     public interface OnTextViewActionListener {
         public void onTextViewClicked(CountryList datum, int position);
     }
 
     public SelectCountryAdapter(Context context,
-                                List<CountryList> countryList,OnTextViewActionListener onTextViewActionListener) {
+                                List<CountryList> countryList, OnTextViewActionListener onTextViewActionListener, String countryId) {
         this.context = context;
         this.countryList = countryList;
         this.filteredData = countryList;
         this.onTextViewActionListener = onTextViewActionListener;
+        this.countryId = countryId;
     }
 
     @Override
@@ -68,8 +65,17 @@ public class SelectCountryAdapter extends BaseAdapter implements Filterable {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_select_country_list_item, parent, false);
 
         TextView txtCountryName = (TextView) view.findViewById(R.id.txtCountryName);
+        CheckBox chkSelectedCountry = (CheckBox)view.findViewById(R.id.chkSelectedCountry);
 
         txtCountryName.setText(filteredData.get(position).getTitle());
+
+        if(filteredData.get(position).getId().equals(countryId)){
+            chkSelectedCountry.setVisibility(View.VISIBLE);
+            chkSelectedCountry.setChecked(true);
+        }else{
+            chkSelectedCountry.setChecked(false);
+            chkSelectedCountry.setVisibility(View.GONE);
+        }
 
         txtCountryName.setOnClickListener(new View.OnClickListener() {
             @Override

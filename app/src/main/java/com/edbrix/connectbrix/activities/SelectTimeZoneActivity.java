@@ -43,7 +43,7 @@ public class SelectTimeZoneActivity extends BaseActivity {
 
     SessionManager sessionManager;
     TimeZoneParentData timeZoneParentData;
-    String timezoneId = "";
+    String timeZoneID = "";
     SelectTimeZoneAdapter selectTimeZoneAdapter;
     private SelectTimeZoneAdapter.OnTextViewActionListener onTextViewActionListener;
 
@@ -58,8 +58,8 @@ public class SelectTimeZoneActivity extends BaseActivity {
         timeZoneParentData = new TimeZoneParentData();
         assignViews();
 
-       /* Intent intent = getIntent();
-        timezoneId = intent.getStringExtra("timezoneId");*/
+        Intent intent = getIntent();
+        timeZoneID = intent.getStringExtra("TimeZoneID");
 
         getTimeZones();
 
@@ -119,7 +119,7 @@ public class SelectTimeZoneActivity extends BaseActivity {
                                     if (timeZoneParentData.getTimezoneList() != null && timeZoneParentData.getTimezoneList().size() > 0) {
                                         //txtDataFound.setVisibility(View.GONE);
                                         mSelectTimeZoneList.setVisibility(View.VISIBLE);
-                                        selectTimeZoneAdapter = new SelectTimeZoneAdapter(SelectTimeZoneActivity.this, timeZoneParentData.getTimezoneList(), onTextViewActionListener);
+                                        selectTimeZoneAdapter = new SelectTimeZoneAdapter(SelectTimeZoneActivity.this, timeZoneParentData.getTimezoneList(), onTextViewActionListener,timeZoneID);
                                         mSelectTimeZoneList.setAdapter(selectTimeZoneAdapter);
 
                                     } else {

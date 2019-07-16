@@ -107,6 +107,7 @@ public class SchoolListActivity extends BaseActivity {
     private ImageView cancelSearch;
     private ImageView googlePlusMenu;
     private LinearLayout linearLayoutCircular;
+    private LinearLayout actionBarLayout2;
     private FloatingActionButton requestedMeetingButton;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -118,6 +119,8 @@ public class SchoolListActivity extends BaseActivity {
 
     public static final int REFRESH_DATA = 1;
     String userTimeZon = "";
+    int size = 0;
+    int counter = 0;
 
 
     FloatingActionButton floating_action_button_fab_with_listview;
@@ -161,7 +164,7 @@ public class SchoolListActivity extends BaseActivity {
         sessionManager = new SessionManager(SchoolListActivity.this);
         y_str = "N";
         intent = getIntent();
-        GetUserPersonalData();
+
         if (!validateUser()) {
             finish();
             startActivity(new Intent(SchoolListActivity.this, LoginActivity.class));
@@ -173,9 +176,10 @@ public class SchoolListActivity extends BaseActivity {
             imgCalender = (ImageView) findViewById(R.id.calender);
             imgUserProfile = (ImageView) findViewById(R.id.imgUserProfile);
             imgSearch = (ImageView) findViewById(R.id.search);
-            cancelSearch = (ImageView)findViewById(R.id.cancelSearch);
+            cancelSearch = (ImageView) findViewById(R.id.cancelSearch);
             googlePlusMenu = (ImageView) findViewById(R.id.googlePlusMenu);
             linearLayoutCircular = (LinearLayout) findViewById(R.id.linearLayoutCircular);
+            actionBarLayout2 = (LinearLayout) findViewById(R.id.actionBarLayout2);
             requestedMeetingButton = (FloatingActionButton) findViewById(R.id.requestedMeetingButton);
 
             mInputLayoutSearch = (TextInputLayout) findViewById(R.id.input_layout_search);
@@ -188,7 +192,7 @@ public class SchoolListActivity extends BaseActivity {
             schoolList_listView_schoolList = (ExpandableListView) findViewById(R.id.schoolList_listView_schoolList);
             requestMeetingListCount = (TextView) findViewById(R.id.requestMeetingListCount);
             txtDataFound = (TextView) findViewById(R.id.txtDataFound);
-            meetingListImg = (ImageView)findViewById(R.id.meetingListImg);
+            meetingListImg = (ImageView) findViewById(R.id.meetingListImg);
             txtDataFound.setVisibility(View.GONE);
             meetingListImg.setVisibility(View.GONE);
             meetingListData = new MeetingListData();
@@ -201,10 +205,11 @@ public class SchoolListActivity extends BaseActivity {
             }
             registerEventReceiver();
             //prepareListData();
+            getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
             getThreeMonthsMeeting();
 
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
-            getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
+
 
             if (savedInstanceState != null) {
                 if (!savedInstanceState.getString("mInputSearch").isEmpty()) {
@@ -324,8 +329,8 @@ public class SchoolListActivity extends BaseActivity {
 
                   /*  } else {
                         searchFlag = true;*/
-                        mInputLayoutSearch.setVisibility(View.VISIBLE);
-                        mInputSearch.setText("");
+                    mInputLayoutSearch.setVisibility(View.VISIBLE);
+                    mInputSearch.setText("");
                     /*}*/
 
 
@@ -335,7 +340,22 @@ public class SchoolListActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     mInputLayoutSearch.setVisibility(View.GONE);
+                    if(mInputSearch.getText().toString().isEmpty() || mInputSearch.getText().toString() == null)
+                    {
+
+                    }else{
+                        if (refreshCnt < 1) {
+                            refreshCnt = 1;
+                            userMeetingsDateList.clear();// = new ArrayList<UserMeetingsDate>();
+                            requestCount = 0;
+                            loading = true;
+                            prepareListData("0", 0);
+                            //mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+
                     mInputSearch.setText("");
+
                 }
             });
 
@@ -454,31 +474,30 @@ public class SchoolListActivity extends BaseActivity {
                         public void onPositiveClick() {
 
                             if (checkPermission() == true) {
-                                mCredential = GoogleAccountCredential.usingOAuth2(
-                                        getApplicationContext(), Arrays.asList(SCOPES))
+                                mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                                         .setBackOff(new ExponentialBackOff());
                                 getResultsFromApi();
 
-                                if(userMeetingsDateList.size()>0)
-                                {
 
-                                    for(int i=0;i<userMeetingsDateList.size();i++){
 
-                                        if(userMeetingsDateList.get(i).getUserMeetings().size()>0) {
-                                            for(int j=0;j<userMeetingsDateList.get(i).getUserMeetings().size();j++){
-                                                showBusyProgress();
+                                /*if (userMeetingsDateList.size() > 0) {
+
+                                    for (int i = 0; i < userMeetingsDateList.size(); i++) {
+
+                                        if (userMeetingsDateList.get(i).getUserMeetings().size() > 0) {
+                                            for (int j = 0; j < userMeetingsDateList.get(i).getUserMeetings().size(); j++) {
                                                 String userDate = userMeetingsDateList.get(i).getUserMeetings().get(j).getMeetingDate();
                                                 SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
                                                 DateTime start = null;
                                                 DateTime end = null;
                                                 try {
-                                                    Date dateOfMeeting  = convertDateTime.parse(userDate);
+                                                    Date dateOfMeeting = convertDateTime.parse(userDate);
                                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                                                     String tempDate = simpleDateFormat.format(dateOfMeeting);
                                                     Date dateTime = simpleDateFormat.parse(tempDate);
                                                     start = new DateTime(dateTime);
                                                     end = new DateTime(dateTime);
-                                                    Log.d("Date",dateOfMeeting.toString());
+                                                    Log.d("Date", dateOfMeeting.toString());
                                                 } catch (ParseException e) {
                                                     e.printStackTrace();
                                                 }
@@ -489,7 +508,7 @@ public class SchoolListActivity extends BaseActivity {
                                     }
 
 
-                                }
+                                }*///009
                                 //createEventAsync(eventTitle.getText().toString(), eventLocation.getText().toString(), buffer.toString(), start, end, eventAttendeeEmail );
                             }
                         }
@@ -522,8 +541,17 @@ public class SchoolListActivity extends BaseActivity {
                     .into(imgUserProfile);
             imgUserProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
-            int randomNumber = generateRandomIntIntRange(0001, 9999);
-            String imageUrl = sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
+
+            /*int randomNumber = generateRandomIntIntRange(0001, 9999);*/
+            String imageUrl = sessionManager.getSessionProfileImageUrl();
+            /*if (sessionManager.getIsProfilePicUpdated() == "1") {
+                sessionManager.updateIsProfilePicUpdated("0");
+                imageUrl =sessionManager.getSessionProfileImageUrl() + "?id=" + randomNumber;
+            }else {
+                imageUrl = sessionManager.getSessionProfileImageUrl();
+            }*/
+
+            Log.d("imageUrl", imageUrl);
             Glide.with(this).load(imageUrl)
                     .into(imgUserProfile);
         }
@@ -608,6 +636,8 @@ public class SchoolListActivity extends BaseActivity {
                                     if (meetingListData.getUserMeetingsDates() != null && meetingListData.getUserMeetingsDates().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
                                         meetingListImg.setVisibility(View.GONE);
+                                        actionBarLayout2.setVisibility(View.VISIBLE);
+                                        /*googlePlusMenu.setVisibility(View.VISIBLE);*/
                                         schoolList_listView_schoolList.setVisibility(View.VISIBLE);
 
                                         /*if (meetingListData.getUserMeetingsDates().size() < 10) {
@@ -654,6 +684,8 @@ public class SchoolListActivity extends BaseActivity {
                                             schoolList_listView_schoolList.setVisibility(View.GONE);
                                             txtDataFound.setVisibility(View.VISIBLE);
                                             meetingListImg.setVisibility(View.VISIBLE);
+                                            actionBarLayout2.setVisibility(View.GONE);
+                                           /* googlePlusMenu.setVisibility(View.GONE);*/
                                         }
                                     }
                                 }
@@ -718,21 +750,23 @@ public class SchoolListActivity extends BaseActivity {
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null &&
                         data.getExtras() != null) {
+                    //showToast("in onActivityResult REQUEST_ACCOUNT_PICKER");
                     String accountName =
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
-                        SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
                         mCredential.setSelectedAccountName(accountName);
+                        sessionManager.updateGoogleAccount(accountName);
                         getResultsFromApi();
                     }
                 }
                 break;
             case REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
+                    //showToast("in onActivityResult REQUEST_AUTHORIZATION");
                     getResultsFromApi();
                 }
                 break;
@@ -791,6 +825,7 @@ public class SchoolListActivity extends BaseActivity {
                 }
             }
             /*showToast("hiii");*/
+            getThreeMonthsMeeting();
         }
     }
 
@@ -859,52 +894,7 @@ public class SchoolListActivity extends BaseActivity {
         y_str = "S";
     }
 
-    //call user deails web service to get user time zone for used it when sync meetings to google calendar.
-    private void GetUserPersonalData() {
-        try {
 
-            showBusyProgress();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("UserId", sessionManager.getSessionUserId());
-            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
-
-            GsonRequest<UserData> userOrganizationListRequest = new GsonRequest<>(Request.Method.POST, Constants.getUserPersonalData, jsonObject.toString(), UserData.class,
-                    new Response.Listener<UserData>() {
-                        @Override
-                        public void onResponse(@NonNull UserData response) {
-                            hideBusyProgress();
-                            if (response.getError() != null) {
-                                String error = response.getError().getErrorMessage();
-                                showToast(error);
-                            } else {
-
-                                if (response.getSuccess() == 1) {
-                                    /*sessionManager.updateSessionUsername(userName);
-                                    sessionManager.updateSessionPassword(password);*/
-
-                                    userTimeZon = response.getUser().getUserTimezone();
-                                }
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hideBusyProgress();
-                    showToast(SettingsMy.getErrorMessage(error));
-                }
-            });
-            userOrganizationListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
-            userOrganizationListRequest.setShouldCache(false);
-            Application.getInstance().addToRequestQueue(userOrganizationListRequest, "userOrganizationListRequest");
-
-        } catch (Exception e) {
-
-            hideBusyProgress();
-            Log.e("Exception", e.getMessage());
-        }
-
-    }
 
 
     //------------------------------------- Sync Meetings With Google Calendar-----------------------------------//
@@ -998,16 +988,31 @@ public class SchoolListActivity extends BaseActivity {
 
     private void chooseAccount() {
         // to do clear mCredential and shared perferance when logout
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS))
-        {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
             String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
-            if (accountName != null)
-            {
+            /*if (accountName != null) {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
                 startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+            }*/
+
+            if (accountName != null) {
+                mCredential.setSelectedAccountName(accountName);
+                getResultsFromApi();
+            } else {
+                // Start a dialog from which the user can choose an account
+                //startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+
+                accountName = sessionManager.getGoogleAccount();
+                if (!accountName.isEmpty()) {
+                    mCredential.setSelectedAccountName(accountName);
+                    getResultsFromApi();
+                } else {
+                    // Start a dialog from which the user can choose an account
+                    startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                }
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -1038,7 +1043,6 @@ public class SchoolListActivity extends BaseActivity {
     private com.google.api.services.calendar.Calendar mService = null;
 
 
-
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
 
         private Exception mLastError = null;
@@ -1060,15 +1064,29 @@ public class SchoolListActivity extends BaseActivity {
          */
         @Override
         protected List<String> doInBackground(Void... params) {
-            /*try {
-             *//*getDataFromApi();*//*
+            try {
+                getDataFromApi();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 mLastError = e;
                 cancel(true);
                 return null;
-            }*/
+            }
             return null;
+        }
+
+        private void getDataFromApi() throws IOException {
+            // List the next 10 events from the primary calendar.
+            DateTime now = new DateTime(System.currentTimeMillis());
+            List<String> eventStrings = new ArrayList<String>();
+            Events events = mService.events().list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            List<Event> items = events.getItems();
         }
 
         @Override
@@ -1084,13 +1102,49 @@ public class SchoolListActivity extends BaseActivity {
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             SchoolListActivity.REQUEST_AUTHORIZATION);
                 } else {
-                   // mOutputText.setText("The following error occurred:\n"+ mLastError.getMessage());
+                    // mOutputText.setText("The following error occurred:\n"+ mLastError.getMessage());
                 }
             } else {
                 //mOutputText.setText("Request cancelled.");
             }
         }
 
+        @Override
+        protected void onPreExecute() {//009
+            showBusyProgress();
+        }
+
+        @Override
+        protected void onPostExecute(List<String> output) {
+            hideBusyProgress();
+
+            size = getThreeMonthsMeetingListData.size() - 1;
+            if (getThreeMonthsMeetingListData.size() > 0) {
+
+                //for (int i = 0; i < getThreeMonthsMeetingListData.size(); i++) {
+
+                String userDate = getThreeMonthsMeetingListData.get(0).getStartDateTime();
+                SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                DateTime start = null;
+                DateTime end = null;
+                try {
+                    Date dateOfMeeting = convertDateTime.parse(userDate);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                    String tempDate = simpleDateFormat.format(dateOfMeeting);
+                    Date dateTime = simpleDateFormat.parse(tempDate);
+                    start = new DateTime(dateTime);
+                    end = new DateTime(dateTime);
+                    Log.d("Date", dateOfMeeting.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                createEventAsync(getThreeMonthsMeetingListData.get(0).getTitle(), "", getThreeMonthsMeetingListData.get(0).getAgenda(), start, end, null);
+                //}
+                //showToast("Sync Success");
+            } else {
+                showToast("No meetings available.");
+            }
+        }
     }
 
     public void createEventAsync(final String summary, final String location, final String des, final DateTime startDate, final DateTime endDate, final EventAttendee[]
@@ -1105,7 +1159,6 @@ public class SchoolListActivity extends BaseActivity {
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-
                     insertEvent(summary, location, des, startDate, endDate, new EventAttendee[0]);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -1116,14 +1169,41 @@ public class SchoolListActivity extends BaseActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                getResultsFromApi();
+                if (counter == size) {
+                    counter = 0;
+                    hideBusyProgress();
+                    showToast("Meetings sync to Google Calendar successfully.");
+                } else {
+                    //showBusyProgress();
+                    //getThreeMonthsMeetingListData.get(counter);
+                    counter++;
+                    String userDate = getThreeMonthsMeetingListData.get(counter).getStartDateTime();
+                    SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                    DateTime start = null;
+                    DateTime end = null;
+                    try {
+                        Date dateOfMeeting = convertDateTime.parse(userDate);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        String tempDate = simpleDateFormat.format(dateOfMeeting);
+                        Date dateTime = simpleDateFormat.parse(tempDate);
+                        start = new DateTime(dateTime);
+                        end = new DateTime(dateTime);
+                        Log.d("Date", dateOfMeeting.toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    createEventAsync(getThreeMonthsMeetingListData.get(counter).getTitle(), "", getThreeMonthsMeetingListData.get(counter).getAgenda(), start, end, null);
+
+                }
+
+                //getResultsFromApi();
             }
         }.execute();
     }
 
     void insertEvent(String summary, String location, String des, DateTime startDate, DateTime endDate, EventAttendee[] eventAttendees) throws IOException {
-        hideBusyProgress();
-        showToast("Meetings sync to google calendar successfully.");
+
+        Log.d(SchoolListActivity.class.getName(), TimeZone.getDefault().getID());
         Event event = new Event()
                 .setSummary(summary)
                 .setLocation(location)
@@ -1131,12 +1211,12 @@ public class SchoolListActivity extends BaseActivity {
 
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDate)
-                .setTimeZone("Asia/Calcutta");
+                .setTimeZone(TimeZone.getDefault().getID());
         event.setStart(start);
 
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDate)
-                .setTimeZone("Asia/Calcutta");
+                .setTimeZone(TimeZone.getDefault().getID());
         event.setEnd(end);
 
         String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=1"};
@@ -1156,16 +1236,14 @@ public class SchoolListActivity extends BaseActivity {
 
         String calendarId = "primary";
         //event.send
-        if (mService != null)
-        {
-            try{
+        if (mService != null) {
+            mService.events().insert(calendarId, event).setSendNotifications(true).execute();
+            /*try {
                 mService.events().insert(calendarId, event).setSendNotifications(true).execute();
-
-            }catch (UserRecoverableAuthIOException e) {
+            } catch (UserRecoverableAuthIOException e) {
                 startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-            }
+            }*/
         }
-
     }
 
 
@@ -1180,14 +1258,14 @@ public class SchoolListActivity extends BaseActivity {
                     new Response.Listener<GetThreeMonthsMeetingParentData>() {
                         @Override
                         public void onResponse(@NonNull GetThreeMonthsMeetingParentData response) {
-                           /* hideBusyProgress();*/
+                            /* hideBusyProgress();*/
                             if (response.getError() != null) {
                                 String error = response.getError().getErrorMessage();
                                 showToast(error);
                             } else {
 
                                 if (response.getSuccess() == 1) {
-
+                                    getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
                                     getThreeMonthsMeetingListData.addAll(response.getMeetings());
                                 }
                             }

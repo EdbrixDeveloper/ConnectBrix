@@ -495,10 +495,10 @@ public class CreateMeetingActivity extends BaseActivity {
         String meetingAjenda = mCMeetingAgendaVal.getText().toString().trim();
 
         if (meetingTitle.isEmpty() || meetingTitle == null) {
-            showToast("Please fill meeting title");
+            showToast("Please fill meeting title.");
             return false;
         } else if (meetingDate.isEmpty() || meetingDate == null) {
-            showToast("Please fill meeting date");
+            showToast("Please Select Meeting Date.");
             return false;
         } else {
             return true;

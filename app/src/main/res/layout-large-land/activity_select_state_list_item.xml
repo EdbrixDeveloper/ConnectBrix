@@ -11,7 +11,8 @@
         android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:paddingLeft="5dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/txtStateName"
@@ -19,8 +20,16 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/app_min_margin"
+            android:layout_weight="2"
             android:text="State Name"
             android:textSize="17dp" />
+
+        <CheckBox
+            android:id="@+id/chkSelectedState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.0" />
     </LinearLayout>
 
 </LinearLayout>

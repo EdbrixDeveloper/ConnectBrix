@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorDarkParimary">#388e3c</color>
-    <color name="colorPrimary">#47a54b</color>
+    <color name="colorDarkParimary">#00B289</color><!--#388e3c-->
+    <color name="colorPrimary">#019674</color> <!--#47a54b-->
     <color name="buttonTextColor">#74bc44</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -15,6 +15,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGrey">#f3f3f3</color>
     <color name="lightGrey">#bdbdbd</color>
+    <color name="darkGrey">#424949</color>
     <color name="appBackground">#f3f6f9</color>
 
 

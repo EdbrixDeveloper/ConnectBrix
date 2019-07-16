@@ -1,5 +1,6 @@
 package com.edbrix.connectbrix.activities;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -81,6 +83,7 @@ public class EditProfileActivity extends BaseActivity {
         assignViews();
         sessionManager = new SessionManager(this);
         clickListner();
+        hideKeyboard();
         if (savedInstanceState != null) {
             mEmail.setText("Email:" + savedInstanceState.getString("email"));
             mFirstNameVal.setText(savedInstanceState.getString("firstName"));
@@ -94,6 +97,7 @@ public class EditProfileActivity extends BaseActivity {
             mPhone2Val.setText(savedInstanceState.getString("phone2"));
         } else {
             GetUserPersonalData();
+
         }
     }
 
@@ -132,6 +136,7 @@ public class EditProfileActivity extends BaseActivity {
                 if (countryID > 0) {
                     Intent intent = new Intent(EditProfileActivity.this, SelectStateActivity.class);
                     intent.putExtra("CountryId", String.valueOf(countryID));
+                    intent.putExtra("StateName",mStateVal.getText().toString());
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(EditProfileActivity.this, SelectCountryActivity.class);
@@ -145,7 +150,7 @@ public class EditProfileActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EditProfileActivity.this, SelectTimeZoneActivity.class);
-                /* intent.putExtra("CountryId", String.valueOf(countryID));*/
+                intent.putExtra("TimeZoneID", timeZoneVal.getText().toString());
                 startActivity(intent);
             }
         });
@@ -183,7 +188,7 @@ public class EditProfileActivity extends BaseActivity {
                                     /*sessionManager.updateSessionUsername(userName);
                                     sessionManager.updateSessionPassword(password);*/
 
-                                    String sourceString = response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "Email:" + "<b>" + "-" + "<b>" : "Email:" + "<b>" + response.getUser().getEmail().toString() + "<b>";
+                                    String sourceString = response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "Email: " + "<b>" + "-" + "<b>" : "Email: " + "<b>" + response.getUser().getEmail().toString() + "<b>";
                                     //String sourceString = "<b>" + id + "</b> " + name;
                                     mEmail.setText(Html.fromHtml(sourceString));
                                     //mEmail.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "Email:-" : "Email:"+response.getUser().getEmail().toString());
@@ -234,7 +239,6 @@ public class EditProfileActivity extends BaseActivity {
             jsonObject.put("UserId", sessionManager.getSessionUserId());
             jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
 
-
             jsonObject.put("FirstName", mFirstNameVal.getText().toString());
             sessionManager.updateSessionUserFirstName(mFirstNameVal.getText().toString());
             jsonObject.put("LastName", mLastNameVal.getText().toString());
@@ -276,12 +280,12 @@ public class EditProfileActivity extends BaseActivity {
 
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage().toString());
-                                    finish();
+                                   // finish();
                                    /* Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
                                     startActivity(intent);*/
 
-                                    /*sessionManager.updateSessionUsername(userName);
-                                    sessionManager.updateSessionPassword(password);
+                                    //sessionManager.updateSessionUsername(userName);
+                                    //sessionManager.updateSessionPassword(password);
                                     mEmailVal.setText(response.getUser().getEmail() == null || response.getUser().getEmail().isEmpty() ? "" : response.getUser().getEmail().toString());
                                     mFirstNameVal.setText(response.getUser().getFirstName() == null || response.getUser().getFirstName().isEmpty() ? "" : response.getUser().getFirstName().toString());
                                     mLastNameVal.setText(response.getUser().getLastName() == null || response.getUser().getLastName().isEmpty() ? "" : response.getUser().getLastName().toString());
@@ -292,7 +296,10 @@ public class EditProfileActivity extends BaseActivity {
                                     mPhone1Val.setText(response.getUser().getMobileNumber() == null || response.getUser().getMobileNumber().isEmpty() ? "" : response.getUser().getMobileNumber().toString());
                                     mPhone2Val.setText(response.getUser().getMobileNumber2() == null || response.getUser().getMobileNumber2().isEmpty() ? "" : response.getUser().getMobileNumber2().toString());
                                     countryID = Integer.parseInt(response.getUser().getCountryId() == null || response.getUser().getCountryId().isEmpty() ? "0" : response.getUser().getCountryId().toString());
-                                    stateID = Integer.parseInt(response.getUser().getStateId() == null || response.getUser().getStateId().isEmpty() ? "0" : response.getUser().getStateId().toString());*/
+                                    stateID = Integer.parseInt(response.getUser().getStateId() == null || response.getUser().getStateId().isEmpty() ? "0" : response.getUser().getStateId().toString());
+
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
                                 }
                             }
 
@@ -422,5 +429,10 @@ public class EditProfileActivity extends BaseActivity {
         mZipVal.setText(savedInstanceState.getString("zip"));
         mPhone1Val.setText(savedInstanceState.getString("phone1"));
         mPhone2Val.setText(savedInstanceState.getString("phone2"));
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mFirstNameVal.getWindowToken(), 0);
     }
 }

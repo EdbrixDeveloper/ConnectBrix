@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,8 +21,6 @@ import com.edbrix.connectbrix.adapters.SelectCountryAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.data.CountryList;
 import com.edbrix.connectbrix.data.CountryListData;
-import com.edbrix.connectbrix.data.UserOrganizationListData;
-import com.edbrix.connectbrix.data.UserOrganizationListParentData;
 import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
@@ -32,9 +29,6 @@ import com.edbrix.connectbrix.volley.SettingsMy;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static com.edbrix.connectbrix.utils.Constants.APP_KEY__;
-import static com.edbrix.connectbrix.utils.Constants.APP_SECRET__;
 
 public class SelectCountryActivity extends BaseActivity {
 
@@ -49,6 +43,9 @@ public class SelectCountryActivity extends BaseActivity {
     SelectCountryAdapter selectCountryAdapter;
     private SelectCountryAdapter.OnTextViewActionListener onTextViewActionListener;
 
+    Intent intent;
+    String countryId="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +56,9 @@ public class SelectCountryActivity extends BaseActivity {
         sessionManager = new SessionManager(this);
         countryListData = new CountryListData();
         assignViews();
+
+        intent = getIntent();
+        countryId = intent.getStringExtra("CountryId");
 
 
         mInputSearch.addTextChangedListener(new TextWatcher() {
@@ -115,7 +115,7 @@ public class SelectCountryActivity extends BaseActivity {
             if (countryListData != null)
             {
                 mSelectCountryList.setVisibility(View.VISIBLE);
-                selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener);
+                selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener,countryId);
                 mSelectCountryList.setAdapter(selectCountryAdapter);
             }
             mInputSearch.setText(savedInstanceState.getString("searchCountry"));
@@ -154,7 +154,7 @@ public class SelectCountryActivity extends BaseActivity {
                                     if (countryListData.getCountryList() != null && countryListData.getCountryList().size() > 0) {
                                         //txtDataFound.setVisibility(View.GONE);
                                         mSelectCountryList.setVisibility(View.VISIBLE);
-                                        selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener);
+                                        selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener, countryId);
                                         mSelectCountryList.setAdapter(selectCountryAdapter);
 
                                     } else {
@@ -209,7 +209,7 @@ public class SelectCountryActivity extends BaseActivity {
         if (countryListData != null)
         {
             mSelectCountryList.setVisibility(View.VISIBLE);
-            selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener);
+            selectCountryAdapter = new SelectCountryAdapter(SelectCountryActivity.this, countryListData.getCountryList(), onTextViewActionListener, countryId);
             mSelectCountryList.setAdapter(selectCountryAdapter);
         }
         mInputSearch.setText(savedInstanceState.getString("searchCountry"));

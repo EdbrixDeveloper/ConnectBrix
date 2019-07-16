@@ -43,7 +43,7 @@ public class ChangePasswordActivity extends BaseActivity {
     private Button mBtnChangePassSubmit;
     private boolean isPasswordVisible;
     private boolean isConfirmPasswordVisible;
-
+    private boolean isPasswordLengthFulfill = true;
     SessionManager sessionManager;
 
     @Override
@@ -69,8 +69,8 @@ public class ChangePasswordActivity extends BaseActivity {
         mTextViewConfirmPassword = (TextView) findViewById(R.id.textViewConfirmPassword);
         mEdTxtConfirmPassword = (EditText) findViewById(R.id.edTxtConfirmPassword);
         mBtnChangePassSubmit = (Button) findViewById(R.id.btnChangePassSubmit);
-        mEyeIconPassword = (ImageView)findViewById(R.id.eyeIconPassword);
-        mEyeIconConfirmPassword = (ImageView)findViewById(R.id.eyeIconConfirmPassword);
+        mEyeIconPassword = (ImageView) findViewById(R.id.eyeIconPassword);
+        mEyeIconConfirmPassword = (ImageView) findViewById(R.id.eyeIconConfirmPassword);
     }
 
     private void clickListner() {
@@ -79,10 +79,16 @@ public class ChangePasswordActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (validation(mEdTxtPassword.getText().toString().trim(), mEdTxtConfirmPassword.getText().toString().trim()) == true) {
-                    if (mEdTxtPassword.getText().toString().trim().equals(mEdTxtConfirmPassword.getText().toString().trim())) {
-                        ChangePassword(mEdTxtPassword.getText().toString().trim(), mEdTxtConfirmPassword.getText().toString().trim());
+                    if (isPasswordLengthFulfill == true) {
+                        if (mEdTxtPassword.getText().toString().trim().equals(mEdTxtConfirmPassword.getText().toString().trim())) {
+
+                            ChangePassword(mEdTxtPassword.getText().toString().trim(), mEdTxtConfirmPassword.getText().toString().trim());
+                        } else {
+                            showToast("Password must be same.");
+                        }
+
                     } else {
-                        showToast("New Password and Confirm Password must be match.");
+                        showToast("Password must in between mininum 6 charactor or maximum 10 charactor.");
                     }
                 }
             }
@@ -91,7 +97,7 @@ public class ChangePasswordActivity extends BaseActivity {
         mEyeIconPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPasswordVisible(isPasswordVisible,mEyeIconPassword,mEdTxtPassword);
+                setPasswordVisible(isPasswordVisible, mEyeIconPassword, mEdTxtPassword);
                 isPasswordVisible = !isPasswordVisible;
             }
         });
@@ -99,8 +105,26 @@ public class ChangePasswordActivity extends BaseActivity {
         mEyeIconConfirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setPasswordVisible(isConfirmPasswordVisible,mEyeIconPassword,mEdTxtPassword);
+                setPasswordVisible(isConfirmPasswordVisible, mEyeIconConfirmPassword, mEdTxtConfirmPassword);
                 isConfirmPasswordVisible = !isConfirmPasswordVisible;
+            }
+        });
+
+        mEdTxtPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    checkPasswordLength(mEdTxtPassword, "Password");
+                }
+            }
+        });
+
+        mEdTxtConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    checkPasswordLength(mEdTxtConfirmPassword, "Confirm Password");
+                }
             }
         });
 
@@ -205,13 +229,24 @@ public class ChangePasswordActivity extends BaseActivity {
         mEdTxtConfirmPassword.setText(savedInstanceState.getString("confirmPwd", ""));
     }
 
-    private void setPasswordVisible(boolean isVisible,ImageView imageView,EditText editText) {
+    private void setPasswordVisible(boolean isVisible, ImageView imageView, EditText editText) {
         if (isVisible) {
             imageView.setImageDrawable(ContextCompat.getDrawable(ChangePasswordActivity.this, R.drawable.ic_visibility_off_black_24dp));
             editText.setTransformationMethod(new PasswordTransformationMethod());
         } else {
             imageView.setImageDrawable(ContextCompat.getDrawable(ChangePasswordActivity.this, R.drawable.ic_visibility_black_24dp));
             editText.setTransformationMethod(null);
+        }
+    }
+
+    private void checkPasswordLength(EditText editText, String value) {
+
+        int length = editText.getText().toString().length();
+        if (length < 6 || length > 10) {
+            isPasswordLengthFulfill = false;
+            showToast(value + " must in between mininum 6 charactor or maximum 10 charactor.");
+        } else {
+            isPasswordLengthFulfill = true;
         }
     }
 }

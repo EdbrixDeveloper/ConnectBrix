@@ -72,7 +72,10 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
         android:weightSum="4">
 
         <TextView
@@ -93,24 +96,24 @@
 
         <ImageView
             android:id="@+id/calender"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_weight="0.2"
             android:src="@drawable/calendar2" />
 
         <ImageView
             android:id="@+id/googlePlusMenu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_weight="0.1"
             android:src="@drawable/googleplus" />
 
         <LinearLayout
             android:id="@+id/linearLayoutCircular"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_weight="0.2"
-            android:gravity="right">
+            android:gravity="center">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgUserProfile"
@@ -138,6 +141,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:paddingTop="6dp"
+        android:visibility="gone"
         android:paddingBottom="6dp"
         android:weightSum="2">
 
@@ -226,7 +230,7 @@
         android:layout_height="150dp"
         android:layout_below="@+id/actionBarLayout2"
         android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="250dp"
         android:src="@drawable/meetinglist"
         android:visibility="gone" />
 
@@ -238,7 +242,7 @@
         android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="No meeting available."
-        android:textSize="15dp"
+        android:textSize="23dp"
         android:visibility="gone" />
 
     <!--<ListView

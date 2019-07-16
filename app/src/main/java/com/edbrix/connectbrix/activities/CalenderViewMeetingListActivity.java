@@ -46,6 +46,8 @@ import com.edbrix.connectbrix.adapters.SchoolListWithCalendarAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.data.GetMeetingsByMonthYearResposeData;
+import com.edbrix.connectbrix.data.GetThreeMonthsMeetingListData;
+import com.edbrix.connectbrix.data.GetThreeMonthsMeetingParentData;
 import com.edbrix.connectbrix.data.MeetingListData;
 import com.edbrix.connectbrix.data.MyEventDay;
 import com.edbrix.connectbrix.data.UserData;
@@ -71,6 +73,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
+import com.google.api.services.calendar.model.Events;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +87,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -107,6 +111,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private UserMeetingByDateParentData userMeetingByDateParentData;
     String dateForGetEvents;
     ArrayList<UserMeetingListResponseData> userMeetingListResponseData;
+    List<GetThreeMonthsMeetingListData> getThreeMonthsMeetingListData;
 
     public static final int REFRESH_DATA = 1;
     String RefreshFlag = "";
@@ -121,7 +126,10 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     final public int CHECK_PERMISSIONS = 123;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     String userTimeZon = "";
+    int size = 0;
+    int counter = 0;
     MenuItem menuItem;
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,11 +141,13 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         alertDialogManager = new AlertDialogManager(CalenderViewMeetingListActivity.this);
         assignViews();
         registerEventReceiver();
-        GetUserPersonalData();
+
+        getThreeMonthsMeeting();
 
         meetingListData = new GetMeetingsByMonthYearResposeData();
         userMeetingListResponseData = new ArrayList<>();
         userMeetingByDateParentData = new UserMeetingByDateParentData();
+        getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
         finalSimpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
 
         clickListner();
@@ -242,6 +252,8 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                     txtDataFound.setVisibility(View.VISIBLE);
                     meetingListImg.setVisibility(View.VISIBLE);
                     mMeetingListWithCalender.setVisibility(View.GONE);
+                  /*  menuItem = menu.findItem(R.id.menuGoogle);
+                    menuItem.setEnabled(false);*/
                 }
             }
         });
@@ -327,34 +339,9 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                     @Override
                     public void onPositiveClick() {
                         if (checkPermission() == true) {
-
-                            mCredential = GoogleAccountCredential.usingOAuth2(
-                                    CalenderViewMeetingListActivity.this, Arrays.asList(SCOPES))
+                            mCredential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(SCOPES))
                                     .setBackOff(new ExponentialBackOff());
                             getResultsFromApi();
-
-                            if(userMeetingListResponseData.size()>0) {
-                                for(int j=0;j<userMeetingListResponseData.size();j++){
-                                    String userDate = userMeetingListResponseData.get(j).getStartDateTime();
-                                    SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
-                                    DateTime start = null;
-                                    DateTime end = null;
-                                    try {
-                                        Date dateOfMeeting  = convertDateTime.parse(userDate);
-                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                                        String tempDate = simpleDateFormat.format(dateOfMeeting);
-                                        Date dateTime = simpleDateFormat.parse(tempDate);
-                                        start = new DateTime(dateTime);
-                                        end = new DateTime(dateTime);
-                                        Log.d("Date",dateOfMeeting.toString());
-                                    } catch (ParseException e) {
-                                        Log.d("Exception",e.getMessage());
-                                    }
-                                    createEventAsync(userMeetingListResponseData.get(j).getTitle(), "", userMeetingListResponseData.get(j).getAgenda(), start, end, null);
-                                }
-                                showToast("Meetings sync to google calendar successfully.");
-                            }
-
                         }
                     }
 
@@ -369,14 +356,15 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.calender_view_menu, menu);
         menuItem = menu.findItem(R.id.menuGoogle);
-        if(userMeetingListResponseData.size()>0 || !userMeetingListResponseData.isEmpty()){
+       /* if(userMeetingListResponseData.size()>0 || !userMeetingListResponseData.isEmpty()){
             menuItem.setVisible(true);
         }else{
             menuItem.setVisible(false);
-        }
+        }*/
         return true;
 
     }
@@ -406,7 +394,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                     if (userMeetingByDateParentData.getMeetings() != null && userMeetingByDateParentData.getMeetings().size() > 0) {
                                         txtDataFound.setVisibility(View.GONE);
                                         meetingListImg.setVisibility(View.GONE);
-                                        menuItem.setVisible(true);
+                                        /* menuItem.setVisible(true);*/
                                         mMeetingListWithCalender.setVisibility(View.VISIBLE);
                                         userMeetingListResponseData = new ArrayList<>();
 
@@ -417,7 +405,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                                         mMeetingListWithCalender.setVisibility(View.GONE);
                                         txtDataFound.setVisibility(View.VISIBLE);
                                         meetingListImg.setVisibility(View.VISIBLE);
-                                        menuItem.setVisible(false);
+                                        /* menuItem.setVisible(false);*/
                                     }
                                 }
                             }
@@ -519,37 +507,37 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             //prepareListData();
             //showToast("Calling in Activity Result");
         }
-            switch (requestCode) {
-                case REQUEST_GOOGLE_PLAY_SERVICES:
-                    if (resultCode != RESULT_OK) {
-                        showToast("This app requires Google Play Services. Please install " +
-                                "Google Play Services on your device and relaunch this app.");
-                    } else {
+        switch (requestCode) {
+            case REQUEST_GOOGLE_PLAY_SERVICES:
+                if (resultCode != RESULT_OK) {
+                    showToast("This app requires Google Play Services. Please install " +
+                            "Google Play Services on your device and relaunch this app.");
+                } else {
+                    getResultsFromApi();
+                }
+                break;
+            case REQUEST_ACCOUNT_PICKER:
+                if (resultCode == RESULT_OK && data != null &&
+                        data.getExtras() != null) {
+                    String accountName =
+                            data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null) {
+                        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString(PREF_ACCOUNT_NAME, accountName);
+                        editor.apply();
+                        mCredential.setSelectedAccountName(accountName);
+                        sessionManager.updateGoogleAccount(accountName);
                         getResultsFromApi();
                     }
-                    break;
-                case REQUEST_ACCOUNT_PICKER:
-                    if (resultCode == RESULT_OK && data != null &&
-                            data.getExtras() != null) {
-                        String accountName =
-                                data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                        if (accountName != null) {
-                            SharedPreferences settings =
-                                    getPreferences(Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.putString(PREF_ACCOUNT_NAME, accountName);
-                            editor.apply();
-                            mCredential.setSelectedAccountName(accountName);
-                            getResultsFromApi();
-                        }
-                    }
-                    break;
-                case REQUEST_AUTHORIZATION:
-                    if (resultCode == RESULT_OK) {
-                        getResultsFromApi();
-                    }
-                    break;
-            }
+                }
+                break;
+            case REQUEST_AUTHORIZATION:
+                if (resultCode == RESULT_OK) {
+                    getResultsFromApi();
+                }
+                break;
+        }
 
     }
 
@@ -583,7 +571,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                     prepareMeetingListByDate(dateForGetEvents);
 
                 } catch (Exception ex) {
-
+                    Log.e("Exception", ex.getMessage());
                 }
             }
             //This code will be executed when the broadcast in activity B is launched
@@ -657,53 +645,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         }
     }
 
-    //call user deails web service to get user time zone for used it when sync meetings to google calendar.
-    private void GetUserPersonalData() {
-        try {
-
-            showBusyProgress();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("UserId", sessionManager.getSessionUserId());
-            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
-
-            GsonRequest<UserData> userOrganizationListRequest = new GsonRequest<>(Request.Method.POST, Constants.getUserPersonalData, jsonObject.toString(), UserData.class,
-                    new Response.Listener<UserData>() {
-                        @Override
-                        public void onResponse(@NonNull UserData response) {
-                            hideBusyProgress();
-                            if (response.getError() != null) {
-                                String error = response.getError().getErrorMessage();
-                                showToast(error);
-                            } else {
-
-                                if (response.getSuccess() == 1) {
-                                    /*sessionManager.updateSessionUsername(userName);
-                                    sessionManager.updateSessionPassword(password);*/
-
-                                    userTimeZon = response.getUser().getUserTimezone();
-                                }
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    hideBusyProgress();
-                    showToast(SettingsMy.getErrorMessage(error));
-                }
-            });
-            userOrganizationListRequest.setRetryPolicy(Application.getDefaultRetryPolice());
-            userOrganizationListRequest.setShouldCache(false);
-            Application.getInstance().addToRequestQueue(userOrganizationListRequest, "userOrganizationListRequest");
-
-        } catch (Exception e) {
-
-            hideBusyProgress();
-            Log.e("Exception", e.getMessage());
-        }
-
-    }
-
 
     //------------------------------------- Sync Meetings With Google Calendar-----------------------------------//
 
@@ -748,9 +689,10 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
+            /* mOutputText.setText("No network connection available.");*/
             showToast("No network connection available.");
         } else {
-            new CalenderViewMeetingListActivity.MakeRequestTask(mCredential).execute();
+            new MakeRequestTask(mCredential).execute();
         }
     }
 
@@ -795,16 +737,31 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
     private void chooseAccount() {
         // to do clear mCredential and shared perferance when logout
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS))
-        {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.GET_ACCOUNTS)) {
             String accountName = getPreferences(Context.MODE_PRIVATE).getString(PREF_ACCOUNT_NAME, null);
-            if (accountName != null)
+            /*if (accountName != null)
             {
                 mCredential.setSelectedAccountName(accountName);
                 getResultsFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
                 startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+            }*/
+            if (accountName != null) {
+                mCredential.setSelectedAccountName(accountName);
+                getResultsFromApi();
+            } else {
+                // Start a dialog from which the user can choose an account
+                //startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+
+                accountName = sessionManager.getGoogleAccount();
+                if (!accountName.isEmpty()) {
+                    mCredential.setSelectedAccountName(accountName);
+                    getResultsFromApi();
+                } else {
+                    // Start a dialog from which the user can choose an account
+                    startActivityForResult(mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                }
             }
         } else {
             // Request the GET_ACCOUNTS permission via a user dialog
@@ -835,7 +792,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     private com.google.api.services.calendar.Calendar mService = null;
 
 
-
     private class MakeRequestTask extends AsyncTask<Void, Void, List<String>> {
 
         private Exception mLastError = null;
@@ -857,15 +813,30 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
          */
         @Override
         protected List<String> doInBackground(Void... params) {
-            /*try {
-             *//*getDataFromApi();*//*
+            try {
+                getDataFromApi();
             } catch (Exception e) {
                 e.printStackTrace();
                 mLastError = e;
                 cancel(true);
                 return null;
-            }*/
+            }
             return null;
+        }
+
+        private void getDataFromApi() throws IOException {
+            // List the next 10 events from the primary calendar.
+            DateTime now = new DateTime(System.currentTimeMillis());
+            List<String> eventStrings = new ArrayList<String>();
+            Events events = mService.events().list("primary")
+                    .setMaxResults(10)
+                    .setTimeMin(now)
+                    .setOrderBy("startTime")
+                    .setSingleEvents(true)
+                    .execute();
+            List<Event> items = events.getItems();
+
+
         }
 
         @Override
@@ -888,6 +859,44 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             }
         }
 
+        @Override
+        protected void onPreExecute() {//009
+            showBusyProgress();
+        }
+
+        @Override
+        protected void onPostExecute(List<String> output) {
+            hideBusyProgress();
+
+            size = getThreeMonthsMeetingListData.size() - 1;
+            if (getThreeMonthsMeetingListData.size() > 0) {
+
+                //for (int i = 0; i < getThreeMonthsMeetingListData.size(); i++) {
+
+                String userDate = getThreeMonthsMeetingListData.get(0).getStartDateTime();
+                SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                DateTime start = null;
+                DateTime end = null;
+                try {
+                    Date dateOfMeeting = convertDateTime.parse(userDate);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                    String tempDate = simpleDateFormat.format(dateOfMeeting);
+                    Date dateTime = simpleDateFormat.parse(tempDate);
+                    start = new DateTime(dateTime);
+                    end = new DateTime(dateTime);
+                    Log.d("Date", dateOfMeeting.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                createEventAsync(getThreeMonthsMeetingListData.get(0).getTitle(), "", getThreeMonthsMeetingListData.get(0).getAgenda(), start, end, null);
+                //}
+                //showToast("Sync Success");
+
+            } else {
+                showToast("No meetings available.");
+            }
+        }
+
     }
 
     public void createEventAsync(final String summary, final String location, final String des, final DateTime startDate, final DateTime endDate, final EventAttendee[]
@@ -902,7 +911,6 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
             @Override
             protected String doInBackground(Void... voids) {
                 try {
-
                     insertEvent(summary, location, des, startDate, endDate, new EventAttendee[0]);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -910,15 +918,45 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 return null;
             }
 
+
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                getResultsFromApi();
+                if (counter == size) {
+                    counter = 0;
+                    hideBusyProgress();
+                    showToast("Meetings sync to Google Calendar successfully.");
+                } else {
+                    //showBusyProgress();
+                    //getThreeMonthsMeetingListData.get(counter);
+                    counter++;
+                    String userDate = getThreeMonthsMeetingListData.get(counter).getStartDateTime();
+                    SimpleDateFormat convertDateTime = new SimpleDateFormat("dd/MMM/yyyy hh:mm a");
+                    DateTime start = null;
+                    DateTime end = null;
+                    try {
+                        Date dateOfMeeting = convertDateTime.parse(userDate);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        String tempDate = simpleDateFormat.format(dateOfMeeting);
+                        Date dateTime = simpleDateFormat.parse(tempDate);
+                        start = new DateTime(dateTime);
+                        end = new DateTime(dateTime);
+                        Log.d("Date", dateOfMeeting.toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    createEventAsync(getThreeMonthsMeetingListData.get(counter).getTitle(), "", getThreeMonthsMeetingListData.get(counter).getAgenda(), start, end, null);
+
+                }
+
+                //getResultsFromApi();
             }
         }.execute();
     }
 
     void insertEvent(String summary, String location, String des, DateTime startDate, DateTime endDate, EventAttendee[] eventAttendees) throws IOException {
+
+        Log.d(SchoolListActivity.class.getName(), TimeZone.getDefault().getID());
         Event event = new Event()
                 .setSummary(summary)
                 .setLocation(location)
@@ -926,12 +964,12 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDate)
-                .setTimeZone("Asia/Calcutta");
+                .setTimeZone(TimeZone.getDefault().getID());
         event.setStart(start);
 
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDate)
-                .setTimeZone("Asia/Calcutta");
+                .setTimeZone(TimeZone.getDefault().getID());
         event.setEnd(end);
 
         String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=1"};
@@ -951,15 +989,61 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         String calendarId = "primary";
         //event.send
-        if (mService != null)
-        {
-            try{
+        if (mService != null) {
+            mService.events().insert(calendarId, event).setSendNotifications(true).execute();
+            /*try{
                 mService.events().insert(calendarId, event).setSendNotifications(true).execute();
             }catch (UserRecoverableAuthIOException e) {
                 startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-            }
+            }*/
         }
 
     }
 
+    private void getThreeMonthsMeeting() {
+        try {
+            /*showBusyProgress();*/
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("UserId", sessionManager.getSessionUserId());
+            jsonObject.put("AccessToken", sessionManager.getPrefsSessionAccessToken());
+
+            GsonRequest<GetThreeMonthsMeetingParentData> getThreeMonthsMeetingParentDataGsonRequest = new GsonRequest<>(Request.Method.POST, Constants.getthreemonthsmeeting, jsonObject.toString(), GetThreeMonthsMeetingParentData.class,
+                    new Response.Listener<GetThreeMonthsMeetingParentData>() {
+                        @Override
+                        public void onResponse(@NonNull GetThreeMonthsMeetingParentData response) {
+                            /* hideBusyProgress();*/
+                            if (response.getError() != null) {
+                                String error = response.getError().getErrorMessage();
+                                showToast(error);
+                            } else {
+
+                                if (response.getSuccess() == 1) {
+                                    getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
+                                    getThreeMonthsMeetingListData.addAll(response.getMeetings());
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(SettingsMy.getErrorMessage(error));
+                }
+            });
+            getThreeMonthsMeetingParentDataGsonRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            getThreeMonthsMeetingParentDataGsonRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(getThreeMonthsMeetingParentDataGsonRequest, "getThreeMonthsMeetingParentDataGsonRequest");
+
+        } catch (Exception e) {
+            /*hideBusyProgress();*/
+            Log.e("Exception", e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getThreeMonthsMeeting();
+    }
 }

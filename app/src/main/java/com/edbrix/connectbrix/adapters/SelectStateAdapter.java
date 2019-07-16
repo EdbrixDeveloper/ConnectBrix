@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -24,17 +25,19 @@ public class SelectStateAdapter extends BaseAdapter implements Filterable {
     private OnTextViewActionListener onTextViewActionListener;
     //private OnButtonActionListener onButtonActionListener;
     private ItemFilter mFilter = new ItemFilter();
+    String stateName;
 
     public interface OnTextViewActionListener {
         public void onTextViewClicked(StateList datum, int position);
     }
 
     public SelectStateAdapter(Context context,
-                              List<StateList> stateList, OnTextViewActionListener onTextViewActionListener) {
+                              List<StateList> stateList, OnTextViewActionListener onTextViewActionListener, String stateName) {
         this.context = context;
         this.stateList = stateList;
         this.filteredData = stateList;
         this.onTextViewActionListener = onTextViewActionListener;
+        this.stateName = stateName;
     }
 
     @Override
@@ -62,8 +65,20 @@ public class SelectStateAdapter extends BaseAdapter implements Filterable {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_select_state_list_item, parent, false);
 
         TextView txtStateName = (TextView) view.findViewById(R.id.txtStateName);
+        CheckBox chkSelectedState = (CheckBox)view.findViewById(R.id.chkSelectedState);
 
         txtStateName.setText(filteredData.get(position).getTitle());
+
+        if(filteredData.get(position).getTitle().equals(stateName)){
+            chkSelectedState.setVisibility(View.VISIBLE);
+           /* chkSelectedState.setEnabled(false);*/
+            chkSelectedState.setChecked(true);
+        }else{
+            chkSelectedState.setEnabled(false);
+            chkSelectedState.setVisibility(View.GONE);
+            chkSelectedState.setChecked(false);
+        }
+
 
         txtStateName.setOnClickListener(new View.OnClickListener() {
             @Override
