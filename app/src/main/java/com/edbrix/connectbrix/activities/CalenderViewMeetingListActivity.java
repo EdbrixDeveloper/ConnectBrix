@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -125,6 +126,7 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     final public int CHECK_PERMISSIONS = 123;
     private static final String PREF_ACCOUNT_NAME = "accountName";
+    ProgressDialog mProgress;
     String userTimeZon = "";
     int size = 0;
     int counter = 0;
@@ -136,6 +138,8 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_view_meeting_list);
         getSupportActionBar().setTitle("Meetings");
+        mProgress = new ProgressDialog(this);
+        mProgress.setMessage("Please wait while syncing with Google Calendar..");
 
         sessionManager = new SessionManager(this);
         alertDialogManager = new AlertDialogManager(CalenderViewMeetingListActivity.this);
@@ -861,12 +865,14 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
 
         @Override
         protected void onPreExecute() {//009
-            showBusyProgress();
+           /* showBusyProgress();*/
+            mProgress.show();
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
-            hideBusyProgress();
+          /*  hideBusyProgress();*/
+            mProgress.hide();
 
             size = getThreeMonthsMeetingListData.size() - 1;
             if (getThreeMonthsMeetingListData.size() > 0) {
@@ -924,7 +930,8 @@ public class CalenderViewMeetingListActivity extends BaseActivity {
                 super.onPostExecute(s);
                 if (counter == size) {
                     counter = 0;
-                    hideBusyProgress();
+                    /*hideBusyProgress();*/
+                    mProgress.hide();
                     showToast("Meetings sync to Google Calendar successfully.");
                 } else {
                     //showBusyProgress();

@@ -23,6 +23,11 @@ import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
 import com.edbrix.connectbrix.volley.SettingsMy;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONObject;
 
@@ -37,6 +42,7 @@ public class OrgnizationListActivity extends BaseActivity {
     SessionManager sessionManager;
 
     String userComesFrom;
+    String isPasswordSkip = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,8 @@ public class OrgnizationListActivity extends BaseActivity {
         setContentView(R.layout.activity_orgnization_list);
         getSupportActionBar().setTitle("Select your School");
         assignViews();
+
+        /* mGoogleSignInClient = GoogleSignIn.getClient(this, gso);*/
 
         sessionManager = new SessionManager(this);
         Intent intent = getIntent();
@@ -93,7 +101,15 @@ public class OrgnizationListActivity extends BaseActivity {
             jsonObject.put("APIKEY", userOrganizationListData.get(position).getApiKey());
             jsonObject.put("SECRETKEY", userOrganizationListData.get(position).getSecretekey());
             jsonObject.put("Email", sessionManager.getSessionUsername());
-            jsonObject.put("Password", sessionManager.getSessionPassword());
+
+
+            Log.d(TAG, sessionManager.getPrefIsPasswordSkip());
+            if (sessionManager.getPrefIsPasswordSkip().equals("1")) {
+                jsonObject.put("Password", "");
+                jsonObject.put("IsSkipPassword", sessionManager.getPrefIsPasswordSkip());
+            } else {
+                jsonObject.put("Password", sessionManager.getSessionPassword());
+            }
 
             GsonRequest<UserLoginResponseData> userLoginRequest = new GsonRequest<>(Request.Method.POST, Constants.userLogin, jsonObject.toString(), UserLoginResponseData.class,
                     new Response.Listener<UserLoginResponseData>() {
@@ -101,6 +117,7 @@ public class OrgnizationListActivity extends BaseActivity {
                         public void onResponse(@NonNull UserLoginResponseData response) {
                             hideBusyProgress();
                             if (response.getError() != null) {
+                                signOut();
                                 showToast(response.getError().getErrorMessage());
                             } else {
 
@@ -119,7 +136,7 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());
                                     //finish();
-                                    saveDeviceTokenForNotification(userOrganizationListData.get(position).getId(),response.getUser().getId());
+                                    saveDeviceTokenForNotification(userOrganizationListData.get(position).getId(), response.getUser().getId());
 
 
                                     //Intent intent = new Intent(OrgnizationListActivity.this, SchoolListActivity.class);
@@ -191,15 +208,15 @@ public class OrgnizationListActivity extends BaseActivity {
 
     }
 
-    private void saveDeviceTokenForNotification(String orgnizationId,String userId) {
+    private void saveDeviceTokenForNotification(String orgnizationId, String userId) {
 
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("Token", sessionManager.getSessionFCMToken());
             jsonObject.put("Type", "A");
             jsonObject.put("ProductId", "7");
-            jsonObject.put("OrganizationId",orgnizationId);
-            jsonObject.put("UserId",userId);
+            jsonObject.put("OrganizationId", orgnizationId);
+            jsonObject.put("UserId", userId);
 
             GsonRequest<SaveDeviceTokenResponseData> saveDeviceTokenRequest = new GsonRequest<>(Request.Method.POST, Constants.savedevicetoken, jsonObject.toString(), SaveDeviceTokenResponseData.class,
                     new Response.Listener<SaveDeviceTokenResponseData>() {
@@ -207,6 +224,7 @@ public class OrgnizationListActivity extends BaseActivity {
                         public void onResponse(@NonNull SaveDeviceTokenResponseData response) {
 
                             if (response.getError() != null) {
+
                                 showToast(response.getError().getErrorMessage());
                             } else {
 
@@ -243,5 +261,21 @@ public class OrgnizationListActivity extends BaseActivity {
         finish();
         startActivity(new Intent(OrgnizationListActivity.this, LoginActivity.class));
 
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        /* mAuth.signOut();*/
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        /* updateUI(null);*/
+                        sessionManager.updateIsPasswordSkip("0");
+                        sessionManager.updateGoogleAccount("");
+                    }
+                });
     }
 }

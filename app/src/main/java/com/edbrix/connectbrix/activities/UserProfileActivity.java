@@ -1,6 +1,8 @@
 package com.edbrix.connectbrix.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +35,8 @@ import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
 import com.edbrix.connectbrix.volley.SettingsMy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONObject;
 
@@ -59,7 +63,7 @@ public class UserProfileActivity extends BaseActivity {
     private ListView mUserOptionList;
     private RelativeLayout mUpdatePhotoLayout;
     LinearLayout mLinearLayoutUserInfo;
-
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     public static final int RESULT_UPDATE_PROFILE_PIC = 258;
 
     UserOptionsListAdapter userOptionsListAdapter;
@@ -80,17 +84,19 @@ public class UserProfileActivity extends BaseActivity {
         getSupportActionBar().setTitle("User Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignViews();
-
+        sessionManager = new SessionManager(this);
         alertDialogManager = new AlertDialogManager(UserProfileActivity.this);
         userOptions.add("Edit Profile");
-        userOptions.add("Change Password");
+        if(!sessionManager.getPrefIsPasswordSkip().equals("1")){
+            userOptions.add("Change Password");
+        }
         userOptions.add("App Tour");
 
         userOptionsImages.add(R.drawable.editprofile);
         userOptionsImages.add(R.drawable.resetpass);
         userOptionsImages.add(R.drawable.apptour);
 
-        sessionManager = new SessionManager(this);
+
 
 
         setUserDetails();
@@ -232,6 +238,13 @@ public class UserProfileActivity extends BaseActivity {
             @Override
             public void onPositiveClick() {
                 sessionManager.clearSessionCredentials();
+                /*SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(PREF_ACCOUNT_NAME, "");
+                editor.commit();*/
+                if(sessionManager.getPrefIsPasswordSkip().equals("1")){
+                    signOut();
+                }
                 finish();
                 Intent intent = new Intent(UserProfileActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -310,5 +323,20 @@ public class UserProfileActivity extends BaseActivity {
         }else if (requestCode == 1 && resultCode == RESULT_OK) {
             setUserDetails();
         }
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        /* mAuth.signOut();*/
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        /* updateUI(null);*/
+                        sessionManager.updateIsPasswordSkip("0");
+                    }
+                });
     }
 }

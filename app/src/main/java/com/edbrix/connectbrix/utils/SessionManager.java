@@ -73,6 +73,8 @@ public class SessionManager {
 
     private static final String PREF_IS_PROFIL_PIC_UPDATE = "isProfilePicUpdate";
 
+    private static final String PREF_IS_PASSWORD_SKIP = "isPasswordSkip";
+
     private SharedPreferences sharedPrefs;
 
     public SessionManager(Context context) {
@@ -255,41 +257,41 @@ public class SessionManager {
         return this.sharedPrefs.getString(PREFS_SESSION_USER_TIME, "");
     }
 
-    public String getSessionUserType(){
+    public String getSessionUserType() {
         return this.sharedPrefs.getString(PREFS_SESSION_USER_TYPE, "");
     }
 
-    public String getPrefsSessionSchoolDispalyName(){
+    public String getPrefsSessionSchoolDispalyName() {
         return this.sharedPrefs.getString(PREFS_SESSION_SCHOOL_DISPALY_NAME, "");
     }
 
-    public String getPrefsSessionSchoolLoginUrl(){
+    public String getPrefsSessionSchoolLoginUrl() {
         return this.sharedPrefs.getString(PREFS_SESSION_SCHOOL_DISPALY_NAME, "");
     }
 
-    public String getPrefsSessionAccessToken(){
+    public String getPrefsSessionAccessToken() {
         return this.sharedPrefs.getString(PREFS_SESSION_ACCESS_TOKEN, "");
     }
 
-    public String getPrefsOrganizationApiKey(){
+    public String getPrefsOrganizationApiKey() {
         return this.sharedPrefs.getString(PREFS_SESSION_ORGANISION_API_KEY, "");
     }
 
-    public String getPrefsOrganizationSecretKey(){
+    public String getPrefsOrganizationSecretKey() {
         return this.sharedPrefs.getString(PREFS_SESSION_ORGANISION_SECRET_KEY, "");
     }
 
-    public String getGoogleAccount()
-    {
+    public String getGoogleAccount() {
         return this.sharedPrefs.getString(PREF_ACCOUNT_NAME, "");
     }
 
-    public String getIsProfilePicUpdated()
-    {
+    public String getIsProfilePicUpdated() {
         return this.sharedPrefs.getString(PREF_IS_PROFIL_PIC_UPDATE, "");
     }
 
-
+    public String getPrefIsPasswordSkip() {
+        return this.sharedPrefs.getString(PREF_IS_PASSWORD_SKIP, "");
+    }
 
     /*  public ArrayList<UserData> getLoggedUsersList() {
         try {
@@ -677,7 +679,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateUserType(String userType){
+    public void updateUserType(String userType) {
         Editor editor = this.sharedPrefs.edit();
         if ((userType != null) && (userType.length() > 0)) {
             editor.putString(PREFS_SESSION_USER_TYPE, userType);
@@ -687,7 +689,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateSchoolDisplayName(String schoolDisplayName){
+    public void updateSchoolDisplayName(String schoolDisplayName) {
         Editor editor = this.sharedPrefs.edit();
         if ((schoolDisplayName != null) && (schoolDisplayName.length() > 0)) {
             editor.putString(PREFS_SESSION_SCHOOL_DISPALY_NAME, schoolDisplayName);
@@ -697,7 +699,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateSchoolLoginUrl(String schoolLoginUrl){
+    public void updateSchoolLoginUrl(String schoolLoginUrl) {
         Editor editor = this.sharedPrefs.edit();
         if ((schoolLoginUrl != null) && (schoolLoginUrl.length() > 0)) {
             editor.putString(PREFS_SESSION_SCHOOL_LOGIN_URL, schoolLoginUrl);
@@ -707,7 +709,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateAccessToken(String accessToken){
+    public void updateAccessToken(String accessToken) {
         Editor editor = this.sharedPrefs.edit();
         if ((accessToken != null) && (accessToken.length() > 0)) {
             editor.putString(PREFS_SESSION_ACCESS_TOKEN, accessToken);
@@ -717,8 +719,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateOrganizationApiKey(String organizationApiKey)
-    {
+    public void updateOrganizationApiKey(String organizationApiKey) {
         Editor editor = this.sharedPrefs.edit();
         if ((organizationApiKey != null) && (organizationApiKey.length() > 0)) {
             editor.putString(PREFS_SESSION_ORGANISION_API_KEY, organizationApiKey);
@@ -728,7 +729,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateOrganizationSecretKey(String organizationSecretKey){
+    public void updateOrganizationSecretKey(String organizationSecretKey) {
         Editor editor = this.sharedPrefs.edit();
         if ((organizationSecretKey != null) && (organizationSecretKey.length() > 0)) {
             editor.putString(PREFS_SESSION_ORGANISION_SECRET_KEY, organizationSecretKey);
@@ -738,7 +739,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateGoogleAccount(String googleAccount){
+    public void updateGoogleAccount(String googleAccount) {
         Editor editor = this.sharedPrefs.edit();
         if ((googleAccount != null) && (googleAccount.length() > 0)) {
             editor.putString(PREF_ACCOUNT_NAME, googleAccount);
@@ -748,7 +749,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updateIsProfilePicUpdated(String isProfilePicUpdateStatus){
+    public void updateIsProfilePicUpdated(String isProfilePicUpdateStatus) {
         Editor editor = this.sharedPrefs.edit();
         if ((isProfilePicUpdateStatus != null) && (isProfilePicUpdateStatus.length() > 0)) {
             editor.putString(PREF_IS_PROFIL_PIC_UPDATE, isProfilePicUpdateStatus);
@@ -759,6 +760,15 @@ public class SessionManager {
     }
 
 
+    public void updateIsPasswordSkip(String isPasswordSkip) {
+        Editor editor = this.sharedPrefs.edit();
+        if ((isPasswordSkip != null) && (isPasswordSkip.length() > 0)) {
+            editor.putString(PREF_IS_PASSWORD_SKIP, isPasswordSkip);
+        } else {
+            editor.remove(PREF_IS_PASSWORD_SKIP);
+        }
+        editor.commit();
+    }
 
     /**
      * Updates the saved session credentials.

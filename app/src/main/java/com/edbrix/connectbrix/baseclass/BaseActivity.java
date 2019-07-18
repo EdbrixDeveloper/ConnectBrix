@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
@@ -26,6 +28,9 @@ import com.edbrix.connectbrix.commons.GlobalMethods;
 import com.edbrix.connectbrix.commons.ToastMessage;
 import com.edbrix.connectbrix.utils.NotificationUtils;
 import com.edbrix.connectbrix.utils.SessionManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -52,15 +57,13 @@ public class BaseActivity extends AppCompatActivity {
 
     public static boolean isDuplicateQRcode = false;
 
-    //google sync
-    GoogleAccountCredential mCredential;
-    private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY, CalendarScopes.CALENDAR};
-    static final int REQUEST_ACCOUNT_PICKER = 1000;
-    static final int REQUEST_AUTHORIZATION = 1001;
-    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-    final public int CHECK_PERMISSIONS = 123;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
+
+    //used for google sign in
+    public GoogleSignInOptions gso;
+    public GoogleSignInClient mGoogleSignInClient;
+    /* private FirebaseAuth mAuth;*/
+    /*public SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+    public SharedPreferences.Editor editor = settings.edit();*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,13 @@ public class BaseActivity extends AppCompatActivity {
         toastMessage = new ToastMessage(this);
 //        connectivityMonitor = new ConnectivityMonitor(this, erisConnectionListener);
         mContext = this;
+
+        // Configure Google Sign In
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         displayFirebaseRegId();
 
