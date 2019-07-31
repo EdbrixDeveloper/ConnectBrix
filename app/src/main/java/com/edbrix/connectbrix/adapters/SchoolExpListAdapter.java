@@ -76,6 +76,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         TextView textViewAgenda = (TextView) convertView.findViewById(R.id.textViewAgenda);
         TextView textViewMeetingTime = (TextView) convertView.findViewById(R.id.textViewMeetingTime);
         TextView textViewPartycipentCount = (TextView) convertView.findViewById(R.id.textViewPartycipentCount);
+        TextView textViewHostName = (TextView)convertView.findViewById(R.id.textViewHostName);
 
         String day = "", monthString = "";
         try {
@@ -92,6 +93,7 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         textViewMeetingMonth.setText(monthString);
         textViewMeetingName.setText(userMeeting.getTitle());
         textViewAgenda.setText(userMeeting.getAgenda());
+        textViewHostName.setText(userMeeting.getHostName());
 
         String[] meetingTime = userMeeting.getMeetingDate().split(" ");
 

@@ -28,6 +28,10 @@ public class UserMeetingListResponseData implements Serializable {
     @SerializedName("ParticipantCount")
     @Expose
     private String participantCount;
+    @SerializedName("HostName")
+    @Expose
+    private String hostName;
+
 
     private final static long serialVersionUID = -8749931267024256649L;
 
@@ -89,5 +93,13 @@ public class UserMeetingListResponseData implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 }

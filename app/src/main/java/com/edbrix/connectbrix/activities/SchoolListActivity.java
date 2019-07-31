@@ -427,9 +427,9 @@ public class SchoolListActivity extends BaseActivity {
                         final String meetingId = usermeeting.getMeetingId() == null ? "" : usermeeting.getMeetingId().toString();
                         final String isHost = usermeeting.getIsHost() == null ? "" : usermeeting.getIsHost().toString();
                         final String isAvailable = usermeeting.getIsAvailable() == null ? "" : usermeeting.getIsAvailable().toString();
+                        final String hostName = usermeeting.getHostName() == null ? "" : usermeeting.getHostName().toString();
 
-
-                        goToEditingMeetingDetails(meetingDbId, meetingId, isHost, isAvailable);
+                        goToEditingMeetingDetails(meetingDbId, meetingId, isHost, isAvailable,hostName);
                     }
                 }
 
@@ -572,11 +572,12 @@ public class SchoolListActivity extends BaseActivity {
     }
 
 
-    private void goToEditingMeetingDetails(String meetingDbId, String MeetingId, String IsHost, String isAvailable) {
+    private void goToEditingMeetingDetails(String meetingDbId, String MeetingId, String IsHost, String isAvailable, String hostName) {
         Intent intent = new Intent(SchoolListActivity.this, MeetingDetailsActivity.class);
         intent.putExtra("meetingDbId", meetingDbId);
         intent.putExtra("MeetingId", MeetingId);
         intent.putExtra("IsHost", IsHost);
+        intent.putExtra("hostName",hostName);
         intent.putExtra("isAvailable", isAvailable);
         intent.putExtra("RefreshFlag", "N");
         intent.putExtra("IsCalenderActivity", "N");

@@ -44,6 +44,7 @@ import com.edbrix.connectbrix.utils.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -77,6 +78,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     private ListView mParticipantList;
     private ImageView mMeetingListImg;
     private TextView mTxtDataFound;
+    private TextView txtHostName;
     private SwipeRefreshLayout swipeToRefreshInMeetingDetails;
 
     RadioButton radioMale;
@@ -91,7 +93,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
     ParticipantsListAdapter participantsListAdapter;
 
     SessionManager sessionManager;
-    private String meetingDbId = "", MeetingId = "", isAvailable = "", IsHost = "", RefreshFlag = "", IsCalenderActivity = "";
+    private String meetingDbId = "", MeetingId = "", isAvailable = "", IsHost = "", RefreshFlag = "", IsCalenderActivity = "",hostName = "";
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;//by 008
     ParticipantsListAdapter.OnButtonActionListener onButtonActionListener;
@@ -118,6 +120,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         IsHost = intent.getStringExtra("IsHost");
         RefreshFlag = intent.getStringExtra("RefreshFlag");
         IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
+        hostName = intent.getStringExtra("hostName");
+
+
 
         invalidateOptionsMenu();
         fieldsVisibilityBasedOnUser();
@@ -424,6 +429,7 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         mBtnMJoin = (Button) findViewById(R.id.btnMJoin);
         btns = (LinearLayout)findViewById(R.id.btns);
         mParticipantList = (ListView) findViewById(R.id.participantList);
+        txtHostName = (TextView) findViewById(R.id.txtHostName);
 
         mMeetingListImg = (ImageView) findViewById(R.id.meetingListImg);
         mTxtDataFound = (TextView) findViewById(R.id.txtDataFound);
@@ -463,6 +469,13 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     Constants.HOST_ID = str_HostId;//meetingDetailsData.getMeeting().getHostId();
                                     if (Constants.HOST_ID != null) {
                                         executeBackgroundTaskForUserInfo();
+                                    }
+                                    if(!hostName.equals("")){
+                                        txtHostName.setVisibility(View.VISIBLE);
+                                        txtHostName.setText("Host: "+hostName);
+                                    }else{
+                                        txtHostName.setVisibility(View.GONE);
+                                        txtHostName.setText("");
                                     }
                                     String meetingID = meetingDetailsData.getMeeting().getMeetingId() == null || meetingDetailsData.getMeeting().getMeetingId().isEmpty() ? "Meeting ID: "+"" : "Meeting ID: "+meetingDetailsData.getMeeting().getMeetingId();
                                     txtMeetingId.setText(meetingID);

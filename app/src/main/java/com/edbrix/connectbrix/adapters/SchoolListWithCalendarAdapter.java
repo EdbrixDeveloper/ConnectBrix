@@ -56,6 +56,7 @@ public class SchoolListWithCalendarAdapter extends BaseAdapter {
             holder.mTextViewMeetingTime = (TextView) view.findViewById(R.id.textViewMeetingTime);
             holder.mTextViewPartycipentCount = (TextView) view.findViewById(R.id.textViewPartycipentCount);
             holder.myMeetingList = (LinearLayout) view.findViewById(R.id.myMeetingList);
+            holder.textViewHostName = (TextView)view.findViewById(R.id.textViewHostName);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -69,7 +70,7 @@ public class SchoolListWithCalendarAdapter extends BaseAdapter {
         holder.mTextViewAgenda.setText(userMeetingListResponseData.get(position).getAgenda());
         holder.mTextViewMeetingTime.setText(dateTime[1] + " " + dateTime[2]);
         holder.mTextViewPartycipentCount.setText(userMeetingListResponseData.get(position).getParticipantCount());
-
+        holder.textViewHostName.setText(userMeetingListResponseData.get(position).getHostName());
         if (userMeetingListResponseData.get(position).getIsHost().equals("0")) {
             holder.myMeetingList.setBackground(null);
         }
@@ -85,6 +86,7 @@ public class SchoolListWithCalendarAdapter extends BaseAdapter {
         TextView mTextViewAgenda;
         TextView mTextViewMeetingTime;
         TextView mTextViewPartycipentCount;
+        TextView textViewHostName;
         LinearLayout myMeetingList;
 
     }

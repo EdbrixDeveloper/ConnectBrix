@@ -91,6 +91,22 @@
                     android:textSize="12dp" />
 
 
+                <ImageView
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/host" />
+
+                <TextView
+                    android:id="@+id/textViewHostName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="center"
+                    android:text="Pranav Bandekar"
+                    android:textSize="12dp" />
+
+
             </LinearLayout>
 
 
