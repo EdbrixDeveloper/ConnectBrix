@@ -120,9 +120,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         IsHost = intent.getStringExtra("IsHost");
         RefreshFlag = intent.getStringExtra("RefreshFlag");
         IsCalenderActivity = intent.getStringExtra("IsCalenderActivity");
-        hostName = intent.getStringExtra("hostName");
+        /*hostName = intent.getStringExtra("hostName");*/
 
-
+        hostName = intent.getStringExtra("hostName").equals(null) ? "":intent.getStringExtra("hostName");
 
         invalidateOptionsMenu();
         fieldsVisibilityBasedOnUser();

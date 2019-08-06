@@ -387,6 +387,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     intent.putExtra("IsHost", isHost);
                                     intent.putExtra("isAvailable", isAvailable);
                                     intent.putExtra("RefreshFlag", "Y");
+                                    intent.putExtra("hostName",sessionManager.getSessionUserFirstName()+" "+sessionManager.getSessionUserFirstLast());
                                     //intent.putExtra("IsCalenderActivity", "C");
                                     intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
                                     startActivity(intent);
@@ -443,6 +444,7 @@ public class CreateMeetingActivity extends BaseActivity {
                                     intent.putExtra("IsHost", "1");
                                     intent.putExtra("isAvailable", "0");
                                     intent.putExtra("RefreshFlag", "Y");
+                                    intent.putExtra("hostName",sessionManager.getSessionUserFirstName()+" "+sessionManager.getSessionUserFirstLast());
                                     intent.putExtra("IsCalenderActivity", IsCalenderActivity.equals("Y") ? "YC" : "C");
                                     startActivity(intent);
                                     finish();
