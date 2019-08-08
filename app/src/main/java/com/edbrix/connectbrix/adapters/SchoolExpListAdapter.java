@@ -175,7 +175,6 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
 
 
     public void filterData(String query) {
-
         query = query.toLowerCase();
         Log.v("SchoolExpListAdapter", String.valueOf(userMeetingsDateListAdapter.size()));
         userMeetingsDateListAdapter = new ArrayList<UserMeetingsDate>();
@@ -183,7 +182,6 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
         if (query.isEmpty()) {
             userMeetingsDateListAdapter.addAll(originalList);
         } else {
-
             //UserMeeting userMeeting
             for (UserMeetingsDate userMeetingsDate : originalList) {
                 ArrayList<UserMeeting> countryList = userMeetingsDate.getUserMeetings();
@@ -200,10 +198,8 @@ public class SchoolExpListAdapter extends BaseExpandableListAdapter {
                 }
             }
         }
-
         Log.v("SchoolExpListAdapter", String.valueOf(userMeetingsDateListAdapter.size()));
         notifyDataSetChanged();
-
     }
 
 }

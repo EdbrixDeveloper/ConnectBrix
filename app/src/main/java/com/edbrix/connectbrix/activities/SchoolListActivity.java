@@ -216,10 +216,7 @@ public class SchoolListActivity extends BaseActivity {
             //prepareListData();
             getThreeMonthsMeetingListData = new ArrayList<GetThreeMonthsMeetingListData>();
             getThreeMonthsMeeting();
-
             userMeetingsDateList = new ArrayList<UserMeetingsDate>();
-
-
             if (savedInstanceState != null) {
                 if (!savedInstanceState.getString("mInputSearch").isEmpty()) {
                     //mInputSearch.setText(savedInstanceState.getString("mInputSearch"));
