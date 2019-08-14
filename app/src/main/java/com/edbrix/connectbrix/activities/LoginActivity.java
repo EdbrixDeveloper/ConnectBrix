@@ -127,6 +127,7 @@ public class LoginActivity extends BaseActivity implements AuthConstants, ZoomSD
         /*mAuth = FirebaseAuth.getInstance();*/
 
         if (savedInstanceState == null) {
+            Log.e(TAG, "Call savedInstanceState inside onCreate method.");
             zoomSDK.initialize(LoginActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
         }
 

@@ -470,13 +470,27 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
                                     if (Constants.HOST_ID != null) {
                                         executeBackgroundTaskForUserInfo();
                                     }
-                                    if(!hostName.equals("")){
+
+                                    try{
+                                        if(!hostName.equals("") || !hostName.equals(null)){
+                                            txtHostName.setVisibility(View.VISIBLE);
+                                            txtHostName.setText("Host: "+hostName);
+                                        }else{
+                                            txtHostName.setVisibility(View.GONE);
+                                            txtHostName.setText("");
+                                        }
+                                    }catch (Exception e){
+                                        txtHostName.setVisibility(View.GONE);
+                                        txtHostName.setText("");
+                                    }
+
+                                    /*if(!hostName.equals("")){
                                         txtHostName.setVisibility(View.VISIBLE);
                                         txtHostName.setText("Host: "+hostName);
                                     }else{
                                         txtHostName.setVisibility(View.GONE);
                                         txtHostName.setText("");
-                                    }
+                                    }*/
                                     String meetingID = meetingDetailsData.getMeeting().getMeetingId() == null || meetingDetailsData.getMeeting().getMeetingId().isEmpty() ? "Meeting ID: "+"" : "Meeting ID: "+meetingDetailsData.getMeeting().getMeetingId();
                                     txtMeetingId.setText(meetingID);
                                     mTxtMeetingTitle.setText(meetingDetailsData.getMeeting().getTitle() == null || meetingDetailsData.getMeeting().getTitle().isEmpty() ? "" : meetingDetailsData.getMeeting().getTitle());
