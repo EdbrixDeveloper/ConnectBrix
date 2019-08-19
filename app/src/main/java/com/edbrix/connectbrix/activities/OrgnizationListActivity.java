@@ -128,7 +128,9 @@ public class OrgnizationListActivity extends BaseActivity {
                                     sessionManager.updateSessionUserEmail(response.getUser().getEmail());
                                     sessionManager.updateUserType(response.getUser().getUserType());
                                     sessionManager.updateSchoolDisplayName(response.getUser().getSchoolDisplayName());
-                                    sessionManager.updateSessionProfileImageUrl(response.getUser().getImageUrl());
+                                    int randomNumber = generateRandomIntIntRange(0001, 9999);
+                                    String imageUrl = response.getUser().getImageUrl() + "?id=" + randomNumber;
+                                    sessionManager.updateSessionProfileImageUrl(imageUrl);
                                     sessionManager.updateSchoolLoginUrl(response.getUser().getSchoolLoginUrl());
                                     sessionManager.updateOrganizationApiKey(userOrganizationListData.get(position).getApiKey());
                                     sessionManager.updateOrganizationSecretKey(userOrganizationListData.get(position).getSecretekey());

@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
@@ -74,20 +75,22 @@ public class UpdateProfilePicActivity extends BaseActivity {
 
     }
 
-    private void loadProfile(String url) {
+   /* private void loadProfile(String url) {
         Log.d(TAG, "Image cache path: " + url);
 
         Glide.with(this).load(url)
                 .into(mImgProfile);
         mImgProfile.setColorFilter(ContextCompat.getColor(this, android.R.color.transparent));
 
-    }
+    }*/
 
     private void loadProfileDefault() {
 
 
         if (sessionManager.getSessionProfileImageUrl().isEmpty()) {
             Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(mImgProfile);
             mImgProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
@@ -95,6 +98,8 @@ public class UpdateProfilePicActivity extends BaseActivity {
             String imageUrl = sessionManager.getSessionProfileImageUrl()/*+"?id="+randomNumber*/;
             Log.d("Update imageUrl",imageUrl);
             Glide.with(this).load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(mImgProfile);
         }
     }

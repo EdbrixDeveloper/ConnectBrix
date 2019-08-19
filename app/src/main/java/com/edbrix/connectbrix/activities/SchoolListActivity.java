@@ -18,6 +18,8 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.app.ActivityCompat;
@@ -553,6 +555,8 @@ public class SchoolListActivity extends BaseActivity {
 
             Log.d("imageUrl", imageUrl);
             Glide.with(this).load(imageUrl)
+                    /*.diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)*/
                     .into(imgUserProfile);
         }
     }

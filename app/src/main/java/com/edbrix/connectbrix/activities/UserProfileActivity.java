@@ -135,6 +135,8 @@ public class UserProfileActivity extends BaseActivity {
 
         if (imageUrl.isEmpty() || imageUrl == null) {
             Glide.with(this).load(R.drawable.baseline_account_circle_black_48)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(mImgProfile);
             mImgProfile.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary));
 
@@ -143,8 +145,8 @@ public class UserProfileActivity extends BaseActivity {
         } else {
 
             Glide.with(this).load(imageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    //.apply(RequestOptions.circleCropTransform())//.apply(RequestOptions.bitmapTransform(new FitCenter()))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(mImgProfile);
         }
 
