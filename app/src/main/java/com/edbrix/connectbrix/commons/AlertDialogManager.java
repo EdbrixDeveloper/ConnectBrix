@@ -3,7 +3,7 @@ package com.edbrix.connectbrix.commons;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import com.edbrix.connectbrix.R;
 
 

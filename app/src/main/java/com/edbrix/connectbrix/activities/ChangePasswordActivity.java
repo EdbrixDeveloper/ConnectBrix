@@ -1,9 +1,8 @@
 package com.edbrix.connectbrix.activities;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -27,9 +26,6 @@ import com.edbrix.connectbrix.volley.GsonRequest;
 import com.edbrix.connectbrix.volley.SettingsMy;
 
 import org.json.JSONObject;
-
-import static com.edbrix.connectbrix.utils.Constants.APP_KEY__;
-import static com.edbrix.connectbrix.utils.Constants.APP_SECRET__;
 
 public class ChangePasswordActivity extends BaseActivity {
 

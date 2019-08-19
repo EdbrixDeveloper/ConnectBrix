@@ -2,7 +2,7 @@ package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,9 +23,6 @@ import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.SessionManager;
 import com.edbrix.connectbrix.volley.GsonRequest;
 import com.edbrix.connectbrix.volley.SettingsMy;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 

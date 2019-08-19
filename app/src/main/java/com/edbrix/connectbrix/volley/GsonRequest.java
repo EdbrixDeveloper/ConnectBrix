@@ -1,7 +1,7 @@
 package com.edbrix.connectbrix.volley;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import android.util.Base64;
 
 import com.android.volley.AuthFailureError;

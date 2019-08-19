@@ -1,9 +1,9 @@
 package com.edbrix.connectbrix.activities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,11 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
-import com.edbrix.connectbrix.adapters.SelectStateAdapter;
 import com.edbrix.connectbrix.adapters.SelectTimeZoneAdapter;
 import com.edbrix.connectbrix.baseclass.BaseActivity;
-import com.edbrix.connectbrix.data.StateList;
-import com.edbrix.connectbrix.data.StateListData;
 import com.edbrix.connectbrix.data.TimeZoneListData;
 import com.edbrix.connectbrix.data.TimeZoneParentData;
 import com.edbrix.connectbrix.utils.Constants;

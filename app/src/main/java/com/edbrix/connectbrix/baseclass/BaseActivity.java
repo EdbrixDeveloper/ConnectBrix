@@ -1,18 +1,16 @@
 package com.edbrix.connectbrix.baseclass;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -20,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.edbrix.connectbrix.R;
-import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
 import com.edbrix.connectbrix.commons.AlertDialogManager;
 import com.edbrix.connectbrix.commons.DialogManager;
@@ -31,13 +28,9 @@ import com.edbrix.connectbrix.utils.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Random;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class BaseActivity extends AppCompatActivity {

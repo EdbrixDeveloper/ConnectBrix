@@ -10,29 +10,21 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.Html;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.edbrix.connectbrix.Application;
 import com.edbrix.connectbrix.R;
 import com.edbrix.connectbrix.activities.SchoolListActivity;
 import com.edbrix.connectbrix.app.Config;
-import com.edbrix.connectbrix.utils.Constants;
 import com.edbrix.connectbrix.utils.NotificationUtils;
 import com.edbrix.connectbrix.utils.SessionManager;
-import com.edbrix.connectbrix.volley.JsonRequest;
-import com.edbrix.connectbrix.volley.SettingsMy;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Random;

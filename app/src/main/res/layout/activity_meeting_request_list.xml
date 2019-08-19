@@ -36,7 +36,7 @@
         android:layout_below="@+id/actionBarLayout"
         android:background="@color/colorDarkParimary" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             tools:listheader="@layout/item_meeting_request_list_seprator"
             tools:listitem="@layout/item_meeting_request_list" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <ImageView

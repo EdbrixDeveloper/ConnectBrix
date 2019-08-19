@@ -115,7 +115,7 @@
         android:layout_below="@+id/actionBarLayout2"
         android:background="@color/colorDarkParimary" />-->
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -143,10 +143,10 @@
                 android:src="@drawable/cancelsearch" />
 
         </FrameLayout>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
     <!--android:layout_below="@+id/linearLayout_Status"-->
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             tools:listheader="@layout/item_meeting_list_seprator"
             tools:listitem="@layout/item_meeting_list" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <ImageView
@@ -204,7 +204,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/requestedMeetingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -237,7 +237,7 @@
 
 
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button_fab_with_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
