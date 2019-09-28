@@ -294,8 +294,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
         ZoomSDK zoomSDK = ZoomSDK.getInstance();
 
         if (!zoomSDK.isInitialized()) {
-            Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
-            return;
+            zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
+            /*Toast.makeText(this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+            return;*/
         }
 
         final MeetingService meetingService = zoomSDK.getMeetingService();
@@ -362,8 +363,9 @@ public class MeetingDetailsActivity extends BaseActivity implements AuthConstant
 
         // Check if the zoom SDK is initialized
         if (!zoomSDK.isInitialized()) {
-            Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
-            return;
+            zoomSDK.initialize(MeetingDetailsActivity.this, "qjDDhSsOzp5Ln0WSP0Z0LoKo86XFR4S2UIUn", "ePR5WENlisNzQVRJ8vrVeG0UGUsPza2iQ3xL", WEB_DOMAIN, this);
+            /*Toast.makeText(MeetingDetailsActivity.this, "ZoomSDK has not been initialized successfully", Toast.LENGTH_LONG).show();
+            return;*/
         }
 
         // Step 3: Get meeting service from zoom SDK instance.
